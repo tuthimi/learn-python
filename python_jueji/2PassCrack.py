@@ -1,20 +1,22 @@
 __author__ = 'Administrator'
-import crypt
+
 
 def checkpass(userhash):
     salt = userhash[0:2]
     fdict = open('dictionary.txt', 'r')
     for line in fdict.readlines():
-        if crypt.crypt(line, salt) == userhash:
-            print ('The password' + line + 'right')
-
+        if line.strip('\n') == userhash:
+            print ('The password: ' + line.strip('\n') + ' is right ')
+            return True
+    return False
 
 def main():
     fpass = open('passwords.txt', 'r')
     for line in fpass.readlines():
         username = line.split(':')[0]
         userhash = line.split(':')[1]
-        checkpass(userhash)
+        if checkpass(userhash.strip(' ')):
+            print('to user '+ username)
 
 if __name__ == '__main__':
     main()
