@@ -9,3 +9,6 @@ retBanner.py
 zippass.py
   zFile = zipfile.ZipFile('evil.zip', 'r')
   zFile.extractall(pwd='password')
+  使用多线程：
+  t = Thread(target = functionname, argv = (argvs))
+  t.start
