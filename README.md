@@ -10,5 +10,11 @@ zippass.py
   zFile = zipfile.ZipFile('evil.zip', 'r')
   zFile.extractall(pwd='password')
   使用多线程：
-  t = Thread(target = functionname, argv = (argvs))
+  t = Thread(target = functionname, args = (args))
   t.start
+4scanner.py
+  argparse解析命令行参数
+  # 参数用-h会与默认的帮助的-h冲突
+    # 命令行下运行时需要使用python name.py
+    # --portlist --后的是变量名
+    # nargs = '*' 可是多个变量（端口）
