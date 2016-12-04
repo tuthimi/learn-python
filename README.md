@@ -67,10 +67,16 @@ configFile.write('use exploit/windows/smb/psexec\n')
   msfconsole -r conficker.rc
   来启动我们的攻击。这个命令会告诉Metasploit根据conficker.rc来启动攻击。如果成功，我们的攻击会返回一个命令行Shell来控制对方电脑。 
 
-####32recycle.py
+####32recycle.py 
 用Python 将用户的SID 关联起来:通过检查 Windows 注册表键值HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\<SID>\ProfileImagePath，我们可以看到它返回 一个是%SystemDrive%\Documents and Settings\<USERID>。在下图中，我 们看到这允许我们将SID 为S-1-5-21-1275210071-1715567821-725345543- 1005 转化为用户名“alex”。
 ```python
 key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\\" + sid)
             (value, type) = _winreg.QueryValueEx(key, "ProfileImagePath")
             user = value.split('\\')[-1]
 ```
+
+###20161204 使用python抓取并分析数据—链家网(requests+BeautifulSoup)
+	http://bluewhale.cc/2016-12-04/use-python-crawl-and-analysis-data-lianjia-requests-and-beautifulsoup.html
+	scipy的安装问题【scipy-0.15.1-win32-superpack-python2.7.exe安装包】
+	pandas入门 http://pda.readthedocs.io/en/latest/chp5.html
+	sklearn 是一个 Python 的 科学计算库，提供了数种聚类算法可供选择；numpy、scipy 是 Python 的科学运算库，matplotlib 是图形库，用于绘图。http://www.jianshu.com/p/93c03a09d689
