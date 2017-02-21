@@ -107,3 +107,7 @@ configFile.write('use exploit/windows/smb/psexec\n')
   # 一共m行，如果m=2就是表示2行图。p表示图所在的位置，p=1表示从左到右从上到下的第一个位置。
   plt.subplot(4, 7, index + 15)
   ```
+###20170221 NYC_Taxi 使用Python分析纽约出租车搭乘数据
+  Read more: http://bluewhale.cc/#ixzz4ZIpKZQqW
+  pd操作
+
