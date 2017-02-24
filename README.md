@@ -110,4 +110,11 @@ configFile.write('use exploit/windows/smb/psexec\n')
 ###20170221 NYC_Taxi 使用Python分析纽约出租车搭乘数据
   Read more: http://bluewhale.cc/#ixzz4ZIpKZQqW
   pd操作
+###20170222 lianjia_spider 网上的一个链家爬虫，还未测试
+###20170223 pygame 未完成
+###20170224 socket 用python实现的socket通信
+    python socket编程详细介绍 http://blog.csdn.net/rebelqsp/article/details/22109925
+    Python Socket 网络编程 http://www.cnblogs.com/hazir/p/python_socket_programming.html
+    input()与raw_input()：最好用raw_input();
+    用socket.sendall();
 
