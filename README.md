@@ -118,3 +118,15 @@ configFile.write('use exploit/windows/smb/psexec\n')
     input()与raw_input()：最好用raw_input();
     用socket.sendall();
 
+###20170404 花瓣网图片爬虫     好！！！
+    learn-python\qiubai_crawler、4_grab_huaban_board.py 
+    不错的代码，print color函数；多线程；
+    ```python
+    #get ajax pin data 异步（下拉加载更多）
+    url = "http://huaban.com/boards/%s/?max=%s&limit=100&wfl=1" %(board, pins[-1])
+    
+    # 详细使用文档请参考: http://www.saintic.com/blog/204.html
+    # user（用户） 下有 board（画板），再下有pin（图片）
+    # http://huaban.com/boards/%s/?limit=100 在下拉加载更多的页面上直接请求100个
+    # url = "http://huaban.com/boards/%s/?max=%s&limit=100&wfl=1" %(board, pins[-1]) 请求到max=pins[-1]个 即最后一个。最多100个
+    ```
