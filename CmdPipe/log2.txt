@@ -1,0 +1,5 @@
+2017-04-26(Wed)11:26:53 [WARNING] at 5.py,9: nraw
+2017-04-26(Wed)11:26:53 [ERROR] at 5.py,10: rorre
+2017-04-26(Wed)11:26:53 [CRITICAL] at 5.py,10: lacitirc
+2017-04-26(Wed)11:26:53 [DEBUG] at 5.py,13: GUBED
+2017-04-26(Wed)11:26:53 [CRITICAL] at 5.py,13: LACITIRC
