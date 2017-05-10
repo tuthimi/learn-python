@@ -118,7 +118,7 @@ configFile.write('use exploit/windows/smb/psexec\n')
     input()与raw_input()：最好用raw_input();
     用socket.sendall();
 
-###20170404 花瓣网图片爬虫     好！！！
+###20170404 花瓣网图片爬虫     <font color=OrangeRed>好！！！</font>
     learn-python\qiubai_crawler、4_grab_huaban_board.py 
     不错的代码，print color函数；多线程；
     ```python
@@ -130,3 +130,23 @@ configFile.write('use exploit/windows/smb/psexec\n')
     # http://huaban.com/boards/%s/?limit=100 在下拉加载更多的页面上直接请求100个
     # url = "http://huaban.com/boards/%s/?max=%s&limit=100&wfl=1" %(board, pins[-1]) 请求到max=pins[-1]个 即最后一个。最多100个
     ```
+
+###scan_ips_ports结合了正则、socket等的简单扫描器
+
+###toutiao spider 通过保存toutiao的图片学用mongodb
+
+###CmdPipe 输出重定向、logging模块
+
+###20170510 调用shodan 
+
+###20170510 Scanless
+使用以下几个网站进行扫描：
+Scanner Name   | Website
+---------------|------------------------------
+yougetsignal   | http://www.yougetsignal.com
+viewdns        | http://viewdns.info
+hackertarget   | https://hackertarget.com
+ipfingerprints | http://www.ipfingerprints.com
+pingeu         | http://ping.eu
+spiderip       | https://spiderip.com
+portcheckers   | http://www.portcheckers.com
