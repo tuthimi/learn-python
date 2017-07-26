@@ -1,0 +1,2942 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><style class="vjs-styles-defaults">
+      .video-js {
+        width: 300px;
+        height: 150px;
+      }
+
+      .vjs-fluid {
+        padding-top: 56.25%
+      }
+    </style>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Lei Shi">
+        <meta http-equiv="Cache-Control" content="o-transform">
+        <meta http-equiv="Cache-Control" content="no-siteapp">
+        <meta name="csrf-token" content="IjkxNDU1MzFiMTdhNGQ3MWE0YTFjZTllMmY5ZmZlMWFmNmVlYWYwZjMi.DFnnSg.FYRp14emc7gk4VcDP3uZAEG0NMo">
+        
+            
+                <title>200行Python代码实现2048</title>
+            
+        
+
+        
+        <meta content="实验楼是国内领先的IT在线编程及在线实训学习平台，专业导师提供精选的实践项目，创新的技术使得学习者无需配置繁琐的本地环境，随时在线流畅使用。以就业为导向，提供编程、运维、测试、云计算、大数据、数据库等全面的IT技术动手实践环境，提供Linux、Python、Java、C语言、Node.js、Hadoop、PHP、Docker、Git、R、SQL、MongoDB、Redis、Swift、Spark等千门热门课程。" name="description">
+        <meta content="实验楼,IT培训,IT教育,编程,在线编程,Linux,Linux教程,Linux操作系统,Python,Python教程,Python基础教程,Java,Java编程,C语言,大数据,Node.js,Hadoop,PHP,Docker,Git,R,SQL,MongoDB,Redis,Swift,Spark,在线实验,IT在线教育,编程入门,项目训练,项目实践,webIDE,软件开发" name="keywords">
+        
+        <meta content="实验楼，琛石科技" name="author">
+
+        <link rel="shortcut icon" href="https://static.shiyanlou.com/favicon.ico">
+        <link rel="stylesheet" href="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/font-awesome.css">
+        <link rel="stylesheet" href="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap.css">
+        <link rel="stylesheet" href="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap-switch.css">
+        <link rel="stylesheet" href="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap-tour.css">
+        <link rel="stylesheet" href="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap-table.css">
+        <link rel="stylesheet" href="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/katex.css">
+        <link rel="stylesheet" href="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/video-js.css">
+        <link rel="stylesheet" href="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/monokai-sublime.css">
+
+        <link rel="stylesheet" href="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/styles.css">
+
+        <style>
+            @font-face {
+                font-family: "lantingxihei";
+        src: url("https://static.shiyanlou.com/fonts/FZLTCXHJW.TTF");
+        }
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+        overflow: hidden;
+        }
+        #invite-user .modal-body .form-label {
+        margin-bottom: 16px;
+        font-size:14px;
+        }
+        #invite-user .modal-body .form-invite {
+        width: 80%;
+        padding: 6px 12px;
+        background-color: #eeeeee;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        float: left;
+        margin-right: 10px;
+        }
+        #invite-user .modal-body .msg-modal-style {
+        background-color: #7dd383;
+        margin-top: 10px;
+        padding: 6px 0;
+        text-align: center;
+        width: 100%;
+        }
+        #invite-user .modal-body .modal-flash {
+        position: absolute;
+        top: 53px;
+        right: 74px;
+        z-index: 999;
+        }
+        /* end modal */
+
+        .en-footer {
+        padding: 30px;
+        text-align: center;
+        font-size: 14px;
+        }
+        </style>
+        
+<style>
+body {
+    height: 100%;
+    background: #000;
+}
+.modal .modal-body {
+    font-weight: 100;
+}
+.modal .modal-body > div {
+    margin-bottom: 15px;
+}
+</style>
+
+
+        
+        
+    <style id="ace_editor.css">.ace_editor {position: relative;overflow: hidden;font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;direction: ltr;text-align: left;}.ace_scroller {position: absolute;overflow: hidden;top: 0;bottom: 0;background-color: inherit;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;cursor: text;}.ace_content {position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;min-width: 100%;}.ace_dragging .ace_scroller:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;content: '';background: rgba(250, 250, 250, 0.01);z-index: 1000;}.ace_dragging.ace_dark .ace_scroller:before{background: rgba(0, 0, 0, 0.01);}.ace_selecting, .ace_selecting * {cursor: text !important;}.ace_gutter {position: absolute;overflow : hidden;width: auto;top: 0;bottom: 0;left: 0;cursor: default;z-index: 4;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_gutter-active-line {position: absolute;left: 0;right: 0;}.ace_scroller.ace_scroll-left {box-shadow: 17px 0 16px -16px rgba(0, 0, 0, 0.4) inset;}.ace_gutter-cell {padding-left: 19px;padding-right: 6px;background-repeat: no-repeat;}.ace_gutter-cell.ace_error {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABOFBMVEX/////////QRswFAb/Ui4wFAYwFAYwFAaWGAfDRymzOSH/PxswFAb/SiUwFAYwFAbUPRvjQiDllog5HhHdRybsTi3/Tyv9Tir+Syj/UC3////XurebMBIwFAb/RSHbPx/gUzfdwL3kzMivKBAwFAbbvbnhPx66NhowFAYwFAaZJg8wFAaxKBDZurf/RB6mMxb/SCMwFAYwFAbxQB3+RB4wFAb/Qhy4Oh+4QifbNRcwFAYwFAYwFAb/QRzdNhgwFAYwFAbav7v/Uy7oaE68MBK5LxLewr/r2NXewLswFAaxJw4wFAbkPRy2PyYwFAaxKhLm1tMwFAazPiQwFAaUGAb/QBrfOx3bvrv/VC/maE4wFAbRPBq6MRO8Qynew8Dp2tjfwb0wFAbx6eju5+by6uns4uH9/f36+vr/GkHjAAAAYnRSTlMAGt+64rnWu/bo8eAA4InH3+DwoN7j4eLi4xP99Nfg4+b+/u9B/eDs1MD1mO7+4PHg2MXa347g7vDizMLN4eG+Pv7i5evs/v79yu7S3/DV7/498Yv24eH+4ufQ3Ozu/v7+y13sRqwAAADLSURBVHjaZc/XDsFgGIBhtDrshlitmk2IrbHFqL2pvXf/+78DPokj7+Fz9qpU/9UXJIlhmPaTaQ6QPaz0mm+5gwkgovcV6GZzd5JtCQwgsxoHOvJO15kleRLAnMgHFIESUEPmawB9ngmelTtipwwfASilxOLyiV5UVUyVAfbG0cCPHig+GBkzAENHS0AstVF6bacZIOzgLmxsHbt2OecNgJC83JERmePUYq8ARGkJx6XtFsdddBQgZE2nPR6CICZhawjA4Fb/chv+399kfR+MMMDGOQAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: 2px center;}.ace_gutter-cell.ace_warning {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX///8AAAD///8AAAAAAABPSzb/5sAAAAB/blH/73z/ulkAAAAAAAD85pkAAAAAAAACAgP/vGz/rkDerGbGrV7/pkQICAf////e0IsAAAD/oED/qTvhrnUAAAD/yHD/njcAAADuv2r/nz//oTj/p064oGf/zHAAAAA9Nir/tFIAAAD/tlTiuWf/tkIAAACynXEAAAAAAAAtIRW7zBpBAAAAM3RSTlMAABR1m7RXO8Ln31Z36zT+neXe5OzooRDfn+TZ4p3h2hTf4t3k3ucyrN1K5+Xaks52Sfs9CXgrAAAAjklEQVR42o3PbQ+CIBQFYEwboPhSYgoYunIqqLn6/z8uYdH8Vmdnu9vz4WwXgN/xTPRD2+sgOcZjsge/whXZgUaYYvT8QnuJaUrjrHUQreGczuEafQCO/SJTufTbroWsPgsllVhq3wJEk2jUSzX3CUEDJC84707djRc5MTAQxoLgupWRwW6UB5fS++NV8AbOZgnsC7BpEAAAAABJRU5ErkJggg==");background-position: 2px center;}.ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAAB2k804AAAAPklEQVQY02NgIB68QuO3tiLznjAwpKTgNyDbMegwisCHZUETUZV0ZqOquBpXj2rtnpSJT1AEnnRmL2OgGgAAIKkRQap2htgAAAAASUVORK5CYII=");background-position: 2px center;}.ace_dark .ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAChoaGAgIAqKiq+vr6tra1ZWVmUlJSbm5s8PDxubm56enrdgzg3AAAAAXRSTlMAQObYZgAAAClJREFUeNpjYMAPdsMYHegyJZFQBlsUlMFVCWUYKkAZMxZAGdxlDMQBAG+TBP4B6RyJAAAAAElFTkSuQmCC");}.ace_scrollbar {position: absolute;right: 0;bottom: 0;z-index: 6;}.ace_scrollbar-inner {position: absolute;cursor: text;left: 0;top: 0;}.ace_scrollbar-v{overflow-x: hidden;overflow-y: scroll;top: 0;}.ace_scrollbar-h {overflow-x: scroll;overflow-y: hidden;left: 0;}.ace_print-margin {position: absolute;height: 100%;}.ace_text-input {position: absolute;z-index: 0;width: 0.5em;height: 1em;opacity: 0;background: transparent;-moz-appearance: none;appearance: none;border: none;resize: none;outline: none;overflow: hidden;font: inherit;padding: 0 1px;margin: 0 -1px;text-indent: -1em;-ms-user-select: text;-moz-user-select: text;-webkit-user-select: text;user-select: text;white-space: pre!important;}.ace_text-input.ace_composition {background: inherit;color: inherit;z-index: 1000;opacity: 1;text-indent: 0;}.ace_layer {z-index: 1;position: absolute;overflow: hidden;word-wrap: normal;white-space: pre;height: 100%;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;pointer-events: none;}.ace_gutter-layer {position: relative;width: auto;text-align: right;pointer-events: auto;}.ace_text-layer {font: inherit !important;}.ace_cjk {display: inline-block;text-align: center;}.ace_cursor-layer {z-index: 4;}.ace_cursor {z-index: 4;position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 2px solid;transform: translatez(0);}.ace_slim-cursors .ace_cursor {border-left-width: 1px;}.ace_overwrite-cursors .ace_cursor {border-left-width: 0;border-bottom: 1px solid;}.ace_hidden-cursors .ace_cursor {opacity: 0.2;}.ace_smooth-blinking .ace_cursor {-webkit-transition: opacity 0.18s;transition: opacity 0.18s;}.ace_editor.ace_multiselect .ace_cursor {border-left-width: 1px;}.ace_marker-layer .ace_step, .ace_marker-layer .ace_stack {position: absolute;z-index: 3;}.ace_marker-layer .ace_selection {position: absolute;z-index: 5;}.ace_marker-layer .ace_bracket {position: absolute;z-index: 6;}.ace_marker-layer .ace_active-line {position: absolute;z-index: 2;}.ace_marker-layer .ace_selected-word {position: absolute;z-index: 4;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}.ace_line .ace_fold {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;display: inline-block;height: 11px;margin-top: -2px;vertical-align: middle;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpi+P//fxgTAwPDBxDxD078RSX+YeEyDFMCIMAAI3INmXiwf2YAAAAASUVORK5CYII=");background-repeat: no-repeat, repeat-x;background-position: center center, top left;color: transparent;border: 1px solid black;border-radius: 2px;cursor: pointer;pointer-events: auto;}.ace_dark .ace_fold {}.ace_fold:hover{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACBJREFUeNpi+P//fz4TAwPDZxDxD5X4i5fLMEwJgAADAEPVDbjNw87ZAAAAAElFTkSuQmCC");}.ace_tooltip {background-color: #FFF;background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.1));background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));border: 1px solid gray;border-radius: 1px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);color: black;max-width: 100%;padding: 3px 4px;position: fixed;z-index: 999999;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: default;white-space: pre;word-wrap: break-word;line-height: normal;font-style: normal;font-weight: normal;letter-spacing: normal;pointer-events: none;}.ace_folding-enabled > .ace_gutter-cell {padding-right: 13px;}.ace_fold-widget {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0 -12px 0 1px;display: none;width: 11px;vertical-align: top;background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42mWKsQ0AMAzC8ixLlrzQjzmBiEjp0A6WwBCSPgKAXoLkqSot7nN3yMwR7pZ32NzpKkVoDBUxKAAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: center;border-radius: 3px;border: 1px solid transparent;cursor: pointer;}.ace_folding-enabled .ace_fold-widget {display: inline-block;   }.ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==");}.ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCAYAAAAG5SQMAAAAOUlEQVR42jXKwQkAMAgDwKwqKD4EwQ26sSOkVWjgIIHAzPiCgaqiqnJHZnKICBERHN194O5b9vbLuAVRL+l0YWnZAAAAAElFTkSuQmCCXA==");}.ace_fold-widget:hover {border: 1px solid rgba(0, 0, 0, 0.3);background-color: rgba(255, 255, 255, 0.2);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);}.ace_fold-widget:active {border: 1px solid rgba(0, 0, 0, 0.4);background-color: rgba(0, 0, 0, 0.05);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);}.ace_dark .ace_fold-widget {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHklEQVQIW2P4//8/AzoGEQ7oGCaLLAhWiSwB146BAQCSTPYocqT0AAAAAElFTkSuQmCC");}.ace_dark .ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAH0lEQVQIW2P4//8/AxQ7wNjIAjDMgC4AxjCVKBirIAAF0kz2rlhxpAAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAHElEQVQIW2P4//+/AxAzgDADlOOAznHAKgPWAwARji8UIDTfQQAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget:hover {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);background-color: rgba(255, 255, 255, 0.1);}.ace_dark .ace_fold-widget:active {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);}.ace_fold-widget.ace_invalid {background-color: #FFB4B4;border-color: #DE5555;}.ace_fade-fold-widgets .ace_fold-widget {-webkit-transition: opacity 0.4s ease 0.05s;transition: opacity 0.4s ease 0.05s;opacity: 0;}.ace_fade-fold-widgets:hover .ace_fold-widget {-webkit-transition: opacity 0.05s ease 0.05s;transition: opacity 0.05s ease 0.05s;opacity:1;}.ace_underline {text-decoration: underline;}.ace_bold {font-weight: bold;}.ace_nobold .ace_bold {font-weight: normal;}.ace_italic {font-style: italic;}.ace_error-marker {background-color: rgba(255, 0, 0,0.2);position: absolute;z-index: 9;}.ace_highlight-marker {background-color: rgba(255, 255, 0,0.2);position: absolute;z-index: 8;}.ace_br1 {border-top-left-radius    : 3px;}.ace_br2 {border-top-right-radius   : 3px;}.ace_br3 {border-top-left-radius    : 3px; border-top-right-radius:    3px;}.ace_br4 {border-bottom-right-radius: 3px;}.ace_br5 {border-top-left-radius    : 3px; border-bottom-right-radius: 3px;}.ace_br6 {border-top-right-radius   : 3px; border-bottom-right-radius: 3px;}.ace_br7 {border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px;}.ace_br8 {border-bottom-left-radius : 3px;}.ace_br9 {border-top-left-radius    : 3px; border-bottom-left-radius:  3px;}.ace_br10{border-top-right-radius   : 3px; border-bottom-left-radius:  3px;}.ace_br11{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-left-radius:  3px;}.ace_br12{border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br13{border-top-left-radius    : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br14{border-top-right-radius   : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br15{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
+/*# sourceURL=ace/css/ace_editor.css */</style><style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}
+/*# sourceURL=ace/css/ace-tm */</style><style>    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }</style><style type="text/css">
+.fade-enter-active[data-v-07a2dd56],
+.fade-leave-active[data-v-07a2dd56] {
+  transition: opacity .5s;
+}
+.fade-enter[data-v-07a2dd56],
+.fade-leave-active[data-v-07a2dd56] {
+  opacity: 0;
+}
+.header-message[data-v-07a2dd56] {
+  position: relative;
+  margin-right: 5px;
+}
+.header-message > a[data-v-07a2dd56] {
+  position: relative;
+}
+.header-message > a .fa-bell-o[data-v-07a2dd56] {
+    font-size: 22px;
+    margin-top: -3px;
+}
+.popover[data-v-07a2dd56] {
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: -66px;
+  width: 180px;
+  background: #fff;
+}
+.popover .msg-content[data-v-07a2dd56] {
+    padding: 8px;
+    font-size: 14px;
+    text-align: center;
+}
+.popover .msg-content a[data-v-07a2dd56] {
+      color: #f66;
+}
+.popover .msg-content a[data-v-07a2dd56]:focus, .popover .msg-content a[data-v-07a2dd56]:hover {
+        text-decoration: none;
+}
+.mark[data-v-07a2dd56] {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 1px;
+  height: 1px;
+  background: #f66;
+  border-radius: 50%;
+}
+@media (max-width: 768px) {
+.mark[data-v-07a2dd56] {
+    top: 14px;
+    right: calc(50% - 8px);
+}
+}
+</style><style type="text/css">
+.hidden[data-v-815c5224] {
+  display: none;
+}
+.show[data-v-815c5224] {
+  display: block;
+}
+.fade-enter-active[data-v-815c5224],
+.fade-leave-active[data-v-815c5224] {
+  transition: opacity .5s;
+}
+.fade-enter[data-v-815c5224],
+.fade-leave-active[data-v-815c5224] {
+  opacity: 0;
+}
+.header-userbox a[data-v-815c5224] {
+  display: block;
+  padding: 0;
+}
+.header-avatar[data-v-815c5224] {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+.vip-icon[data-v-815c5224] {
+  position: absolute;
+  bottom: 0;
+  right: calc(50% - 30px);
+  width: 20px;
+  height: 20px;
+}
+@media (min-width: 768px) {
+.vip-icon[data-v-815c5224] {
+    right: 0;
+}
+}
+.user[data-v-815c5224] {
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: -150px;
+  width: 300px;
+  height: 320px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 4px 1px #ccc;
+  z-index: 999 !important;
+}
+.user[data-v-815c5224]:before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: 0;
+    width: 220px;
+    height: 50px;
+}
+.user.popover > .arrow[data-v-815c5224] {
+    left: 63%;
+}
+.user-info[data-v-815c5224] {
+  overflow: hidden;
+}
+.user-info a[data-v-815c5224] {
+    float: left;
+}
+.user-info a img[data-v-815c5224] {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+      border-radius: 50%;
+}
+.username[data-v-815c5224] {
+  position: relative;
+}
+.username > img[data-v-815c5224] {
+    width: 20px;
+    position: absolute;
+    left: -30px;
+    bottom: 10px;
+}
+.username > span[data-v-815c5224] {
+    display: inline-block;
+    max-width: 150px;
+    color: #666;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.username > span.user-level[data-v-815c5224] {
+      color: #fec42d;
+      font-size: 14px;
+      font-weight: 700;
+}
+.username > p[data-v-815c5224] {
+    color: #A4A4A4;
+    font-size: 12px;
+    margin-top: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 170px;
+    text-overflow: ellipsis;
+}
+.marked-words[data-v-815c5224] {
+  width: 100%;
+  color: #A4A4A4 !important;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  position: absolute;
+  top: 130px;
+  left: 0;
+}
+.marked-words > a[data-v-815c5224] {
+    color: #A4A4A4 !important;
+    font-size: 12px;
+}
+.marked-words > a[data-v-815c5224]:hover, .marked-words > a[data-v-815c5224]:focus {
+      text-decoration: none;
+      color: #A4A4A4;
+}
+.start-experiment > a[data-v-815c5224] {
+  display: inline-block;
+  width: 240px;
+  height: 35px;
+  line-height: 35px;
+  background-color: #08BF91;
+  border-radius: 100px;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #fff;
+}
+.start-experiment > a[data-v-815c5224]:hover, .start-experiment > a[data-v-815c5224]:focus {
+    text-decoration: none;
+    color: #fff;
+}
+.user-links[data-v-815c5224] {
+  margin-top: 30px;
+}
+.user-links .row > div[data-v-815c5224] {
+    padding-right: 0;
+    padding-left: 10px;
+}
+.user-links .row a[data-v-815c5224],
+  .user-links .row .invite-user-btn[data-v-815c5224] {
+    width: 115px;
+    height: 30px;
+    line-height: 30px;
+    margin: 5px 0 10px;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid #eee;
+    *display: inline;
+    *zoom: 1;
+}
+.user-links .row a[data-v-815c5224]:focus, .user-links .row a[data-v-815c5224]:hover,
+    .user-links .row .invite-user-btn[data-v-815c5224]:focus,
+    .user-links .row .invite-user-btn[data-v-815c5224]:hover {
+      text-decoration: none;
+}
+.user-links .row a[data-v-815c5224]:hover,
+    .user-links .row .invite-user-btn[data-v-815c5224]:hover {
+      background: #eee;
+}
+.user-links .invite-user-btn[data-v-815c5224] {
+    margin: 0 !important;
+}
+.user-links a.member-index[data-v-815c5224] {
+    border: 1px solid #f66;
+    color: #f66;
+}
+.user-links a.member-index[data-v-815c5224]:hover, .user-links a.member-index[data-v-815c5224]:focus {
+      background: #f66;
+      color: #fff;
+}
+.feedback[data-v-815c5224] {
+  font-size: 12px;
+  color: #C6C6C6;
+  margin-top: 35px;
+  margin-left: calc(50% - 96px);
+}
+.friendly-link[data-v-815c5224] {
+  margin-top: 10px;
+}
+.friendly-link .invite-user[data-v-815c5224] {
+    width: 240px;
+    color: #C6C6C6;
+    font-size: 12px;
+}
+.friendly-link .invite-user img[data-v-815c5224] {
+      width: 18px;
+      height: 18px;
+}
+.friendly-link .invite-user a[data-v-815c5224] {
+      display: inline-block;
+      width: 18px;
+}
+.log-out[data-v-815c5224] {
+  display: block;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 20px;
+  width: 100%;
+  text-align: right;
+}
+.log-out a[data-v-815c5224] {
+    display: inline-block;
+    color: #999;
+    font-size: 14px;
+}
+.log-out a[data-v-815c5224]:hover, .log-out a[data-v-815c5224]:focus {
+      text-decoration: none;
+      color: #999;
+}
+.invite-user-link[data-v-815c5224] {
+  display: none;
+}
+.invite-user-msg[data-v-815c5224] {
+  position: absolute;
+  bottom: -20px;
+}
+.no_member_vm[data-v-815c5224] {
+  background: #ddd !important;
+}
+.no_member_vm .memberVmIcon[data-v-815c5224] {
+    margin-left: 5px;
+}
+.is-member[data-v-815c5224] {
+  cursor: default;
+}
+</style><style type="text/css">
+.header-learn-info[data-v-33ac7940] {
+  float: right;
+  width: 100%;
+  padding: 23.5px 10px;
+  margin: 0;
+  position: relative;
+}
+.header-learn-info > span[data-v-33ac7940] {
+    font-size: 16px;
+    color: #666;
+}
+.header-learn-info > span img[data-v-33ac7940] {
+      transform: rotate(-90deg);
+}
+.header-learn-info > span[data-v-33ac7940]:hover {
+      cursor: pointer;
+}
+.home-page[data-v-33ac7940] {
+  color: #666;
+}
+.home-page[data-v-33ac7940]:hover {
+    text-decoration: none;
+    color: #08bf91;
+}
+@media (min-width: 768px) {
+.header-learn-info[data-v-33ac7940] {
+    width: auto;
+}
+}
+@media (max-width: 1200px) {
+.header-learn-info[data-v-33ac7940] {
+    display: none;
+}
+}
+.fade-enter-active[data-v-33ac7940],
+.fade-leave-active[data-v-33ac7940] {
+  transition: opacity .5s;
+}
+.fade-enter[data-v-33ac7940],
+.fade-leave-active[data-v-33ac7940] {
+  opacity: 0;
+}
+.learninfo-box[data-v-33ac7940] {
+  display: block;
+  width: 223px;
+  margin-top: 60px;
+  margin-bottom: 20px;
+  padding: 20px;
+  left: 35px;
+  background: #fff;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  border: none;
+}
+.learninfo-box .lab-running > span[data-v-33ac7940] {
+    font-size: 14px;
+    color: #a4a4a4;
+}
+.learninfo-box .lab-running .lab-running-name[data-v-33ac7940] {
+    font-size: 14px;
+    padding: 10px 0;
+}
+.learninfo-box .lab-running .lab-running-name > span[data-v-33ac7940] {
+      max-width: 60%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: inline-block;
+}
+.learninfo-box .lab-running .lab-running-name .lab-continue[data-v-33ac7940] {
+      background: #08bf91;
+      font-size: 12px;
+      color: #fff;
+      border: none;
+      padding: 2px 12px;
+      margin-top: -1px;
+}
+.learninfo-box .learn-records > span[data-v-33ac7940] {
+    font-size: 14px;
+    color: #a4a4a4;
+}
+.learninfo-box .learn-records .records-list[data-v-33ac7940] {
+    margin-top: 10px;
+}
+.learninfo-box .learn-records .records-list .record-item[data-v-33ac7940] {
+      display: inline-block;
+      font-size: 14px;
+      color: #666;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 10px;
+}
+.learninfo-box .learn-records .records-list .record-item[data-v-33ac7940]:hover {
+        text-decoration: none;
+        background-color: #f5f5f5;
+}
+.learninfo-box .learn-records .record-view-all[data-v-33ac7940] {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+.learninfo-box .learn-records .record-view-all[data-v-33ac7940]:hover {
+      text-decoration: none;
+}
+@media (min-width: 768px) {
+.learninfo-box[data-v-33ac7940] {
+    left: -30px;
+    margin-bottom: 0;
+}
+}
+</style><style type="text/css">
+.side-new-contest .sidebox-body[data-v-7d67fa2d] {
+  overflow: hidden;
+}
+.side-new-contest .sidebox-body span[data-v-7d67fa2d] {
+    position: relative;
+    top: 4px;
+    color: #3a3a3a;
+    font-size: 14px;
+}
+.side-new-contest .sidebox-body .btn[data-v-7d67fa2d] {
+    padding: 2px 10px;
+    color: #08bf91;
+    font-size: 14px;
+    border: solid 1px #08bf91;
+}
+.side-new-contest .sidebox-body .btn[data-v-7d67fa2d]:hover, .side-new-contest .sidebox-body .btn[data-v-7d67fa2d]:focus {
+      color: #fff;
+      background: #09bf91;
+}
+</style><style type="text/css">
+a[data-v-9b3c8994] {
+    display: inline-block;
+}
+.fa[data-v-9b3c8994] {
+    padding: 4px;
+    color: #274a59;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+}
+.fa[data-v-9b3c8994]:hover {
+    color: #ec5353;
+}
+
+/*# sourceURL=/home/shiyanlou/shiyanlou/simplecloud/app/src/base/components/weibo.vue?1f60b06f */
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3NoaXlhbmxvdS9zaGl5YW5sb3Uvc2ltcGxlY2xvdWQvYXBwL3NyYy9iYXNlL2NvbXBvbmVudHMvd2VpYm8udnVlPzFmNjBiMDZmIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFpQ0E7SUFDQSxzQkFBQTtDQUNBO0FBQ0E7SUFDQSxhQUFBO0lBQ0EsZUFBQTtJQUNBLGlCQUFBO0lBQ0EsZ0JBQUE7SUFDQSxtQkFBQTtDQUNBO0FBQ0E7SUFDQSxlQUFBO0NBQ0EiLCJmaWxlIjoid2VpYm8udnVlIiwic291cmNlc0NvbnRlbnQiOlsiPHRlbXBsYXRlPlxuPGEgOmhyZWY9XCJocmVmXCIgOmNsYXNzPVwieyAnYnRuIGJ0bi1wcmltYXJ5JzogaXNCdG4gfVwiIHRhcmdldD1cIl9ibGFua1wiPlxuICAgIDxzcGFuIHYtaWY9XCJpc0J0blwiPuWIhuS6q+WIsOW+ruWNmjwvc3Bhbj5cbiAgICA8aSB2LWVsc2UgY2xhc3M9XCJmYSBmYS13ZWlib1wiPjwvaT5cbjwvYT5cbjwvdGVtcGxhdGU+XG5cbjxzY3JpcHQ+XG5leHBvcnQgZGVmYXVsdCB7XG4gICAgcHJvcHM6IFsnaXNCdG4nLCAncGF0aCcsICd0aXRsZScsICdwaWMnXSxcbiAgICBkYXRhKCkge1xuICAgICAgICByZXR1cm4ge1xuICAgICAgICAgICAgaHJlZjogJycsXG4gICAgICAgICAgICBwYXJhbXM6IHtcbiAgICAgICAgICAgICAgICB0aXRsZTogdGhpcy50aXRsZSxcbiAgICAgICAgICAgICAgICBhcHBrZXk6ICcxMzQzNzEzMDUzJyxcbiAgICAgICAgICAgICAgICBwaWM6ICh0aGlzLnBpYyAmJiB0aGlzLnBpYy5sZW5ndGgpID8gdGhpcy5waWMgOiBbJ2h0dHBzOi8vc3RhdGljLnNoaXlhbmxvdS5jb20vaW1nL2xvZ28tYmFzZS5wbmcnXSxcbiAgICAgICAgICAgICAgICBzZWFyY2hQaWM6IGZhbHNlLFxuICAgICAgICAgICAgfSxcbiAgICAgICAgICAgIHdlaWJvVXJsOiAnaHR0cDovL3NlcnZpY2Uud2VpYm8uY29tL3NoYXJlL3NoYXJlLnBocD91cmw9aHR0cHM6Ly93d3cuc2hpeWFubG91LmNvbScsXG4gICAgICAgIH07XG4gICAgfSxcbiAgICBtb3VudGVkKCkge1xuICAgICAgICB0aGlzLmhyZWYgPSBgJHt0aGlzLndlaWJvVXJsfSR7dGhpcy5wYXRofWBcbiAgICAgICAgICAgICsgYCZ0aXRsZT0ke2VuY29kZVVSSUNvbXBvbmVudCh0aGlzLnBhcmFtcy50aXRsZSl9YFxuICAgICAgICAgICAgKyBgJmFwcGtleT0ke3RoaXMucGFyYW1zLmFwcGtleX1gXG4gICAgICAgICAgICArIGAmcGljPSR7dGhpcy5wYXJhbXMucGljLmpvaW4oJ3x8Jyl9YFxuICAgICAgICAgICAgKyBgJnNlYXJjaFBpYz0ke3RoaXMucGFyYW1zLnNlYXJjaFBpY31gO1xuICAgIH1cbn1cbjwvc2NyaXB0PlxuXG48c3R5bGUgc2NvcGVkPlxuYSB7XG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xufVxuLmZhIHtcbiAgICBwYWRkaW5nOiA0cHg7XG4gICAgY29sb3I6ICMyNzRhNTk7XG4gICAgYmFja2dyb3VuZDogI2ZmZjtcbiAgICBmb250LXNpemU6IDE0cHg7XG4gICAgYm9yZGVyLXJhZGl1czogNHB4O1xufVxuLmZhOmhvdmVyIHtcbiAgICBjb2xvcjogI2VjNTM1Mztcbn1cbjwvc3R5bGU+XG5cbiJdLCJzb3VyY2VSb290IjoiIn0= */</style><style type="text/css">
+.search-autocomplete[data-v-72bea96c] {
+  position: absolute;
+  top: 35px;
+  left: 1px;
+  width: 195px;
+  padding: 4px;
+  border: solid 1px #ddd;
+  border-top: none;
+  background: #fff;
+  z-index: 1000;
+}
+.search-autocomplete a[data-v-72bea96c] {
+    display: block;
+    padding: 6px 8px;
+    color: #4c5157;
+    font-size: 13px;
+}
+.search-autocomplete a[data-v-72bea96c]:hover, .search-autocomplete a[data-v-72bea96c]:focus {
+      color: #fff;
+      background: #0c9;
+      text-decoration: none;
+}
+</style>
+            <style>
+            #message-box {
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                padding: 10px;
+                z-index: 100;
+            }
+            .message-item {
+                display: none;
+                position: relative;
+                width: 200px;
+                padding: 20px;
+                margin: 0;
+                background: rgba(39,39,39,.8);
+                border-radius: 4px;
+                overflow: hidden;
+            }
+            .message-content {
+                margin-bottom: 20px;
+                color: #d0b089;
+                font-size: 16px;
+            }
+            .message-content a {
+                color: #ccc;
+                text-decoration: none;
+            }
+            .message-content a:focus,
+            .message-content a:hover {
+                color: #fff;
+                text-decoration: none;
+            }
+            .message-strong {
+                color: #f4a63f;
+            }
+            .message-close {
+                position: absolute;
+                right: 0;
+                top: 0;
+                padding: 4px;
+                color: #f4a63f;
+                cursor: pointer;
+            }
+            .btns {
+                font-size: 12px;
+            }
+            .btns .btn-group {
+                margin: 0;
+                padding: 0;
+            }
+            .btns .btn {
+                font-size: 12px;
+            }
+            .btns .silence-lab-msg-btn {
+                color: #ccc;
+            }
+            .btns .silence-lab-msg-btn:focus,
+            .btns .silence-lab-msg-btn:hover {
+                color: #fff;
+            }
+            </style>
+        </head>
+
+    <body>
+        
+
+
+        
+        
+
+        
+        
+
+        
+<div class="share-desktop" style="display:none;">
+    
+    
+    
+    <p>你正在以<span>协作模式</span>查看<span><a href="" target="_blank"></a></span>的<span>200行Python代码实现2048</span>实验的桌面。</p>
+    <p>查看更多精彩课程内容请返回实验楼！</p>
+    <p><a href="https://www.shiyanlou.com/" class="btn btn-primary">&lt; 返回实验楼</a></p>
+    <p><a href="https://www.shiyanlou.com/faq" target="_blank">使用帮助？</a></p>
+</div>
+
+<div id="lab-console">
+<div id="lab-container" style="display: block; width: 656px;">
+    <div class="desktop-toggle" style="display: block;">
+        <span class="show-desktop">显示桌面</span>
+        <span class="hide-desktop">隐藏桌面</span>
+    </div>
+    <div class="lab-nav-container">
+        <div class="tabs-hover" style="left: 58px;"></div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li>
+                
+                <a class="btn btn-primary" href="https://www.shiyanlou.com/courses/368">
+                    <i class="fa fa-arrow-circle-left"></i>
+                </a>
+                
+            </li>
+            <li role="presentation" class="active">
+                <a href="#labdoc" class="stat-event" data-stat="console_doc" aria-controls="labdoc" role="tab" data-toggle="tab">实验文档</a>
+            </li>
+            
+            <li role="presentation">
+                <a href="#report" class="stat-event" data-stat="console_report" aria-controls="report" role="tab" data-toggle="tab">实验报告</a>
+            </li>
+            <a href="#askquestion" class="pull-right btn btn-default btn-askquestion" data-toggle="modal">
+                <i class="fa fa-question-circle"></i> 我要提问
+            </a>
+            
+        </ul>
+    </div>
+    <div class="container tab-content">
+        <div role="tabpanel" class="tab-pane active" id="labdoc">
+            
+            <div class="labdoc-msg">
+                <div style="" class="alert alert-warning alert-dismissible msg1" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <i class="fa fa-lightbulb-o fa-2x"></i>
+                    <strong style="vertical-align:super;">[新手任务]</strong>
+                    <span style="vertical-align:super;">发布一篇实验报告获得大家点评。</span>
+                </div>
+            </div>
+            
+            <div class="labdoc-sections"><h2>200行Python代码实现2048</h2><nav class="navbar" id="document-navbar"><ul class="nav navbar-nav"><li style="width: 10%;"><a class="stat-event" href="#doc-section-0" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="一、实验说明" data-original-title="" title=""></a></li><li style="width: 10%;"><a class="stat-event" href="#doc-section-1" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="二、实验内容" data-original-title="" title=""></a></li><li style="width: 10%;"><a class="stat-event" href="#doc-section-2" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="1. 主逻辑" data-original-title="" title=""></a></li><li style="width: 10%;"><a class="stat-event" href="#doc-section-3" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="2. 用户输入处理" data-original-title="" title=""></a></li><li style="width: 10%;"><a class="stat-event" href="#doc-section-4" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="3. 矩阵转置与矩阵逆转" data-original-title="" title=""></a></li><li style="width: 10%;"><a class="stat-event" href="#doc-section-5" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="4. 创建棋盘" data-original-title="" title=""></a></li><li style="width: 10%;"><a class="stat-event" href="#doc-section-6" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="5. 完成主逻辑" data-original-title="" title=""></a></li><li style="width: 10%;"><a class="stat-event" href="#doc-section-7" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="6. 运行" data-original-title="" title=""></a></li><li style="width: 10%;"><a class="stat-event" href="#doc-section-8" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="全部代码" data-original-title="" title=""></a></li><li style="width: 10%;"><a class="stat-event" href="#doc-section-9" data-toggle="tooltip" data-stat="console_step" data-placement="top" data-title="License" data-original-title="" title=""></a></li><div class="sections-line" style="position: absolute; top: 7px; width: 90%; height: 1px; margin-left: 5%; background: rgb(153, 153, 153) none repeat scroll 0% 0%;"></div></ul></nav></div>
+            <div class="labdoc-preview">
+                
+                
+                <div class="labdoc-content markdown-body"><h1 id="200-python-2048">200行Python代码实现2048</h1>
+<h2 id="doc-section-0" style="">一、实验说明</h2>
+<h3 id="1-">1. 环境登录</h3>
+<p>无需密码自动登录，系统用户名shiyanlou</p>
+<h3 id="2-">2. 环境介绍</h3>
+<p>本实验环境采用带桌面的Ubuntu Linux环境，实验中会用到桌面上的程序：</p>
+<ol>
+<li>LX终端（LXTerminal）: Linux命令行终端，打开后会进入Bash环境，可以使用Linux命令</li>
+<li>GVim：非常好用的编辑器，最简单的用法可以参考课程<a href="http://www.shiyanlou.com/courses/2" target="_blank">Vim编辑器</a></li>
+</ol>
+<h3 id="3-">3. 环境使用</h3>
+<p>使用GVim编辑器输入实验所需的代码及文件，使用LX终端（LXTerminal）运行所需命令进行操作。</p>
+<p>实验报告可以在个人主页中查看，其中含有每次实验的截图及笔记，以及每次实验的有效学习时间（指的是在实验桌面内操作的时间，如果没有操作，系统会记录为发呆时间）。这些都是您学习的真实性证明。</p>
+<h3 id="4-">4. 知识点</h3>
+<p>本节实验中将学习和实践以下知识点：</p>
+<ol>
+<li>Python基本知识</li>
+<li>状态机的概念</li>
+</ol>
+<h2 id="doc-section-1" style="">二、实验内容</h2>
+<p>是的，又是2048，这回我们是用 Python 实现，只需要200行代码，不用很麻烦很累就可以写一个 2048 游戏出来。</p>
+<p>实验楼上已有的 2048 课程：</p>
+<ul>
+<li><a href="https://www.shiyanlou.com/courses/42" target="_blank">GO语言开发2048</a></li>
+<li><a href="https://www.shiyanlou.com/courses/62" target="_blank">网页版2048</a></li>
+<li><a href="https://www.shiyanlou.com/courses/155" target="_blank">C语言制作2048</a></li>
+</ul>
+<p>游戏玩法这里就不再赘述了，还会有比亲自玩一遍体会规则更快的的吗：）</p>
+<p>2048 原版游戏地址：<a href="http://gabrielecirulli.github.io/2048" target="_blank">http://gabrielecirulli.github.io/2048</a></p>
+<p>创建游戏文件 2048.py</p>
+<p>首先导入需要的包：</p>
+<pre><code class="hljs coffeescript"><span class="hljs-keyword">import</span> curses
+<span class="hljs-keyword">from</span> random <span class="hljs-keyword">import</span> randrange, choice
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+
+</code></pre><h2 id="doc-section-2" style="">1. 主逻辑</h2>
+<h3 id="1-1-">1.1 用户行为</h3>
+<p>所有的有效输入都可以转换为"上，下，左，右，游戏重置，退出"这六种行为，用 <code>actions</code> 表示</p>
+<pre><code class="hljs ini"><span class="hljs-attr">actions</span> = [<span class="hljs-string">'Up'</span>, <span class="hljs-string">'Left'</span>, <span class="hljs-string">'Down'</span>, <span class="hljs-string">'Right'</span>, <span class="hljs-string">'Restart'</span>, <span class="hljs-string">'Exit'</span>]
+
+
+</code></pre><p>有效输入键是最常见的 W（上），A（左），S（下），D（右），R（重置），Q（退出），这里要考虑到大写键开启的情况，获得有效键值列表：</p>
+<pre><code class="hljs bash">letter_codes = [ord(ch) <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-string">'WASDRQwasdrq'</span>]
+
+
+</code></pre><p>将输入与行为进行关联：</p>
+<pre><code class="hljs ini"><span class="hljs-attr">actions_dict</span> = dict(zip(letter_codes, actions * <span class="hljs-number">2</span>))
+
+
+</code></pre><h3 id="1-2-">1.2 状态机</h3>
+<p>处理游戏主逻辑的时候我们会用到一种十分常用的技术：状态机，或者更准确的说是有限状态机（FSM）</p>
+<p>你会发现 2048 游戏很容易就能分解成几种状态的转换。</p>
+<p><img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/wm_002.png" alt="此处输入图片的描述"></p>
+<p><code>state</code> 存储当前状态， <code>state_actions</code> 这个词典变量作为状态转换的规则，它的 key 是状态，value 是返回下一个状态的函数：</p>
+<ul>
+<li>Init: init()<ul>
+<li>Game</li>
+</ul>
+</li>
+<li>Game: game()<ul>
+<li>Game</li>
+<li>Win</li>
+<li>GameOver</li>
+<li>Exit</li>
+</ul>
+</li>
+<li>Win: lambda: not_game('Win')<ul>
+<li>Init</li>
+<li>Exit</li>
+</ul>
+</li>
+<li>Gameover: lambda: not_game('Gameover')<ul>
+<li>Init</li>
+<li>Exit</li>
+</ul>
+</li>
+<li>Exit: 
+退出循环</li>
+</ul>
+<p>状态机会不断循环，直到达到 Exit 终结状态结束程序。</p>
+<p>下面是经过提取的主逻辑的代码，会在后面进行补全：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">(stdscr)</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init</span><span class="hljs-params">()</span>:</span>
+        <span class="hljs-comment">#重置游戏棋盘</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Game'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">not_game</span><span class="hljs-params">(state)</span>:</span>
+        <span class="hljs-comment">#画出 GameOver 或者 Win 的界面</span>
+        <span class="hljs-comment">#读取用户输入得到action，判断是重启游戏还是结束游戏</span>
+        responses = defaultdict(<span class="hljs-keyword">lambda</span>: state) ＃默认是当前状态，没有行为就会一直在当前界面循环
+        responses[<span class="hljs-string">'Restart'</span>], responses[<span class="hljs-string">'Exit'</span>] = <span class="hljs-string">'Init'</span>, <span class="hljs-string">'Exit'</span> <span class="hljs-comment">#对应不同的行为转换到不同的状态</span>
+        <span class="hljs-keyword">return</span> responses[action]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">game</span><span class="hljs-params">()</span>:</span>
+        <span class="hljs-comment">#画出当前棋盘状态</span>
+        <span class="hljs-comment">#读取用户输入得到action</span>
+        <span class="hljs-keyword">if</span> action == <span class="hljs-string">'Restart'</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'Init'</span>
+        <span class="hljs-keyword">if</span> action == <span class="hljs-string">'Exit'</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'Exit'</span>
+        <span class="hljs-comment">#if 成功移动了一步:</span>
+            <span class="hljs-keyword">if</span> 游戏胜利了:
+                <span class="hljs-keyword">return</span> <span class="hljs-string">'Win'</span>
+            <span class="hljs-keyword">if</span> 游戏失败了:
+                <span class="hljs-keyword">return</span> <span class="hljs-string">'Gameover'</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Game'</span>
+
+
+    state_actions = {
+            <span class="hljs-string">'Init'</span>: init,
+            <span class="hljs-string">'Win'</span>: <span class="hljs-keyword">lambda</span>: not_game(<span class="hljs-string">'Win'</span>),
+            <span class="hljs-string">'Gameover'</span>: <span class="hljs-keyword">lambda</span>: not_game(<span class="hljs-string">'Gameover'</span>),
+            <span class="hljs-string">'Game'</span>: game
+        }
+
+    state = <span class="hljs-string">'Init'</span>
+
+    <span class="hljs-comment">#状态机开始循环</span>
+    <span class="hljs-keyword">while</span> state != <span class="hljs-string">'Exit'</span>:
+        state = state_actions[state]()
+
+
+</code></pre><h2 id="doc-section-3" style="">2. 用户输入处理</h2>
+<p>阻塞＋循环，直到获得用户有效输入才返回对应行为：</p>
+<pre><code class="hljs cs"><span class="hljs-function">def <span class="hljs-title">get_user_action</span>(<span class="hljs-params">keyboard</span>):    
+    <span class="hljs-keyword">char</span> </span>= <span class="hljs-string">"N"</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-keyword">char</span> not <span class="hljs-keyword">in</span> actions_dict:    
+        <span class="hljs-keyword">char</span> = keyboard.getch()
+    <span class="hljs-keyword">return</span> actions_dict[<span class="hljs-keyword">char</span>]
+
+
+</code></pre><h2 id="doc-section-4" style="">3. 矩阵转置与矩阵逆转</h2>
+<p>加入这两个操作可以大大节省我们的代码量，减少重复劳动，看到后面就知道了。</p>
+<p>矩阵转置：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">transpose</span><span class="hljs-params">(field)</span>:</span>
+    <span class="hljs-keyword">return</span> [list(row) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> zip(*field)]
+
+
+</code></pre><p>矩阵逆转（不是逆矩阵）：</p>
+<pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invert</span><span class="hljs-params">(field)</span></span>:
+    <span class="hljs-keyword">return</span> [row[<span class="hljs-symbol">:</span><span class="hljs-symbol">:-</span><span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> field]
+
+
+</code></pre><h2 id="doc-section-5" style="">4. 创建棋盘</h2>
+<p>初始化棋盘的参数，可以指定棋盘的高和宽以及游戏胜利条件，默认是最经典的 4x4～2048。</p>
+<pre><code class="hljs ruby">    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GameField</span>(<span class="hljs-title">object</span>):</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, height=<span class="hljs-number">4</span>, width=<span class="hljs-number">4</span>, win=<span class="hljs-number">2048</span>)</span></span>:
+            <span class="hljs-keyword">self</span>.height = height       <span class="hljs-comment">#高</span>
+            <span class="hljs-keyword">self</span>.width = width         <span class="hljs-comment">#宽</span>
+            <span class="hljs-keyword">self</span>.win_value = <span class="hljs-number">2048</span>      <span class="hljs-comment">#过关分数</span>
+            <span class="hljs-keyword">self</span>.score = <span class="hljs-number">0</span>             <span class="hljs-comment">#当前分数</span>
+            <span class="hljs-keyword">self</span>.highscore = <span class="hljs-number">0</span>         <span class="hljs-comment">#最高分</span>
+            <span class="hljs-keyword">self</span>.reset()               <span class="hljs-comment">#棋盘重置</span>
+</code></pre><h3 id="4-1-">4.1 棋盘操作</h3>
+<h4 id="-2-4">随机生成一个 2 或者 4</h4>
+<pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spawn</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+        new_element = <span class="hljs-number">4</span> <span class="hljs-keyword">if</span> randrange(<span class="hljs-number">100</span>) &gt; <span class="hljs-number">89</span> <span class="hljs-keyword">else</span> <span class="hljs-number">2</span>
+        (i,j) = choice([(i,j) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-keyword">self</span>.width) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-keyword">self</span>.height) <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.field[i][j] == <span class="hljs-number">0</span>])
+        <span class="hljs-keyword">self</span>.field[i][j] = new_element
+
+
+</code></pre><h4 id="-">重置棋盘</h4>
+<pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reset</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.score &gt; <span class="hljs-keyword">self</span>.<span class="hljs-symbol">highscore:</span>
+        <span class="hljs-keyword">self</span>.highscore = <span class="hljs-keyword">self</span>.score
+    <span class="hljs-keyword">self</span>.score = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">self</span>.field = [[<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-keyword">self</span>.width)] <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-keyword">self</span>.height)]
+    <span class="hljs-keyword">self</span>.spawn()
+    <span class="hljs-keyword">self</span>.spawn()
+
+
+
+</code></pre><h4 id="-">一行向左合并</h4>
+<p>(注：这一操作是在 move 内定义的，拆出来是为了方便阅读)</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">move_row_left</span><span class="hljs-params">(row)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tighten</span><span class="hljs-params">(row)</span>:</span> <span class="hljs-comment"># 把零散的非零单元挤到一块</span>
+        new_row = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> row <span class="hljs-keyword">if</span> i != <span class="hljs-number">0</span>]
+        new_row += [<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(row) - len(new_row))]
+        <span class="hljs-keyword">return</span> new_row
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge</span><span class="hljs-params">(row)</span>:</span> <span class="hljs-comment"># 对邻近元素进行合并</span>
+        pair = <span class="hljs-keyword">False</span>
+        new_row = []
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(row)):
+            <span class="hljs-keyword">if</span> pair:
+                new_row.append(<span class="hljs-number">2</span> * row[i])
+                self.score += <span class="hljs-number">2</span> * row[i]
+                pair = <span class="hljs-keyword">False</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">if</span> i + <span class="hljs-number">1</span> &lt; len(row) <span class="hljs-keyword">and</span> row[i] == row[i + <span class="hljs-number">1</span>]:
+                    pair = <span class="hljs-keyword">True</span>
+                    new_row.append(<span class="hljs-number">0</span>)
+                <span class="hljs-keyword">else</span>:
+                    new_row.append(row[i])
+        <span class="hljs-keyword">assert</span> len(new_row) == len(row)
+        <span class="hljs-keyword">return</span> new_row
+    <span class="hljs-comment">#先挤到一块再合并再挤到一块</span>
+    <span class="hljs-keyword">return</span> tighten(merge(tighten(row)))
+
+
+</code></pre><h4 id="-">棋盘走一步</h4>
+<p>通过对矩阵进行转置与逆转，可以直接从左移得到其余三个方向的移动操作</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">move</span><span class="hljs-params">(self, direction)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">move_row_left</span><span class="hljs-params">(row)</span>:</span>
+        <span class="hljs-comment">#一行向左合并</span>
+
+    moves = {}
+    moves[<span class="hljs-string">'Left'</span>]  = <span class="hljs-keyword">lambda</span> field: [move_row_left(row) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> field]
+    moves[<span class="hljs-string">'Right'</span>] = <span class="hljs-keyword">lambda</span> field: invert(moves[<span class="hljs-string">'Left'</span>](invert(field)))
+    moves[<span class="hljs-string">'Up'</span>]    = <span class="hljs-keyword">lambda</span> field: transpose(moves[<span class="hljs-string">'Left'</span>](transpose(field)))
+    moves[<span class="hljs-string">'Down'</span>]  = <span class="hljs-keyword">lambda</span> field: transpose(moves[<span class="hljs-string">'Right'</span>](transpose(field)))
+
+    <span class="hljs-keyword">if</span> direction <span class="hljs-keyword">in</span> moves:
+        <span class="hljs-keyword">if</span> self.move_is_possible(direction):
+            self.field = moves[direction](self.field)
+            self.spawn()
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+
+
+</code></pre><h4 id="-">判断输赢</h4>
+<pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_win</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+    <span class="hljs-keyword">return</span> any(any(i &gt;= <span class="hljs-keyword">self</span>.win_value <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> row) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span>.field)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_gameover</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> any(<span class="hljs-keyword">self</span>.move_is_possible(move) <span class="hljs-keyword">for</span> move <span class="hljs-keyword">in</span> actions)
+
+
+</code></pre><h4 id="-">判断能否移动</h4>
+<pre><code class="hljs sql">def move_is_possible(self, direction):
+    def row_is_left_movable(row): 
+        def <span class="hljs-keyword">change</span>(i):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">row</span>[i] == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">row</span>[i + <span class="hljs-number">1</span>] != <span class="hljs-number">0</span>: # 可以移动
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">row</span>[i] != <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">row</span>[i + <span class="hljs-number">1</span>] == <span class="hljs-keyword">row</span>[i]: # 可以合并
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">any</span>(<span class="hljs-keyword">change</span>(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-keyword">range</span>(<span class="hljs-keyword">len</span>(<span class="hljs-keyword">row</span>) - <span class="hljs-number">1</span>))
+
+    <span class="hljs-keyword">check</span> = {}
+    <span class="hljs-keyword">check</span>[<span class="hljs-string">'Left'</span>]  = lambda <span class="hljs-keyword">field</span>: <span class="hljs-keyword">any</span>(row_is_left_movable(<span class="hljs-keyword">row</span>) <span class="hljs-keyword">for</span> <span class="hljs-keyword">row</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">field</span>)
+
+    <span class="hljs-keyword">check</span>[<span class="hljs-string">'Right'</span>] = lambda <span class="hljs-keyword">field</span>: <span class="hljs-keyword">check</span>[<span class="hljs-string">'Left'</span>](invert(<span class="hljs-keyword">field</span>))
+
+    <span class="hljs-keyword">check</span>[<span class="hljs-string">'Up'</span>]    = lambda <span class="hljs-keyword">field</span>: <span class="hljs-keyword">check</span>[<span class="hljs-string">'Left'</span>](transpose(<span class="hljs-keyword">field</span>))
+
+    <span class="hljs-keyword">check</span>[<span class="hljs-string">'Down'</span>]  = lambda <span class="hljs-keyword">field</span>: <span class="hljs-keyword">check</span>[<span class="hljs-string">'Right'</span>](transpose(<span class="hljs-keyword">field</span>))
+
+    <span class="hljs-keyword">if</span> direction <span class="hljs-keyword">in</span> <span class="hljs-keyword">check</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">check</span>[direction](self.field)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+
+</code></pre><h3 id="4-2-">4.2 绘制游戏界面</h3>
+<p>（注：这一步是在棋盘类内定义的）</p>
+<pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">draw</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, screen)</span></span>:
+    help_string1 = <span class="hljs-string">'(W)Up (S)Down (A)Left (D)Right'</span>
+    help_string2 = <span class="hljs-string">'     (R)Restart (Q)Exit'</span>
+    gameover_string = <span class="hljs-string">'           GAME OVER'</span>
+    win_string = <span class="hljs-string">'          YOU WIN!'</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cast</span><span class="hljs-params">(string)</span></span>:
+        screen.addstr(string + <span class="hljs-string">'\n'</span>)
+
+    <span class="hljs-comment">#绘制水平分割线</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">draw_hor_separator</span><span class="hljs-params">()</span></span>:
+        line = <span class="hljs-string">'+'</span> + (<span class="hljs-string">'+------'</span> * <span class="hljs-keyword">self</span>.width + <span class="hljs-string">'+'</span>)[<span class="hljs-number">1</span><span class="hljs-symbol">:</span>]
+        separator = defaultdict(<span class="hljs-symbol">lambda:</span> line)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> hasattr(draw_hor_separator, <span class="hljs-string">"counter"</span>):
+            draw_hor_separator.counter = <span class="hljs-number">0</span>
+        cast(separator[draw_hor_separator.counter])
+        draw_hor_separator.counter += <span class="hljs-number">1</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">draw_row</span><span class="hljs-params">(row)</span></span>:
+        cast(<span class="hljs-string">''</span>.join(<span class="hljs-string">'|{: ^5} '</span>.format(num) <span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-string">'|      '</span> <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> row) + <span class="hljs-string">'|'</span>)
+
+    screen.clear()
+
+    cast(<span class="hljs-string">'SCORE: '</span> + str(<span class="hljs-keyword">self</span>.score))
+    <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> != <span class="hljs-keyword">self</span>.<span class="hljs-symbol">highscore:</span>
+        cast(<span class="hljs-string">'HIGHSCORE: '</span> + str(<span class="hljs-keyword">self</span>.highscore))
+
+    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span>.<span class="hljs-symbol">field:</span>
+        draw_hor_separator()
+        draw_row(row)
+
+    draw_hor_separator()
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.is_win():
+        cast(win_string)
+    <span class="hljs-symbol">else:</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.is_gameover():
+            cast(gameover_string)
+        <span class="hljs-symbol">else:</span>
+            cast(help_string1)
+    cast(help_string2)
+
+
+
+
+</code></pre><h2 id="doc-section-6" style="">5. 完成主逻辑</h2>
+<p>完成以上工作后，我们就可以补完主逻辑了！</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">(stdscr)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init</span><span class="hljs-params">()</span>:</span>
+        <span class="hljs-comment">#重置游戏棋盘</span>
+        game_field.reset()
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Game'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">not_game</span><span class="hljs-params">(state)</span>:</span>
+        <span class="hljs-comment">#画出 GameOver 或者 Win 的界面</span>
+        game_field.draw(stdscr)
+        <span class="hljs-comment">#读取用户输入得到action，判断是重启游戏还是结束游戏</span>
+        action = get_user_action(stdscr)
+        responses = defaultdict(<span class="hljs-keyword">lambda</span>: state) <span class="hljs-comment">#默认是当前状态，没有行为就会一直在当前界面循环</span>
+        responses[<span class="hljs-string">'Restart'</span>], responses[<span class="hljs-string">'Exit'</span>] = <span class="hljs-string">'Init'</span>, <span class="hljs-string">'Exit'</span> <span class="hljs-comment">#对应不同的行为转换到不同的状态</span>
+        <span class="hljs-keyword">return</span> responses[action]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">game</span><span class="hljs-params">()</span>:</span>
+        <span class="hljs-comment">#画出当前棋盘状态</span>
+        game_field.draw(stdscr)
+        <span class="hljs-comment">#读取用户输入得到action</span>
+        action = get_user_action(stdscr)
+
+        <span class="hljs-keyword">if</span> action == <span class="hljs-string">'Restart'</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'Init'</span>
+        <span class="hljs-keyword">if</span> action == <span class="hljs-string">'Exit'</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'Exit'</span>
+        <span class="hljs-keyword">if</span> game_field.move(action): <span class="hljs-comment"># move successful</span>
+            <span class="hljs-keyword">if</span> game_field.is_win():
+                <span class="hljs-keyword">return</span> <span class="hljs-string">'Win'</span>
+            <span class="hljs-keyword">if</span> game_field.is_gameover():
+                <span class="hljs-keyword">return</span> <span class="hljs-string">'Gameover'</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Game'</span>
+
+
+    state_actions = {
+            <span class="hljs-string">'Init'</span>: init,
+            <span class="hljs-string">'Win'</span>: <span class="hljs-keyword">lambda</span>: not_game(<span class="hljs-string">'Win'</span>),
+            <span class="hljs-string">'Gameover'</span>: <span class="hljs-keyword">lambda</span>: not_game(<span class="hljs-string">'Gameover'</span>),
+            <span class="hljs-string">'Game'</span>: game
+        }
+
+    curses.use_default_colors()
+    game_field = GameField(win=<span class="hljs-number">32</span>)
+
+
+    state = <span class="hljs-string">'Init'</span>
+
+    <span class="hljs-comment">#状态机开始循环</span>
+    <span class="hljs-keyword">while</span> state != <span class="hljs-string">'Exit'</span>:
+        state = state_actions[state]()
+
+
+</code></pre><h2 id="doc-section-7" style="">6. 运行</h2>
+<p>填上最后一行代码：</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">curses</span><span class="hljs-selector-class">.wrapper</span>(<span class="hljs-selector-tag">main</span>)
+
+
+</code></pre><p>运行看看吧！</p>
+<pre><code class="hljs ruby">$ python <span class="hljs-number">2048</span>.py
+
+
+</code></pre><p><img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/wm.png" alt="此处输入图片的描述"></p>
+<h2 id="doc-section-8" style="">全部代码</h2>
+<pre><code class="hljs ruby"><span class="hljs-comment">#-*- coding:utf-8 -*-</span>
+
+import curses
+from random import randrange, choice <span class="hljs-comment"># generate and place new tile</span>
+from collections import defaultdict
+
+letter_codes = [ord(ch) <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-string">'WASDRQwasdrq'</span>]
+actions = [<span class="hljs-string">'Up'</span>, <span class="hljs-string">'Left'</span>, <span class="hljs-string">'Down'</span>, <span class="hljs-string">'Right'</span>, <span class="hljs-string">'Restart'</span>, <span class="hljs-string">'Exit'</span>]
+actions_dict = dict(zip(letter_codes, actions * <span class="hljs-number">2</span>))
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user_action</span><span class="hljs-params">(keyboard)</span></span>:    
+    char = <span class="hljs-string">"N"</span>
+    <span class="hljs-keyword">while</span> char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-symbol">actions_dict:</span>    
+        char = keyboard.getch()
+    <span class="hljs-keyword">return</span> actions_dict[char]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">transpose</span><span class="hljs-params">(field)</span></span>:
+    <span class="hljs-keyword">return</span> [list(row) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> zip(*field)]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invert</span><span class="hljs-params">(field)</span></span>:
+    <span class="hljs-keyword">return</span> [row[<span class="hljs-symbol">:</span><span class="hljs-symbol">:-</span><span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> field]
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GameField</span>(<span class="hljs-title">object</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, height=<span class="hljs-number">4</span>, width=<span class="hljs-number">4</span>, win=<span class="hljs-number">2048</span>)</span></span>:
+        <span class="hljs-keyword">self</span>.height = height
+        <span class="hljs-keyword">self</span>.width = width
+        <span class="hljs-keyword">self</span>.win_value = win
+        <span class="hljs-keyword">self</span>.score = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">self</span>.highscore = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">self</span>.reset()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reset</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.score &gt; <span class="hljs-keyword">self</span>.<span class="hljs-symbol">highscore:</span>
+            <span class="hljs-keyword">self</span>.highscore = <span class="hljs-keyword">self</span>.score
+        <span class="hljs-keyword">self</span>.score = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">self</span>.field = [[<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-keyword">self</span>.width)] <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-keyword">self</span>.height)]
+        <span class="hljs-keyword">self</span>.spawn()
+        <span class="hljs-keyword">self</span>.spawn()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">move</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, direction)</span></span>:
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">move_row_left</span><span class="hljs-params">(row)</span></span>:
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tighten</span><span class="hljs-params">(row)</span></span>: <span class="hljs-comment"># squeese non-zero elements together</span>
+                new_row = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> row <span class="hljs-keyword">if</span> i != <span class="hljs-number">0</span>]
+                new_row += [<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(row) - len(new_row))]
+                <span class="hljs-keyword">return</span> new_row
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge</span><span class="hljs-params">(row)</span></span>:
+                pair = False
+                new_row = []
+                <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(row)):
+                    <span class="hljs-keyword">if</span> <span class="hljs-symbol">pair:</span>
+                        new_row.append(<span class="hljs-number">2</span> * row[i])
+                        <span class="hljs-keyword">self</span>.score += <span class="hljs-number">2</span> * row[i]
+                        pair = False
+                    <span class="hljs-symbol">else:</span>
+                        <span class="hljs-keyword">if</span> i + <span class="hljs-number">1</span> &lt; len(row) <span class="hljs-keyword">and</span> row[i] == row[i + <span class="hljs-number">1</span>]:
+                            pair = True
+                            new_row.append(<span class="hljs-number">0</span>)
+                        <span class="hljs-symbol">else:</span>
+                            new_row.append(row[i])
+                assert len(new_row) == len(row)
+                <span class="hljs-keyword">return</span> new_row
+            <span class="hljs-keyword">return</span> tighten(merge(tighten(row)))
+
+        moves = {}
+        moves[<span class="hljs-string">'Left'</span>]  = lambda <span class="hljs-symbol">field:</span>                              \
+                [move_row_left(row) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> field]
+        moves[<span class="hljs-string">'Right'</span>] = lambda <span class="hljs-symbol">field:</span>                              \
+                invert(moves[<span class="hljs-string">'Left'</span>](invert(field)))
+        moves[<span class="hljs-string">'Up'</span>]    = lambda <span class="hljs-symbol">field:</span>                              \
+                transpose(moves[<span class="hljs-string">'Left'</span>](transpose(field)))
+        moves[<span class="hljs-string">'Down'</span>]  = lambda <span class="hljs-symbol">field:</span>                              \
+                transpose(moves[<span class="hljs-string">'Right'</span>](transpose(field)))
+
+        <span class="hljs-keyword">if</span> direction <span class="hljs-keyword">in</span> <span class="hljs-symbol">moves:</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.move_is_possible(direction):
+                <span class="hljs-keyword">self</span>.field = moves[direction](<span class="hljs-keyword">self</span>.field)
+                <span class="hljs-keyword">self</span>.spawn()
+                <span class="hljs-keyword">return</span> True
+            <span class="hljs-symbol">else:</span>
+                <span class="hljs-keyword">return</span> False
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_win</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+        <span class="hljs-keyword">return</span> any(any(i &gt;= <span class="hljs-keyword">self</span>.win_value <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> row) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span>.field)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_gameover</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> any(<span class="hljs-keyword">self</span>.move_is_possible(move) <span class="hljs-keyword">for</span> move <span class="hljs-keyword">in</span> actions)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">draw</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, screen)</span></span>:
+        help_string1 = <span class="hljs-string">'(W)Up (S)Down (A)Left (D)Right'</span>
+        help_string2 = <span class="hljs-string">'     (R)Restart (Q)Exit'</span>
+        gameover_string = <span class="hljs-string">'           GAME OVER'</span>
+        win_string = <span class="hljs-string">'          YOU WIN!'</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cast</span><span class="hljs-params">(string)</span></span>:
+            screen.addstr(string + <span class="hljs-string">'\n'</span>)
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">draw_hor_separator</span><span class="hljs-params">()</span></span>:
+            line = <span class="hljs-string">'+'</span> + (<span class="hljs-string">'+------'</span> * <span class="hljs-keyword">self</span>.width + <span class="hljs-string">'+'</span>)[<span class="hljs-number">1</span><span class="hljs-symbol">:</span>]
+            separator = defaultdict(<span class="hljs-symbol">lambda:</span> line)
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> hasattr(draw_hor_separator, <span class="hljs-string">"counter"</span>):
+                draw_hor_separator.counter = <span class="hljs-number">0</span>
+            cast(separator[draw_hor_separator.counter])
+            draw_hor_separator.counter += <span class="hljs-number">1</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">draw_row</span><span class="hljs-params">(row)</span></span>:
+            cast(<span class="hljs-string">''</span>.join(<span class="hljs-string">'|{: ^5} '</span>.format(num) <span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-string">'|      '</span> <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> row) + <span class="hljs-string">'|'</span>)
+
+        screen.clear()
+        cast(<span class="hljs-string">'SCORE: '</span> + str(<span class="hljs-keyword">self</span>.score))
+        <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> != <span class="hljs-keyword">self</span>.<span class="hljs-symbol">highscore:</span>
+            cast(<span class="hljs-string">'HIGHSCORE: '</span> + str(<span class="hljs-keyword">self</span>.highscore))
+        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span>.<span class="hljs-symbol">field:</span>
+            draw_hor_separator()
+            draw_row(row)
+        draw_hor_separator()
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.is_win():
+            cast(win_string)
+        <span class="hljs-symbol">else:</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.is_gameover():
+                cast(gameover_string)
+            <span class="hljs-symbol">else:</span>
+                cast(help_string1)
+        cast(help_string2)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spawn</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+        new_element = <span class="hljs-number">4</span> <span class="hljs-keyword">if</span> randrange(<span class="hljs-number">100</span>) &gt; <span class="hljs-number">89</span> <span class="hljs-keyword">else</span> <span class="hljs-number">2</span>
+        (i,j) = choice([(i,j) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-keyword">self</span>.width) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-keyword">self</span>.height) <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.field[i][j] == <span class="hljs-number">0</span>])
+        <span class="hljs-keyword">self</span>.field[i][j] = new_element
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">move_is_possible</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, direction)</span></span>:
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">row_is_left_movable</span><span class="hljs-params">(row)</span></span>: 
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">change</span><span class="hljs-params">(i)</span></span>: <span class="hljs-comment"># true if there'll be change in i-th tile</span>
+                <span class="hljs-keyword">if</span> row[i] == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> row[i + <span class="hljs-number">1</span>] != <span class="hljs-number">0</span>: <span class="hljs-comment"># Move</span>
+                    <span class="hljs-keyword">return</span> True
+                <span class="hljs-keyword">if</span> row[i] != <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> row[i + <span class="hljs-number">1</span>] == row[i]: <span class="hljs-comment"># Merge</span>
+                    <span class="hljs-keyword">return</span> True
+                <span class="hljs-keyword">return</span> False
+            <span class="hljs-keyword">return</span> any(change(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(row) - <span class="hljs-number">1</span>))
+
+        check = {}
+        check[<span class="hljs-string">'Left'</span>]  = lambda <span class="hljs-symbol">field:</span>                              \
+                any(row_is_left_movable(row) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> field)
+
+        check[<span class="hljs-string">'Right'</span>] = lambda <span class="hljs-symbol">field:</span>                              \
+                 check[<span class="hljs-string">'Left'</span>](invert(field))
+
+        check[<span class="hljs-string">'Up'</span>]    = lambda <span class="hljs-symbol">field:</span>                              \
+                check[<span class="hljs-string">'Left'</span>](transpose(field))
+
+        check[<span class="hljs-string">'Down'</span>]  = lambda <span class="hljs-symbol">field:</span>                              \
+                check[<span class="hljs-string">'Right'</span>](transpose(field))
+
+        <span class="hljs-keyword">if</span> direction <span class="hljs-keyword">in</span> <span class="hljs-symbol">check:</span>
+            <span class="hljs-keyword">return</span> check[direction](<span class="hljs-keyword">self</span>.field)
+        <span class="hljs-symbol">else:</span>
+            <span class="hljs-keyword">return</span> False
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">(stdscr)</span></span>:
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>:
+        <span class="hljs-comment">#重置游戏棋盘</span>
+        game_field.reset()
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Game'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">not_game</span><span class="hljs-params">(state)</span></span>:
+        <span class="hljs-comment">#画出 GameOver 或者 Win 的界面</span>
+        game_field.draw(stdscr)
+        <span class="hljs-comment">#读取用户输入得到action，判断是重启游戏还是结束游戏</span>
+        action = get_user_action(stdscr)
+        responses = defaultdict(<span class="hljs-symbol">lambda:</span> state) <span class="hljs-comment">#默认是当前状态，没有行为就会一直在当前界面循环</span>
+        responses[<span class="hljs-string">'Restart'</span>], responses[<span class="hljs-string">'Exit'</span>] = <span class="hljs-string">'Init'</span>, <span class="hljs-string">'Exit'</span> <span class="hljs-comment">#对应不同的行为转换到不同的状态</span>
+        <span class="hljs-keyword">return</span> responses[action]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">game</span><span class="hljs-params">()</span></span>:
+        <span class="hljs-comment">#画出当前棋盘状态</span>
+        game_field.draw(stdscr)
+        <span class="hljs-comment">#读取用户输入得到action</span>
+        action = get_user_action(stdscr)
+
+        <span class="hljs-keyword">if</span> action == <span class="hljs-string">'Restart'</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'Init'</span>
+        <span class="hljs-keyword">if</span> action == <span class="hljs-string">'Exit'</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'Exit'</span>
+        <span class="hljs-keyword">if</span> game_field.move(action): <span class="hljs-comment"># move successful</span>
+            <span class="hljs-keyword">if</span> game_field.is_win():
+                <span class="hljs-keyword">return</span> <span class="hljs-string">'Win'</span>
+            <span class="hljs-keyword">if</span> game_field.is_gameover():
+                <span class="hljs-keyword">return</span> <span class="hljs-string">'Gameover'</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Game'</span>
+
+
+    state_actions = {
+            <span class="hljs-string">'Init'</span>: init,
+            <span class="hljs-string">'Win'</span>: <span class="hljs-symbol">lambda:</span> not_game(<span class="hljs-string">'Win'</span>),
+            <span class="hljs-string">'Gameover'</span>: <span class="hljs-symbol">lambda:</span> not_game(<span class="hljs-string">'Gameover'</span>),
+            <span class="hljs-string">'Game'</span>: game
+        }
+
+    curses.use_default_colors()
+    game_field = GameField(win=<span class="hljs-number">32</span>)
+
+
+    state = <span class="hljs-string">'Init'</span>
+
+    <span class="hljs-comment">#状态机开始循环</span>
+    <span class="hljs-keyword">while</span> state != <span class="hljs-string">'Exit'</span>:
+        state = state_actions[state]()
+
+curses.wrapper(main)
+
+
+
+
+</code></pre><h2 id="doc-section-9" style="">License</h2>
+<p>本作品在 <a href="http://www.gnu.org/licenses/fdl-1.2.html" target="_blank">GFDL1.2 协议</a>下授权使用</p>
+</div>
+                <div class="lab-exam">
+                </div>
+                
+                    <div class="vip-view" style="">
+                        <div class="vip-view-header">
+                            <img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/icon-vip.png">
+                            升级实验楼会员
+                        </div>
+                        <div class="vip-view-body">精品课程+环境保存+会员客户端</div>
+                        <div class="vip-view-footer">
+                            <a href="https://www.shiyanlou.com/vip" target="_blank">[获取会员特权]</a>
+                        </div>
+                    </div>
+                    
+                        <div class="labdoc-btns" style="margin-bottom: 77px;">
+                            <a href="#stop-lab-modal" class="btn btn-danger" data-toggle="modal">
+                                <i class="fa fa-stop"></i>
+                                停止实验
+                            </a>
+                        </div>
+                    
+                
+            </div>
+            
+                <a href="#askquestion" class="btn btn-danger btn-err-correction">
+                    <i class="fa fa-arrow-circle-left"></i> 纠错
+                </a>
+            
+        </div>
+        <div role="tabpanel" class="tab-pane" id="report">
+            <form>
+                <div class="tabpanel mkeditor">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#report-mkeditor-editor" role="tab" data-toggle="tab">编辑</a>
+                        </li>
+                        <li role="presentation">
+                            <a class="mkeditor-btn-view" href="#report-mkeditor-viewer" role="tab" data-toggle="tab">预览</a>
+                        </li>
+                        
+                            <a class="btn btn-primary pull-right publish-report-btn">
+                            <i class="fa fa-share"></i> 发布
+                        </a>
+                        
+                        <div class="pull-right autosave-time"></div>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active mkeditor-editor" id="report-mkeditor-editor" role="tabpanel">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default mkeditor-btn-bold">
+                                    <i class="fa fa-bold"></i>
+                                </button>
+                                <button type="button" class="btn btn-default mkeditor-btn-italic">
+                                    <i class="fa fa-italic"></i>
+                                </button>
+                                <button type="button" class="btn btn-default mkeditor-btn-link">
+                                    <i class="fa fa-link"></i>
+                                </button>
+                                <button type="button" class="btn btn-default mkeditor-btn-quote">
+                                    <i class="fa fa-quote-left"></i>
+                                </button>
+                                <button type="button" class="btn btn-default mkeditor-btn-code">
+                                    <i class="fa fa-code"></i>
+                                </button>
+                                <button style="display: none; z-index: 1;" type="button" id="mkeditor-note-pickfile" class="btn btn-default mkeditor-btn-img">
+                                    <i class="fa fa-image"></i>
+                                </button>
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#insert-img-modal">
+                                    <i class="fa fa-image"></i>
+                                </button>
+                                <button type="button" class="btn btn-default mkeditor-btn-listol">
+                                    <i class="fa fa-list-ol"></i>
+                                </button>
+                                <button type="button" class="btn btn-default mkeditor-btn-listul">
+                                    <i class="fa fa-list-ul"></i>
+                                </button>
+                                <a class="btn btn-default" href="https://www.shiyanlou.com/questions/764" target="_blank">
+                                    <i class="fa fa-question"></i>
+                                </a>
+                            <div id="html5_1blv0u8g21b64cmf1132vvf1vou3_container" class="moxie-shim moxie-shim-html5" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px; overflow: hidden; z-index: 0;"><input id="html5_1blv0u8g21b64cmf1132vvf1vou3" style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;" multiple="" accept="" type="file"></div></div>
+                            <textarea name="text" placeholder="报告自动保存，推荐使用 Markdown 语法"></textarea>
+                        </div>
+                        <div class="tab-pane mkeditor-viewer" id="report-mkeditor-viewer" role="tabpanel">
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="desktop">
+    
+    <div id="display" style="width: auto;"><div style="position: relative; width: 1162.67px; height: 872px;"><div style="position: relative; width: 1024px; height: 768px; transform-origin: 0px 0px 0px; transform: scale(1.13542, 1.13542);"><div style="width: 1024px; height: 768px; position: absolute; left: 0px; top: 0px; overflow: hidden;"><canvas width="1024" height="768" style="z-index: -1; position: absolute; left: 0px; top: 0px;"></canvas></div></div></div></div>
+</div>
+
+
+<div id="tools">
+    <div class="tools-toggle">
+        <span class="show-tools">显示工具栏</span>
+        <span class="hide-tools">隐藏工具栏</span>
+    </div>
+    <div class="lefttime">
+        <span>58:19</span>
+        <a href="#increase-time-modal" class="increase-time-btn btn btn-default" data-toggle="modal">延时</a>
+    </div>
+    <div class="tools-divide"></div>
+    <div class="vm-mode-select">
+        <a class="btn btn-defualt" style="display: block;">
+            <i class="fa fa-random"></i> 切换界面
+        </a>
+        <div class="vm-modes">
+                <a data-stat="conosle_mode" data-mode="desktop" class="btn stat-event active">
+                    <i class="fa fa=desktop"></i> 图形界面
+                </a>
+            
+                <a data-stat="conosle_mode" data-mode="ssh" class="btn stat-event">
+                    <i class="fa fa=terminal"></i> 字符界面
+                </a>
+            </div>
+        <a class="show-modes"><i class="fa fa-angle-left"></i></a>
+    </div>
+    <div class="tools-divide"></div>
+    
+    <a href="#stop-lab-modal" class="stop-lab-btn btn btn-default" data-toggle="modal" style="display: block;"><i class="fa fa-stop"></i> 停止实验</a>
+    
+        <div class="tools-divide"></div>
+        <span id="tools-vmtools" style="display:inline-block;">
+            <a href="#clipboard-modal" class="clipboard-btn stat-event btn btn-default" data-toggle="modal" data-stat="console_clipboard" style="display: block;"><i class="fa fa-cut"></i> 剪切板</a>
+            
+                <a href="#share-desktop-modal" class="share-desktop-btn btn btn-default" data-toggle="modal" style="display: block;"><i class="fa fa-share-alt"></i> 共享桌面</a>
+            
+            <a href="#download-code-modal" class="download-code-btn btn btn-default" data-toggle="modal" style="display: block;"><i class="fa fa-download"></i> 下载代码</a>
+            <a href="#" data-stat="console_fullscreen" class="stat-event btn btn-default fullscreen-btn" style="display: block;"><i class="fa fa-arrows-alt"></i> 桌面全屏</a>
+            <span></span>
+        </span>
+    
+        <a href="#webide-modal" target="_blank" class="btn btn-default webide stat-event" data-stat="console_webide" data-toggle="modal" style="display: block;">
+            <img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/icon-vip.png"> WebIDE
+        </a>
+        <a href="#ssh-modal" class="ssh-btn stat-event btn btn-default" data-stat="console_ssh" data-toggle="modal" style="display: block;">
+            <img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/icon-vip.png"> SSH 直连
+        </a>
+        <a href="#save-vm-modal" target="_blank" class="btn btn-default save-vm-btn" data-toggle="modal" style="display: block;">
+            <img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/icon-vip.png"> 保存环境
+        </a>
+        <a href="https://www.shiyanlou.com/vip#vip-clients" target="_blank" class="btn btn-default client-btn" style="display: block;">
+            <img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/icon-vip.png"> 会员客户端
+        </a>
+        <a href="#" class="btn btn-default question-service-btn" style="display: block;">
+            <img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/icon-vip-advance.png"> 答疑服务
+        </a>
+    
+    <a href="https://www.shiyanlou.com/questions/?tag=%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98" target="_blank" class="btn btn-default faq-btn"><i class="fa fa-question-circle-o fa-2x"></i></a>
+</div>
+
+</div>
+
+
+        <div class="modal fade" id="invite-user" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">邀请好友，双方都可获赠实验豆！</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="form-label">
+                            分享专属链接给好友，或粘贴到QQ群/微博/论坛，好友注册后，您和好友将分别获赠3个实验豆！
+                        </div>
+                        <input id="bstext" class="form-invite" value="https://www.shiyanlou.com/register?inviter=NTY0MzE5MzkyMDIx" type="text">
+                        
+                        <div id="msg-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="flash-message" tabindex="-1" role="dialog">
+            <div class="modal-dialog" rolw="document">
+            </div>
+        </div>
+        <div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">注意</h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary confirm" data-dismiss="modal">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        
+
+
+<div class="modal fade" id="increase-time-modal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="submit-result-modal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+             <div class="modal-footer">
+             </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="ssh-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">系统访问信息</h4>
+            </div>
+            <div class="modal-body">
+                
+                <div class="alert alert-info" role="alert">
+                </div>
+                <p>标准会员可以通过SSH直接连接实验环境，方法见 <a href="https://www.shiyanlou.com/questions/2391" target="_blank">SSH 连接方法</a></p>
+                <div style="text-align:center">
+                    <p><a class="btn btn-primary vip-without-bean" href="https://www.shiyanlou.com/vip">查看更多会员特权</a></p>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="clipboard-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">剪切板</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <strong>复制外部内容到实验环境内：</strong>粘贴内容到下方输入框—点击保存—在实验环境中粘贴（暂不支持中文）
+                    <div>注：1.粘贴前请不要选中任何内容，否则会出现粘贴错误。</div>
+                    <div style="text-indent:2em;">2.实验文档不支持Ctrl+C复制，请选中内容—右键—复制</div>
+                </div>
+                <div><strong>获取实验环境中的内容：</strong>复制环境中的内容—在下方输入框中复制内容</div>
+                <textarea></textarea>
+                <button class="btn btn-default clipboard-copy-btn" type="button">保存</button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="share-desktop-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">共享桌面</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <h3>只读模式</h3>
+                    <p>复制以下链接发给朋友，让他围观您的桌面操作</p>
+                    <input class="form-control readonly" readonly="readonly" type="text">
+                </div>
+                <div>
+                    <h3>协作模式</h3>
+                    <p>复制以下链接发给朋友，邀请他远程协助，与您共同完成实验任务</p>
+                    <input class="form-control cooperation" readonly="readonly" type="text">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="download-code-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">从实验楼环境中导出代码</h4>
+            </div>
+            <div class="modal-body">
+                将需要的代码文件放入到“/home/shiyanlou/Code”目录，点击下载会把该目录打包下载（限5M以内）。
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary confirm" type="button">下载</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="stop-lab-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">停止实验</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert" style="text-align:center">
+                    <p>请确保您的实验代码已保存，可以保存到 Github 或<a href="https://www.shiyanlou.com/questions/94" target="_blank">下载到本地</a></p>
+                    <p>免费用户停止实验后环境将删除</p>
+                    <p style="margin-top:20px;"><a class="btn btn-primary btn-lg" href="https://www.shiyanlou.com/vip" target="_blank">加入会员保存环境</a></p>
+                    
+                    <p>
+                        <img style="width: 16px;" src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/vip-faq.png">
+                        <a href="https://www.shiyanlou.com/questions/1440" style="font-size:14px;" target="_blank"> 加入实验楼会员，学习更多精品课程！</a>
+                    </p>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="next-lab-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">开始下一个实验</h4>
+            </div>
+            <div class="modal-body">
+                当前实验环境继续使用，确定进入下一个实验？
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary confirm" type="button">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="publish-report-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">发布实验报告</h4>
+            </div>
+            <div class="modal-body">
+                实验报告是您在本实验中保存的笔记、截图及实验代码的完整记录，点击发布后可以收到小伙伴的点评，可在“<a href="https://www.shiyanlou.com/user/379346/" target="_blank">我的主页</a>“界面查看及编辑。
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+                <button class="btn btn-primary confirm" type="button">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="publish-report-success-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">发布实验报告成功</h4>
+            </div>
+            <div class="modal-body">
+                <div>实验报告已成功发布，实验报告页面链接为：</div>
+                <div>点击”分享到微博“，有机会获得热门IT书籍，实验楼每周随机抽取！</div>
+            </div>
+            <div class="modal-footer">
+                <div id="weibo-box" data-is-btn="true" data-title="#实验分析# 分享一篇我的技术学习总结：200行Python代码实现2048"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="show-image-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="" style="width:100%;">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm" type="button">删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete-image-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">删除截图</h4>
+            </div>
+            <div class="modal-body">
+                您将删除实验“200行Python代码实现2048”的实验截图
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+                <button class="btn btn-primary confirm" type="button">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="show-doc-image-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document" style="min-width:1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="" style="width:100%;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="insert-img-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">插入图片</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-default upload-image-btn">
+                            <i class="fa fa-upload"></i> 上传本地图片
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-default screenshot-btn">
+                            <i class="fa fa-cut"></i> 截取实验桌面
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="save-vm-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">保存实验环境</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert" style="text-align:center">
+                    <p>标准会员可以保存实验环境，随时随地继续实验</p>
+                    <p style="margin-top:20px;"><a class="btn btn-primary btn-lg" href="https://www.shiyanlou.com/vip" target="_blank">加入会员保存环境</a></p>
+                    
+                    <p>
+                        <img style="width: 16px;" src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/vip-faq.png">
+                        <a href="https://www.shiyanlou.com/questions/1440" style="font-size:14px;" target="_blank"> 加入实验楼会员，学习更多精品课程！</a>
+                    </p>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="vip-startlab-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始实验</h3>
+            </div>
+            <div class="modal-body">
+                <div class="start-newlab"></div>
+                <br>
+                <div class="text-center vip-vm">
+                    <a class="btn btn-default btn-lg newvm">创建新环境</a>
+                </div>
+                <br>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="timeout-modal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">实验已停止</h4>
+            </div>
+            <div class="modal-body"><div class="alert alert-danger">
+            实验时间已到，实验环境已被删除，点击确认回到课程。
+            </div></div>
+            <div class="modal-footer">
+                
+                <a class="btn btn-primary" href="https://www.shiyanlou.com/courses/368">确定</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading-lab" style="top: 0px; left: 0px; width: auto; height: auto; display: none;">
+    <div class="loading-lab-container">
+        <div class="loading-lab-logo">
+            <img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/console-loading-logo.png">
+            <div class="loading-lab-hover"></div>
+        </div>
+        <div class="loading-lab-msg">
+            <p class="loading-step-0">尝试重新连接中...</p>
+            <p class="loading-step-1" style="display: block;">正在分配服务器...</p>
+            <p class="loading-step-2" style="display: block;">实验环境启动中...</p>
+            <p class="loading-step-3" style="display: block;">环境正在连接中...</p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="webide-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">实验楼 WebIDE</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert" style="text-align:center">
+                    <p>会员可以使用 WebIDE 编辑实验环境中的代码，使用方法见 <a href="https://www.shiyanlou.com/questions/2081">WebIDE 使用指南</a></p>
+                    <p><br><a class="btn btn-primary vip-without-bean" href="https://www.shiyanlou.com/vip">查看更多会员特权</a></p>
+                    <p class="join-vip-faq"><img class="img-circle" src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/vip-faq.png"><a href="https://www.shiyanlou.com/vip"> 加入实验楼会员，学习更多精品课程！</a></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="need-network-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    本实验需要在联网环境中完成，加入会员获得联网权限。
+                </div>
+                <br>
+                <div style="text-align:center;">
+                    <a style="color:#08bf91; text-decoration:none;" href="https://www.shiyanlou.com/vip" target="_blank">[了解更多会员特权]</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reboot-lab-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                抱歉，启动实验环境失败，请停止实验后重新开始实验。
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button">停止实验</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="asleep-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">需要帮助吗？</h4>
+            </div>
+            <div class="modal-body">
+                <p>您已经有一会儿没有操作了，是否在实验中遇到了困难？</p>
+            </div>
+            <div class="modal-footer" style="margin-top:0px">
+                <button type="button" class="btn btn-default" data-dismiss="modal">继续实验</button>
+                <button type="button" class="btn btn-primary btn-ask-question">我要提问</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="service-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">答疑服务</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert" style="text-align:center">
+                    <p>高级会员在讨论区提问，可以获得实验楼专职助教的回复！</p>
+                    <p>让我们帮助你完成实验</p>
+                    <p><br><a class="btn btn-primary vip-without-bean" href="https://www.shiyanlou.com/vip">高级会员助教答疑</a></p>
+                    <p class="join-vip-faq"><img class="img-circle" src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/vip-faq.png"><a href="https://www.shiyanlou.com/vip"> 加入实验楼会员，学习更多精品课程！</a></p>
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top:0px">
+                <button class="btn btn-primary" type="button" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="vm-tips" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert" style="text-align:center">
+                    <p>当前实验环境不是已保存的环境, 倒计时结束将被删除!</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top:0px">
+                <button class="btn btn-primary" type="button" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="disconnect-modal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">桌面连接断开</h4>
+            </div>
+            <div class="modal-body">
+                <p>由于您打开的其他页面正在连接中，当前页面连接被迫断开，如需重连请刷新页面。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confused-vm-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">实验环境异常</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger">抱歉，当前实验环境出现异常，请重新启动实验！</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade askquestion-modal" id="askquestion" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">提问</h4>
+            </div>
+            <div class="modal-body words-ctrl">
+                <form class="form-horizontal" action="/questions/">
+                    <input name="_csrf_token" value="IjkxNDU1MzFiMTdhNGQ3MWE0YTFjZTllMmY5ZmZlMWFmNmVlYWYwZjMi.DFnnSg.FYRp14emc7gk4VcDP3uZAEG0NMo" type="hidden">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">标题</label>
+                        <div class="col-md-10">
+                            <input name="title" min="5" max="100" class="form-control" placeholder="至少输入5个字" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">描述</label>
+                        <div class="col-md-10">
+                            
+                            
+                            
+<div class="tabpanel mkeditor">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#mkeditor-editor" role="tab" data-toggle="tab">编辑</a>
+        </li>
+        <li role="presentation">
+            <a class="mkeditor-btn-view" href="#mkeditor-viewer" role="tab" data-toggle="tab">预览</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active mkeditor-editor" id="mkeditor-editor" role="tabpanel">
+            
+            <div class="btn-group" role="group">
+            
+                <button type="button" class="btn btn-default mkeditor-btn-bold">
+                    <i class="fa fa-bold"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-italic">
+                    <i class="fa fa-italic"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-link">
+                    <i class="fa fa-link"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-quote">
+                    <i class="fa fa-quote-left"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-code">
+                    <i class="fa fa-code"></i>
+                </button>
+                <button id="mkeditor-pickfile" type="button" class="btn btn-default mkeditor-btn-img" style="z-index: 1;">
+                    <i class="fa fa-image"></i>
+                </button>
+                
+                <button type="button" class="btn btn-default mkeditor-btn-listol">
+                    <i class="fa fa-list-ol"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-listul">
+                    <i class="fa fa-list-ul"></i>
+                </button>
+            <div id="html5_1blv0u8g6fa3vssabf1t52a866_container" class="moxie-shim moxie-shim-html5" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px; overflow: hidden; z-index: 0;"><input id="html5_1blv0u8g6fa3vssabf1t52a866" style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;" multiple="" accept="" type="file"></div></div>
+            <div class="btn-group pull-right" role="group">
+                <a style="font-size:12px; color:#666; text-decoration:underline;" href="https://www.shiyanlou.com/questions/764" target="_blank">
+                    <i class="fa fa-question-circle"></i>Markdown 语法
+                </a>
+            </div>
+            <textarea name="content" class="content" min="0" max="20000" placeholder="推荐使用 Markdown 语法，至少输入 5 个字"></textarea>
+            <div class="help-block"></div>
+        </div>
+        <div class="tab-pane mkeditor-viewer markdown-body" id="mkeditor-viewer" role="tabpanel">
+            <div></div>
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none;">
+                        <label class="col-md-2 control-label">板块</label>
+                        <div class="col-md-10">
+                            <div class="q-types" data-type="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                
+        <div class="form-group">
+        <label class="col-md-2 control-label">相关问题</label>
+        <div class="col-md-10">
+        <ul class="list-group">
+    
+            <a class="list-group-item" href="https://www.shiyanlou.com/questions/5052" target="_blank">
+            curses.error 找不到终端
+            </a>
+        
+            <a class="list-group-item" href="https://www.shiyanlou.com/questions/14687" target="_blank">
+            draw函数
+            </a>
+        
+            <a class="list-group-item" href="https://www.shiyanlou.com/questions/13171" target="_blank">
+            state_action is not defined是怎么办
+            </a>
+        
+            <a class="list-group-item" href="https://www.shiyanlou.com/questions/21349" target="_blank">
+            不初始化stdscr也可以吗
+            </a>
+        
+            <a class="list-group-item" href="https://www.shiyanlou.com/questions/14695" target="_blank">
+            文档说明中def move_row_left我觉得这是在向右移动啊
+            </a>
+        
+            <li class="list-group-item">
+                <a class="more-questions" href="https://www.shiyanlou.com/questions/courses/368" target="_blank">查看所有</a>
+            </li>
+        </ul></div></div></form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="bottom-link btn btn-primary" href="https://www.shiyanlou.com/vip" target="_blank" style="background:#FFFFFF;color:#00CC99;border:none;float:left;padding-left:0;"><img src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/icon-vip-advance.png" alt=""> 加入高级会员获得助教答疑</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="submit-question btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+        
+        
+        
+        
+        
+
+        <div class="modal fade" id="sign-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#signin-form" aria-controls="signin-form" role="tab" data-toggle="tab">登录</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#signup-form" aria-controls="signup-form" role="tab" data-toggle="tab">注册</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="signin-form">
+                        <form action="/login" method="post">
+                            <input name="_csrf_token" value="IjkxNDU1MzFiMTdhNGQ3MWE0YTFjZTllMmY5ZmZlMWFmNmVlYWYwZjMi.DFnnSg.FYRp14emc7gk4VcDP3uZAEG0NMo" type="hidden">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input name="login" class="form-control" placeholder="请输入邮箱" type="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input name="password" class="form-control" placeholder="请输入密码" type="password">
+                                </div>
+                            </div>
+                            <div class="form-inline verify-code-item" style="display:none;">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input name="captcha_v" class="form-control" placeholder="请输入验证码" type="text">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="" source="/captcha.gif">
+                            </div>
+                            <div class="form-group remember-login">
+                                <input name="remember" value="y" type="checkbox"> 下次自动登录
+                                <a class="pull-right" href="https://www.shiyanlou.com/reset_password">忘记密码？</a>
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" value="进入实验楼" type="submit">
+                            </div>
+                            <div class="form-group widget-signin">
+                                <span>快速登录</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="signup-form">
+                        <form action="/register" method="post">
+                            <input name="_csrf_token" value="IjkxNDU1MzFiMTdhNGQ3MWE0YTFjZTllMmY5ZmZlMWFmNmVlYWYwZjMi.DFnnSg.FYRp14emc7gk4VcDP3uZAEG0NMo" type="hidden">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input name="email" class="form-control" placeholder="请输入邮箱" type="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input name="password" class="form-control" placeholder="请输入密码" type="password">
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input name="captcha_v" class="form-control" placeholder="请输入验证码" type="text">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="" source="/captcha.gif">
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" value="注册" type="submit">
+                            </div>
+                            <div class="form-group agree-privacy">
+                                注册表示您已经同意我们的<a href="https://www.shiyanlou.com/privacy" target="_blank">隐私条款</a>
+                            </div>
+                            <div class="form-group widget-signup">
+                                <span>快速注册</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div id="base-data" data-flash="false" data-is-login="true" data-jwt-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIzNzkzNDYiLCJpc3MiOiJzaGl5YW5sb3U6d2ViOmFwcCIsInVuYW1lIjoiTE9VMTU4OTMyOTQ2NSIsImlzX2FkbWluIjpmYWxzZSwiZXhwIjoxNTAxMTQ0OTA2LCJpYXQiOjE1MDEwNTg1MDZ9.KxKulVutcuKgwMfqGLzqBHDhjJShr7wdSpkDgJejgXs" data-user-id="379346" data-is-jwt="true" data-socket-url="wss://comet.shiyanlou.com" data-msg-user="" data-msg-system=""></div>
+
+        <!-- 不带 CSS 的库 -->
+        <script async="" src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/analytics.js"></script><script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/polyfill.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/manifest.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/vendor.js"></script>
+
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/jquery_003.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/jquery.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/jquery_002.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/jquery_004.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/html2canvas.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/jspdf.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/ZeroClipboard.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/aliyun-oss-sdk-4.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/qiniu.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/plupload.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/echarts.js"></script>
+        <!-- 不带 CSS 的库 end -->
+
+        <!-- 带有 CSS 的库 -->
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap-switch.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap-tour.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap-table.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap-table-zh-CN.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/bootstrap-table-filter-control.js"></script>
+
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/ace.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/video.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/katex.js"></script>
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/highlight.js"></script>
+        <!-- 带有 CSS 的库 end -->
+
+        <script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/raven.js"></script>
+        <script>
+            Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
+                release: '3.12.13'
+            }).install();
+        </script>
+
+        
+<textarea id="doc-content" style="display:none;">#200行Python代码实现2048
+
+## 一、实验说明
+
+### 1. 环境登录
+
+无需密码自动登录，系统用户名shiyanlou
+
+### 2. 环境介绍
+
+本实验环境采用带桌面的Ubuntu Linux环境，实验中会用到桌面上的程序：
+
+1. LX终端（LXTerminal）: Linux命令行终端，打开后会进入Bash环境，可以使用Linux命令
+2. GVim：非常好用的编辑器，最简单的用法可以参考课程[Vim编辑器](http://www.shiyanlou.com/courses/2)
+
+### 3. 环境使用
+
+使用GVim编辑器输入实验所需的代码及文件，使用LX终端（LXTerminal）运行所需命令进行操作。
+
+
+实验报告可以在个人主页中查看，其中含有每次实验的截图及笔记，以及每次实验的有效学习时间（指的是在实验桌面内操作的时间，如果没有操作，系统会记录为发呆时间）。这些都是您学习的真实性证明。
+
+### 4. 知识点
+
+本节实验中将学习和实践以下知识点：
+
+1. Python基本知识
+2. 状态机的概念
+
+## 二、实验内容
+
+是的，又是2048，这回我们是用 Python 实现，只需要200行代码，不用很麻烦很累就可以写一个 2048 游戏出来。
+
+实验楼上已有的 2048 课程：
+
++ [GO语言开发2048](https://www.shiyanlou.com/courses/42)
++ [网页版2048](https://www.shiyanlou.com/courses/62)
++ [C语言制作2048](https://www.shiyanlou.com/courses/155)
+
+游戏玩法这里就不再赘述了，还会有比亲自玩一遍体会规则更快的的吗：）
+
+2048 原版游戏地址：http://gabrielecirulli.github.io/2048
+
+创建游戏文件 2048.py
+
+首先导入需要的包：
+
+    import curses
+    from random import randrange, choice
+    from collections import defaultdict
+
+## 1. 主逻辑
+
+### 1.1 用户行为
+
+所有的有效输入都可以转换为"上，下，左，右，游戏重置，退出"这六种行为，用 `actions` 表示
+
+    actions = ['Up', 'Left', 'Down', 'Right', 'Restart', 'Exit']
+
+有效输入键是最常见的 W（上），A（左），S（下），D（右），R（重置），Q（退出），这里要考虑到大写键开启的情况，获得有效键值列表：
+
+    letter_codes = [ord(ch) for ch in 'WASDRQwasdrq']
+
+将输入与行为进行关联：
+
+    actions_dict = dict(zip(letter_codes, actions * 2))
+
+### 1.2 状态机
+
+处理游戏主逻辑的时候我们会用到一种十分常用的技术：状态机，或者更准确的说是有限状态机（FSM）
+
+你会发现 2048 游戏很容易就能分解成几种状态的转换。
+
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid8834labid1172timestamp1468333673772.png/wm)
+
+``state`` 存储当前状态， ``state_actions`` 这个词典变量作为状态转换的规则，它的 key 是状态，value 是返回下一个状态的函数：
+
++ Init: init()
+    + Game
++ Game: game()
+    + Game
+    + Win
+    + GameOver
+    + Exit
++ Win: lambda: not_game('Win')
+    + Init
+    + Exit
++ Gameover: lambda: not_game('Gameover')
+    + Init
+    + Exit
++ Exit: 
+    退出循环
+
+状态机会不断循环，直到达到 Exit 终结状态结束程序。
+
+下面是经过提取的主逻辑的代码，会在后面进行补全：
+
+    def main(stdscr):
+
+        def init():
+            #重置游戏棋盘
+            return 'Game'
+
+        def not_game(state):
+            #画出 GameOver 或者 Win 的界面
+            #读取用户输入得到action，判断是重启游戏还是结束游戏
+            responses = defaultdict(lambda: state) ＃默认是当前状态，没有行为就会一直在当前界面循环
+            responses['Restart'], responses['Exit'] = 'Init', 'Exit' #对应不同的行为转换到不同的状态
+            return responses[action]
+
+        def game():
+            #画出当前棋盘状态
+            #读取用户输入得到action
+            if action == 'Restart':
+                return 'Init'
+            if action == 'Exit':
+                return 'Exit'
+            #if 成功移动了一步:
+                if 游戏胜利了:
+                    return 'Win'
+                if 游戏失败了:
+                    return 'Gameover'
+            return 'Game'
+
+
+        state_actions = {
+                'Init': init,
+                'Win': lambda: not_game('Win'),
+                'Gameover': lambda: not_game('Gameover'),
+                'Game': game
+            }
+
+        state = 'Init'
+
+        #状态机开始循环
+        while state != 'Exit':
+            state = state_actions[state]()
+
+## 2. 用户输入处理
+
+阻塞＋循环，直到获得用户有效输入才返回对应行为：
+
+    def get_user_action(keyboard):    
+        char = "N"
+        while char not in actions_dict:    
+            char = keyboard.getch()
+        return actions_dict[char]
+
+## 3. 矩阵转置与矩阵逆转
+
+加入这两个操作可以大大节省我们的代码量，减少重复劳动，看到后面就知道了。
+
+矩阵转置：
+
+    def transpose(field):
+        return [list(row) for row in zip(*field)]
+
+矩阵逆转（不是逆矩阵）：
+     
+    def invert(field):
+        return [row[::-1] for row in field]
+
+## 4. 创建棋盘
+
+初始化棋盘的参数，可以指定棋盘的高和宽以及游戏胜利条件，默认是最经典的 4x4～2048。
+```
+    class GameField(object):
+        def __init__(self, height=4, width=4, win=2048):
+            self.height = height       #高
+            self.width = width         #宽
+            self.win_value = 2048      #过关分数
+            self.score = 0             #当前分数
+            self.highscore = 0         #最高分
+            self.reset()               #棋盘重置
+```
+
+### 4.1 棋盘操作
+
+####随机生成一个 2 或者 4
+
+    def spawn(self):
+            new_element = 4 if randrange(100) &gt; 89 else 2
+            (i,j) = choice([(i,j) for i in range(self.width) for j in range(self.height) if self.field[i][j] == 0])
+            self.field[i][j] = new_element
+
+####重置棋盘
+
+    def reset(self):
+        if self.score &gt; self.highscore:
+            self.highscore = self.score
+        self.score = 0
+        self.field = [[0 for i in range(self.width)] for j in range(self.height)]
+        self.spawn()
+        self.spawn()
+
+
+####一行向左合并
+
+(注：这一操作是在 move 内定义的，拆出来是为了方便阅读)
+
+    def move_row_left(row):
+        def tighten(row): # 把零散的非零单元挤到一块
+            new_row = [i for i in row if i != 0]
+            new_row += [0 for i in range(len(row) - len(new_row))]
+            return new_row
+
+        def merge(row): # 对邻近元素进行合并
+            pair = False
+            new_row = []
+            for i in range(len(row)):
+                if pair:
+                    new_row.append(2 * row[i])
+                    self.score += 2 * row[i]
+                    pair = False
+                else:
+                    if i + 1 &lt; len(row) and row[i] == row[i + 1]:
+                        pair = True
+                        new_row.append(0)
+                    else:
+                        new_row.append(row[i])
+            assert len(new_row) == len(row)
+            return new_row
+        #先挤到一块再合并再挤到一块
+        return tighten(merge(tighten(row)))
+
+####棋盘走一步
+
+通过对矩阵进行转置与逆转，可以直接从左移得到其余三个方向的移动操作
+
+    def move(self, direction):
+        def move_row_left(row):
+            #一行向左合并
+ 
+        moves = {}
+        moves['Left']  = lambda field: [move_row_left(row) for row in field]
+        moves['Right'] = lambda field: invert(moves['Left'](invert(field)))
+        moves['Up']    = lambda field: transpose(moves['Left'](transpose(field)))
+        moves['Down']  = lambda field: transpose(moves['Right'](transpose(field)))
+ 
+        if direction in moves:
+            if self.move_is_possible(direction):
+                self.field = moves[direction](self.field)
+                self.spawn()
+                return True
+            else:
+                return False
+
+####判断输赢
+
+    def is_win(self):
+        return any(any(i &gt;= self.win_value for i in row) for row in self.field)
+ 
+    def is_gameover(self):
+        return not any(self.move_is_possible(move) for move in actions)
+
+####判断能否移动
+
+    def move_is_possible(self, direction):
+        def row_is_left_movable(row): 
+            def change(i):
+                if row[i] == 0 and row[i + 1] != 0: # 可以移动
+                    return True
+                if row[i] != 0 and row[i + 1] == row[i]: # 可以合并
+                    return True
+                return False
+            return any(change(i) for i in range(len(row) - 1))
+ 
+        check = {}
+        check['Left']  = lambda field: any(row_is_left_movable(row) for row in field)
+ 
+        check['Right'] = lambda field: check['Left'](invert(field))
+ 
+        check['Up']    = lambda field: check['Left'](transpose(field))
+ 
+        check['Down']  = lambda field: check['Right'](transpose(field))
+ 
+        if direction in check:
+            return check[direction](self.field)
+        else:
+            return False
+
+### 4.2 绘制游戏界面
+
+（注：这一步是在棋盘类内定义的）
+
+    def draw(self, screen):
+        help_string1 = '(W)Up (S)Down (A)Left (D)Right'
+        help_string2 = '     (R)Restart (Q)Exit'
+        gameover_string = '           GAME OVER'
+        win_string = '          YOU WIN!'
+        def cast(string):
+            screen.addstr(string + '\n')
+        
+        #绘制水平分割线
+        def draw_hor_separator():
+            line = '+' + ('+------' * self.width + '+')[1:]
+            separator = defaultdict(lambda: line)
+            if not hasattr(draw_hor_separator, "counter"):
+                draw_hor_separator.counter = 0
+            cast(separator[draw_hor_separator.counter])
+            draw_hor_separator.counter += 1
+
+        def draw_row(row):
+            cast(''.join('|{: ^5} '.format(num) if num &gt; 0 else '|      ' for num in row) + '|')
+ 
+        screen.clear()
+        
+        cast('SCORE: ' + str(self.score))
+        if 0 != self.highscore:
+            cast('HIGHSCORE: ' + str(self.highscore))
+        
+        for row in self.field:
+            draw_hor_separator()
+            draw_row(row)
+        
+        draw_hor_separator()
+        
+        if self.is_win():
+            cast(win_string)
+        else:
+            if self.is_gameover():
+                cast(gameover_string)
+            else:
+                cast(help_string1)
+        cast(help_string2)
+
+
+
+## 5. 完成主逻辑
+
+完成以上工作后，我们就可以补完主逻辑了！
+
+    def main(stdscr):
+        def init():
+            #重置游戏棋盘
+            game_field.reset()
+            return 'Game'
+
+        def not_game(state):
+            #画出 GameOver 或者 Win 的界面
+            game_field.draw(stdscr)
+            #读取用户输入得到action，判断是重启游戏还是结束游戏
+            action = get_user_action(stdscr)
+            responses = defaultdict(lambda: state) #默认是当前状态，没有行为就会一直在当前界面循环
+            responses['Restart'], responses['Exit'] = 'Init', 'Exit' #对应不同的行为转换到不同的状态
+            return responses[action]
+
+        def game():
+            #画出当前棋盘状态
+            game_field.draw(stdscr)
+            #读取用户输入得到action
+            action = get_user_action(stdscr)
+
+            if action == 'Restart':
+                return 'Init'
+            if action == 'Exit':
+                return 'Exit'
+            if game_field.move(action): # move successful
+                if game_field.is_win():
+                    return 'Win'
+                if game_field.is_gameover():
+                    return 'Gameover'
+            return 'Game'
+
+
+        state_actions = {
+                'Init': init,
+                'Win': lambda: not_game('Win'),
+                'Gameover': lambda: not_game('Gameover'),
+                'Game': game
+            }
+
+        curses.use_default_colors()
+        game_field = GameField(win=32)
+        
+
+        state = 'Init'
+
+        #状态机开始循环
+        while state != 'Exit':
+            state = state_actions[state]()
+
+## 6. 运行
+
+填上最后一行代码：
+
+    curses.wrapper(main)
+
+运行看看吧！
+    
+    $ python 2048.py
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid8834labid1172timestamp1468333712964.png/wm)
+
+##全部代码
+
+    #-*- coding:utf-8 -*-
+     
+    import curses
+    from random import randrange, choice # generate and place new tile
+    from collections import defaultdict
+     
+    letter_codes = [ord(ch) for ch in 'WASDRQwasdrq']
+    actions = ['Up', 'Left', 'Down', 'Right', 'Restart', 'Exit']
+    actions_dict = dict(zip(letter_codes, actions * 2))
+     
+    def get_user_action(keyboard):    
+        char = "N"
+        while char not in actions_dict:    
+            char = keyboard.getch()
+        return actions_dict[char]
+     
+    def transpose(field):
+        return [list(row) for row in zip(*field)]
+     
+    def invert(field):
+        return [row[::-1] for row in field]
+     
+    class GameField(object):
+        def __init__(self, height=4, width=4, win=2048):
+            self.height = height
+            self.width = width
+            self.win_value = win
+            self.score = 0
+            self.highscore = 0
+            self.reset()
+     
+        def reset(self):
+            if self.score &gt; self.highscore:
+                self.highscore = self.score
+            self.score = 0
+            self.field = [[0 for i in range(self.width)] for j in range(self.height)]
+            self.spawn()
+            self.spawn()
+     
+        def move(self, direction):
+            def move_row_left(row):
+                def tighten(row): # squeese non-zero elements together
+                    new_row = [i for i in row if i != 0]
+                    new_row += [0 for i in range(len(row) - len(new_row))]
+                    return new_row
+     
+                def merge(row):
+                    pair = False
+                    new_row = []
+                    for i in range(len(row)):
+                        if pair:
+                            new_row.append(2 * row[i])
+                            self.score += 2 * row[i]
+                            pair = False
+                        else:
+                            if i + 1 &lt; len(row) and row[i] == row[i + 1]:
+                                pair = True
+                                new_row.append(0)
+                            else:
+                                new_row.append(row[i])
+                    assert len(new_row) == len(row)
+                    return new_row
+                return tighten(merge(tighten(row)))
+     
+            moves = {}
+            moves['Left']  = lambda field:                              \
+                    [move_row_left(row) for row in field]
+            moves['Right'] = lambda field:                              \
+                    invert(moves['Left'](invert(field)))
+            moves['Up']    = lambda field:                              \
+                    transpose(moves['Left'](transpose(field)))
+            moves['Down']  = lambda field:                              \
+                    transpose(moves['Right'](transpose(field)))
+     
+            if direction in moves:
+                if self.move_is_possible(direction):
+                    self.field = moves[direction](self.field)
+                    self.spawn()
+                    return True
+                else:
+                    return False
+     
+        def is_win(self):
+            return any(any(i &gt;= self.win_value for i in row) for row in self.field)
+     
+        def is_gameover(self):
+            return not any(self.move_is_possible(move) for move in actions)
+     
+        def draw(self, screen):
+            help_string1 = '(W)Up (S)Down (A)Left (D)Right'
+            help_string2 = '     (R)Restart (Q)Exit'
+            gameover_string = '           GAME OVER'
+            win_string = '          YOU WIN!'
+            def cast(string):
+                screen.addstr(string + '\n')
+     
+            def draw_hor_separator():
+                line = '+' + ('+------' * self.width + '+')[1:]
+                separator = defaultdict(lambda: line)
+                if not hasattr(draw_hor_separator, "counter"):
+                    draw_hor_separator.counter = 0
+                cast(separator[draw_hor_separator.counter])
+                draw_hor_separator.counter += 1
+     
+            def draw_row(row):
+                cast(''.join('|{: ^5} '.format(num) if num &gt; 0 else '|      ' for num in row) + '|')
+     
+            screen.clear()
+            cast('SCORE: ' + str(self.score))
+            if 0 != self.highscore:
+                cast('HIGHSCORE: ' + str(self.highscore))
+            for row in self.field:
+                draw_hor_separator()
+                draw_row(row)
+            draw_hor_separator()
+            if self.is_win():
+                cast(win_string)
+            else:
+                if self.is_gameover():
+                    cast(gameover_string)
+                else:
+                    cast(help_string1)
+            cast(help_string2)
+     
+        def spawn(self):
+            new_element = 4 if randrange(100) &gt; 89 else 2
+            (i,j) = choice([(i,j) for i in range(self.width) for j in range(self.height) if self.field[i][j] == 0])
+            self.field[i][j] = new_element
+     
+        def move_is_possible(self, direction):
+            def row_is_left_movable(row): 
+                def change(i): # true if there'll be change in i-th tile
+                    if row[i] == 0 and row[i + 1] != 0: # Move
+                        return True
+                    if row[i] != 0 and row[i + 1] == row[i]: # Merge
+                        return True
+                    return False
+                return any(change(i) for i in range(len(row) - 1))
+     
+            check = {}
+            check['Left']  = lambda field:                              \
+                    any(row_is_left_movable(row) for row in field)
+     
+            check['Right'] = lambda field:                              \
+                     check['Left'](invert(field))
+     
+            check['Up']    = lambda field:                              \
+                    check['Left'](transpose(field))
+     
+            check['Down']  = lambda field:                              \
+                    check['Right'](transpose(field))
+     
+            if direction in check:
+                return check[direction](self.field)
+            else:
+                return False
+     
+    def main(stdscr):
+        def init():
+            #重置游戏棋盘
+            game_field.reset()
+            return 'Game'
+
+        def not_game(state):
+            #画出 GameOver 或者 Win 的界面
+            game_field.draw(stdscr)
+            #读取用户输入得到action，判断是重启游戏还是结束游戏
+            action = get_user_action(stdscr)
+            responses = defaultdict(lambda: state) #默认是当前状态，没有行为就会一直在当前界面循环
+            responses['Restart'], responses['Exit'] = 'Init', 'Exit' #对应不同的行为转换到不同的状态
+            return responses[action]
+
+        def game():
+            #画出当前棋盘状态
+            game_field.draw(stdscr)
+            #读取用户输入得到action
+            action = get_user_action(stdscr)
+
+            if action == 'Restart':
+                return 'Init'
+            if action == 'Exit':
+                return 'Exit'
+            if game_field.move(action): # move successful
+                if game_field.is_win():
+                    return 'Win'
+                if game_field.is_gameover():
+                    return 'Gameover'
+            return 'Game'
+
+
+        state_actions = {
+                'Init': init,
+                'Win': lambda: not_game('Win'),
+                'Gameover': lambda: not_game('Gameover'),
+                'Game': game
+            }
+
+        curses.use_default_colors()
+        game_field = GameField(win=32)
+        
+
+        state = 'Init'
+
+        #状态机开始循环
+        while state != 'Exit':
+            state = state_actions[state]()
+     
+    curses.wrapper(main)
+     
+
+     
+##License
+
+本作品在 [GFDL1.2 协议](http://www.gnu.org/licenses/fdl-1.2.html)下授权使用
+</textarea>
+<div id="jinja-data" data-tencent-labid="[877]" data-userlab-id="3995474" data-userid="379346" data-course-id="368" data-labid="1172" data-lab-name="200行Python代码实现2048" data-vm-id="2608972" data-image-id="46" data-guac-link="/vm/2608972" data-image-list="[45, 52, 90, 93, 67, 101, 113]" data-is-evaluation-course="false" data-increase-time="/courses/running/time/increase" data-stop-lab="/courses/clear" data-course-details="/courses/368" data-is-member="false" data-is-senior-member="false" data-share-desktop="/courses/running/share/request" data-share-desktop-url="/courses/running/share/verify?key=" data-download-code="/courses/2608972/code/download" data-next-lab="/courses/nextlab" data-is-authenticated="true" data-qiniu-token-url="/api/qiniu/token" data-question-form="/questions/meta" data-publish-report="/courses/labs/1172/report/publish" data-update-report="/courses/labs/1172/report" data-course-question="/questions/related?course_id=368" data-course-questions="/questions/courses/368" data-study-time="/courses/running/update" data-quizzes="{&quot;_id&quot;: 1172, &quot;quiz_num&quot;: 0, &quot;quizzes&quot;: []}" data-save-vm="/courses/savevm" data-is-running="true" data-has-member-vm="false" data-need-network="false" data-readonly="false" data-start-lab-url="/courses/start/1172" data-is-challenge="false" data-jiucuo-url="/questions/16351"></div>
+
+<script src="200%E8%A1%8CPython%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B02048_files/console.js"></script><div style="display: none; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background: rgba(0, 0, 0, 0.5) none repeat scroll 0% 0%; text-align: center; z-index: 1600;"><i class="fa fa-spinner fa-pulse" style="margin-top: 348.8px; color: rgb(255, 255, 255); font-size: 35px;"></i></div><div id="message-box"></div>
+<script>
+setTimeout(function() {
+    $('.labdoc-content').trigger('DOMSubtreeModified');
+}, 100);
+</script>
+
+
+        
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89338452-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+    
+</body></html>

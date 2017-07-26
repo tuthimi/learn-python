@@ -152,7 +152,11 @@ spiderip       | https://spiderip.com
 portcheckers   | http://www.portcheckers.com
 
 
-###20170515 smart_login [转]
+###20170515 smart_login
+ [转]
 本项目用于研究和分享各大网站的模拟登陆方式,主要使用selenium+phantomjs或者直接登录的方式,语言采用Python
 可以在登录过后得到的cookie维护起来，然后调用requests或者scrapy等进行数据采集，这样数据采集的速度可以得到保证。
+
+###20170519 data_analyse\tableau
+蓝鲸的网站分析笔记 使用python和tableau对数据进行抓取及可视化 http://bluewhale.cc/2017-05-05/use-python-and-tableau-to-capture-and-visualize-the-data.html
 
