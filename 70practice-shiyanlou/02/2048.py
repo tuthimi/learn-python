@@ -6,19 +6,20 @@ import curses # py -2 -m pip install curses-2.2-cp27-none-win_amd64.whl
 from random import randrange, choice # generate and place new tile
 from collections import defaultdict
 
-letter_codes = [ord(ch) for ch in 'WASDRQwasdrq']
+letter_codes = [ord(ch) for ch in 'WASDRQwasdrq'] # ord()将ASCLL码值转换为字符
 actions = ['Up', 'Left', 'Down', 'Right', 'Restart', 'Exit']
-actions_dict = dict(zip(letter_codes, actions * 2))
+actions_dict = dict(zip(letter_codes, actions * 2)) # zip函数接受任意多个（包括0个和1个）序列作为参数，返回一个tuple列表
 
-def get_user_action(keyboard):    
+def get_user_action(keyboard):
     char = "N"
-    while char not in actions_dict:    
+    while char not in actions_dict:
         char = keyboard.getch()
     return actions_dict[char]
 
+# 加入这两个操作可以大大节省我们的代码量，减少重复劳动，看到后面就知道了。矩阵转置：
 def transpose(field):
     return [list(row) for row in zip(*field)]
-
+# 矩阵逆转（不是逆矩阵）：
 def invert(field):
     return [row[::-1] for row in field]
 
@@ -62,8 +63,10 @@ class GameField(object):
                             new_row.append(row[i])
                 assert len(new_row) == len(row)
                 return new_row
+            #先挤到一块再合并再挤到一块
             return tighten(merge(tighten(row)))
 
+        # 通过对矩阵进行转置与逆转，可以直接从左移得到其余三个方向的移动操作：
         moves = {}
         moves['Left']  = lambda field:                              \
                 [move_row_left(row) for row in field]
@@ -125,7 +128,8 @@ class GameField(object):
         cast(help_string2)
 
     def spawn(self):
-        new_element = 4 if randrange(100) > 89 else 2
+        new_element = 4 if randrange(100) > 89 else 2  # =随机生成4和2的概率
+        # random.choice(seq) seq可以是一个列表，元组或字符串。 返回随机项。
         (i,j) = choice([(i,j) for i in range(self.width) for j in range(self.height) if self.field[i][j] == 0])
         self.field[i][j] = new_element
 
@@ -198,7 +202,7 @@ def main(stdscr):
         }
 
     curses.use_default_colors()
-    game_field = GameField(win=32)
+    game_field = GameField(win=128)
 
 
     state = 'Init'

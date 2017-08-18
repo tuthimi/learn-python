@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><style class="vjs-styles-defaults">
+      .video-js {
+        width: 300px;
+        height: 150px;
+      }
+
+      .vjs-fluid {
+        padding-top: 56.25%
+      }
+    </style>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Lei Shi">
+        <meta http-equiv="Cache-Control" content="o-transform">
+        <meta http-equiv="Cache-Control" content="no-siteapp">
+        <meta name="csrf-token" content="IjkxNDU1MzFiMTdhNGQ3MWE0YTFjZTllMmY5ZmZlMWFmNmVlYWYwZjMi.DGq0FQ.Ma8vhZOFfs7zp-KE8cZSLc0_98w">
+        
+            
+                <title>Python3 实现火车票查询工具</title>
+            
+        
+
+        
+        <meta content="实验楼是国内领先的IT在线编程及在线实训学习平台，专业导师提供精选的实践项目，创新的技术使得学习者无需配置繁琐的本地环境，随时在线流畅使用。以就业为导向，提供编程、运维、测试、云计算、大数据、数据库等全面的IT技术动手实践环境，提供Linux、Python、Java、C语言、Node.js、Hadoop、PHP、Docker、Git、R、SQL、MongoDB、Redis、Swift、Spark等千门热门课程。" name="description">
+        <meta content="实验楼,IT培训,IT教育,编程,在线编程,Linux,Linux教程,Linux操作系统,Python,Python教程,Python基础教程,Java,Java编程,C语言,大数据,Node.js,Hadoop,PHP,Docker,Git,R,SQL,MongoDB,Redis,Swift,Spark,在线实验,IT在线教育,编程入门,项目训练,项目实践,webIDE,软件开发" name="keywords">
+        
+        <meta content="实验楼，琛石科技" name="author">
+
+        <link rel="shortcut icon" href="https://static.shiyanlou.com/favicon.ico">
+        <link rel="stylesheet" href="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/font-awesome.css">
+        <link rel="stylesheet" href="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap.css">
+        <link rel="stylesheet" href="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap-switch.css">
+        <link rel="stylesheet" href="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap-tour.css">
+        <link rel="stylesheet" href="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap-table.css">
+        <link rel="stylesheet" href="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/katex.css">
+        <link rel="stylesheet" href="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/video-js.css">
+        <link rel="stylesheet" href="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/monokai-sublime.css">
+
+        <link rel="stylesheet" href="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/styles.css">
+
+        <style>
+            @font-face {
+                font-family: "lantingxihei";
+        src: url("https://static.shiyanlou.com/fonts/FZLTCXHJW.TTF");
+        }
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+        overflow: hidden;
+        }
+        #invite-user .modal-body .form-label {
+        margin-bottom: 16px;
+        font-size:14px;
+        }
+        #invite-user .modal-body .form-invite {
+        width: 80%;
+        padding: 6px 12px;
+        background-color: #eeeeee;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        float: left;
+        margin-right: 10px;
+        }
+        #invite-user .modal-body .msg-modal-style {
+        background-color: #7dd383;
+        margin-top: 10px;
+        padding: 6px 0;
+        text-align: center;
+        width: 100%;
+        }
+        #invite-user .modal-body .modal-flash {
+        position: absolute;
+        top: 53px;
+        right: 74px;
+        z-index: 999;
+        }
+        /* end modal */
+
+        .en-footer {
+        padding: 30px;
+        text-align: center;
+        font-size: 14px;
+        }
+        </style>
+        
+<style>
+    .layout-fullscreen {
+        margin-top: 0;
+    }
+    .labdoc-header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 18px;
+        color: #666;
+        background: #fff;
+        font-size: 16px;
+        border-bottom: solid 1px #eee;
+        z-index: 10;
+    }
+    .labdoc-header a {
+        color: #666;
+    }
+    .labdoc-header a:hover,
+    .labdoc-header a:focus {
+        color: #08bf91;;
+        text-decoration: none;
+    }
+    .labdoc-nav {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 20%;
+        height: calc(100% - 60px);
+        padding: 0 10px;
+        background-color: #f7f7f7;
+        background-image: url(https://static.shiyanlou.com/img/logo-water-mark.png);
+        background-repeat: no-repeat;
+        background-position: 50% calc(100% - 20px);
+        overflow: auto;
+    }
+    .labdoc-nav-content {
+        margin-left: 10px;
+    }
+    .labdoc-nav h2 {
+        padding: 5px 0;
+        font-size: 16px;
+    }
+    .labdoc-nav h3 {
+        padding: 5px 0;
+        margin-left: 20px;
+        font-size: 14px;
+    }
+    .labdoc-nav h2 a,
+    .labdoc-nav h3 a {
+        color: #666;
+        text-decoration: none;
+    }
+    .labdoc-nav h2:hover a,
+    .labdoc-nav h2:focus a,
+    .labdoc-nav h3:hover a,
+    .labdoc-nav h3:focus a,
+    .labdoc-nav h2.active a,
+    .labdoc-nav h3.active a {
+        color: #08bf91;
+        text-decoration: none;
+    }
+    .labdoc-content-container {
+        float: right;
+        width: 100%;
+        padding: 0;
+        margin-top: 60px;
+    }
+    .labdoc-content {
+        padding: 0 10px 20px;
+        background: #fff;
+    }
+    .lab-btns {
+        display: none;
+        position: fixed;
+        top: 30%;
+        right: 10px;
+        width: 56px;
+        text-align: center;
+        z-index: 10;
+    }
+    .lab-btns div {
+        margin-bottom: 4px;
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
+    }
+    .lab-btns a {
+        display: block;
+        padding: 0 2px;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .lab-btns a:hover,
+    .lab-btns a:focus {
+        text-decoration: none;
+    }
+
+    .lab-btns img {
+        display: inline-block;
+        border-radius: 5px;
+    }
+    .lab-btns a img {
+        padding: 11px 0;
+    }
+    .lab-btns span {
+        display: none;
+        color: #08bf91;
+    }
+    .lab-btns a:hover img {
+        display: none;
+    }
+    .lab-btns a:hover span {
+        display: block;
+        width: 52px;
+        height: 52px;
+        padding-top: 8px;
+        text-align: center;
+    }
+    .labinfo {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 20%;
+        padding: 5px 20px;
+        background: cornsilk;
+        z-index: 10;
+    }
+    .labinfo-header {
+        margin-bottom: 20px;
+    }
+    .labinfo-body div {
+        margin: 5px 0;
+        font-size: 16px;
+    }
+    .labinfo-body div {
+        margin: 10px 0;
+        font-size: 16px;
+    }
+    .labinfo-body a {
+        margin: 10px 0;
+    }
+    .left-time a {
+        position: relative;
+        bottom: 1px;
+        padding: 4px 10px;
+        margin-left: 4px;
+        color: #fff;
+        background: #f66;
+        font-size: 14px;
+    }
+    .left-time a:hover,
+    .left-time a:focus {
+        color: #fff;
+    }
+    .labdoc-page,
+    .labdoc-page:focus,
+    .labdoc-page:hover {
+        padding: 20px;
+        color: #08bf91;
+        font-size: 16px;
+        text-decoration: none;
+    }
+    .course-warning {
+        width: 40%;
+        margin: 10px auto;
+        font-size: 18px;
+        text-align: center;
+    }
+    @media (min-width: 768px) {
+        .labdoc-nav,
+        .lab-btns {
+            display: block;
+        }
+        .labdoc-content-container {
+            width: 80%;
+        }
+        .labdoc-content {
+            padding: 0 100px 20px;
+        }
+    }
+</style>
+
+
+        
+        
+    <style id="ace_editor.css">.ace_editor {position: relative;overflow: hidden;font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;direction: ltr;text-align: left;}.ace_scroller {position: absolute;overflow: hidden;top: 0;bottom: 0;background-color: inherit;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;cursor: text;}.ace_content {position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;min-width: 100%;}.ace_dragging .ace_scroller:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;content: '';background: rgba(250, 250, 250, 0.01);z-index: 1000;}.ace_dragging.ace_dark .ace_scroller:before{background: rgba(0, 0, 0, 0.01);}.ace_selecting, .ace_selecting * {cursor: text !important;}.ace_gutter {position: absolute;overflow : hidden;width: auto;top: 0;bottom: 0;left: 0;cursor: default;z-index: 4;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_gutter-active-line {position: absolute;left: 0;right: 0;}.ace_scroller.ace_scroll-left {box-shadow: 17px 0 16px -16px rgba(0, 0, 0, 0.4) inset;}.ace_gutter-cell {padding-left: 19px;padding-right: 6px;background-repeat: no-repeat;}.ace_gutter-cell.ace_error {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABOFBMVEX/////////QRswFAb/Ui4wFAYwFAYwFAaWGAfDRymzOSH/PxswFAb/SiUwFAYwFAbUPRvjQiDllog5HhHdRybsTi3/Tyv9Tir+Syj/UC3////XurebMBIwFAb/RSHbPx/gUzfdwL3kzMivKBAwFAbbvbnhPx66NhowFAYwFAaZJg8wFAaxKBDZurf/RB6mMxb/SCMwFAYwFAbxQB3+RB4wFAb/Qhy4Oh+4QifbNRcwFAYwFAYwFAb/QRzdNhgwFAYwFAbav7v/Uy7oaE68MBK5LxLewr/r2NXewLswFAaxJw4wFAbkPRy2PyYwFAaxKhLm1tMwFAazPiQwFAaUGAb/QBrfOx3bvrv/VC/maE4wFAbRPBq6MRO8Qynew8Dp2tjfwb0wFAbx6eju5+by6uns4uH9/f36+vr/GkHjAAAAYnRSTlMAGt+64rnWu/bo8eAA4InH3+DwoN7j4eLi4xP99Nfg4+b+/u9B/eDs1MD1mO7+4PHg2MXa347g7vDizMLN4eG+Pv7i5evs/v79yu7S3/DV7/498Yv24eH+4ufQ3Ozu/v7+y13sRqwAAADLSURBVHjaZc/XDsFgGIBhtDrshlitmk2IrbHFqL2pvXf/+78DPokj7+Fz9qpU/9UXJIlhmPaTaQ6QPaz0mm+5gwkgovcV6GZzd5JtCQwgsxoHOvJO15kleRLAnMgHFIESUEPmawB9ngmelTtipwwfASilxOLyiV5UVUyVAfbG0cCPHig+GBkzAENHS0AstVF6bacZIOzgLmxsHbt2OecNgJC83JERmePUYq8ARGkJx6XtFsdddBQgZE2nPR6CICZhawjA4Fb/chv+399kfR+MMMDGOQAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: 2px center;}.ace_gutter-cell.ace_warning {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX///8AAAD///8AAAAAAABPSzb/5sAAAAB/blH/73z/ulkAAAAAAAD85pkAAAAAAAACAgP/vGz/rkDerGbGrV7/pkQICAf////e0IsAAAD/oED/qTvhrnUAAAD/yHD/njcAAADuv2r/nz//oTj/p064oGf/zHAAAAA9Nir/tFIAAAD/tlTiuWf/tkIAAACynXEAAAAAAAAtIRW7zBpBAAAAM3RSTlMAABR1m7RXO8Ln31Z36zT+neXe5OzooRDfn+TZ4p3h2hTf4t3k3ucyrN1K5+Xaks52Sfs9CXgrAAAAjklEQVR42o3PbQ+CIBQFYEwboPhSYgoYunIqqLn6/z8uYdH8Vmdnu9vz4WwXgN/xTPRD2+sgOcZjsge/whXZgUaYYvT8QnuJaUrjrHUQreGczuEafQCO/SJTufTbroWsPgsllVhq3wJEk2jUSzX3CUEDJC84707djRc5MTAQxoLgupWRwW6UB5fS++NV8AbOZgnsC7BpEAAAAABJRU5ErkJggg==");background-position: 2px center;}.ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAAB2k804AAAAPklEQVQY02NgIB68QuO3tiLznjAwpKTgNyDbMegwisCHZUETUZV0ZqOquBpXj2rtnpSJT1AEnnRmL2OgGgAAIKkRQap2htgAAAAASUVORK5CYII=");background-position: 2px center;}.ace_dark .ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAChoaGAgIAqKiq+vr6tra1ZWVmUlJSbm5s8PDxubm56enrdgzg3AAAAAXRSTlMAQObYZgAAAClJREFUeNpjYMAPdsMYHegyJZFQBlsUlMFVCWUYKkAZMxZAGdxlDMQBAG+TBP4B6RyJAAAAAElFTkSuQmCC");}.ace_scrollbar {position: absolute;right: 0;bottom: 0;z-index: 6;}.ace_scrollbar-inner {position: absolute;cursor: text;left: 0;top: 0;}.ace_scrollbar-v{overflow-x: hidden;overflow-y: scroll;top: 0;}.ace_scrollbar-h {overflow-x: scroll;overflow-y: hidden;left: 0;}.ace_print-margin {position: absolute;height: 100%;}.ace_text-input {position: absolute;z-index: 0;width: 0.5em;height: 1em;opacity: 0;background: transparent;-moz-appearance: none;appearance: none;border: none;resize: none;outline: none;overflow: hidden;font: inherit;padding: 0 1px;margin: 0 -1px;text-indent: -1em;-ms-user-select: text;-moz-user-select: text;-webkit-user-select: text;user-select: text;white-space: pre!important;}.ace_text-input.ace_composition {background: inherit;color: inherit;z-index: 1000;opacity: 1;text-indent: 0;}.ace_layer {z-index: 1;position: absolute;overflow: hidden;word-wrap: normal;white-space: pre;height: 100%;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;pointer-events: none;}.ace_gutter-layer {position: relative;width: auto;text-align: right;pointer-events: auto;}.ace_text-layer {font: inherit !important;}.ace_cjk {display: inline-block;text-align: center;}.ace_cursor-layer {z-index: 4;}.ace_cursor {z-index: 4;position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 2px solid;transform: translatez(0);}.ace_slim-cursors .ace_cursor {border-left-width: 1px;}.ace_overwrite-cursors .ace_cursor {border-left-width: 0;border-bottom: 1px solid;}.ace_hidden-cursors .ace_cursor {opacity: 0.2;}.ace_smooth-blinking .ace_cursor {-webkit-transition: opacity 0.18s;transition: opacity 0.18s;}.ace_editor.ace_multiselect .ace_cursor {border-left-width: 1px;}.ace_marker-layer .ace_step, .ace_marker-layer .ace_stack {position: absolute;z-index: 3;}.ace_marker-layer .ace_selection {position: absolute;z-index: 5;}.ace_marker-layer .ace_bracket {position: absolute;z-index: 6;}.ace_marker-layer .ace_active-line {position: absolute;z-index: 2;}.ace_marker-layer .ace_selected-word {position: absolute;z-index: 4;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}.ace_line .ace_fold {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;display: inline-block;height: 11px;margin-top: -2px;vertical-align: middle;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpi+P//fxgTAwPDBxDxD078RSX+YeEyDFMCIMAAI3INmXiwf2YAAAAASUVORK5CYII=");background-repeat: no-repeat, repeat-x;background-position: center center, top left;color: transparent;border: 1px solid black;border-radius: 2px;cursor: pointer;pointer-events: auto;}.ace_dark .ace_fold {}.ace_fold:hover{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACBJREFUeNpi+P//fz4TAwPDZxDxD5X4i5fLMEwJgAADAEPVDbjNw87ZAAAAAElFTkSuQmCC");}.ace_tooltip {background-color: #FFF;background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.1));background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));border: 1px solid gray;border-radius: 1px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);color: black;max-width: 100%;padding: 3px 4px;position: fixed;z-index: 999999;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: default;white-space: pre;word-wrap: break-word;line-height: normal;font-style: normal;font-weight: normal;letter-spacing: normal;pointer-events: none;}.ace_folding-enabled > .ace_gutter-cell {padding-right: 13px;}.ace_fold-widget {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0 -12px 0 1px;display: none;width: 11px;vertical-align: top;background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42mWKsQ0AMAzC8ixLlrzQjzmBiEjp0A6WwBCSPgKAXoLkqSot7nN3yMwR7pZ32NzpKkVoDBUxKAAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: center;border-radius: 3px;border: 1px solid transparent;cursor: pointer;}.ace_folding-enabled .ace_fold-widget {display: inline-block;   }.ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==");}.ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCAYAAAAG5SQMAAAAOUlEQVR42jXKwQkAMAgDwKwqKD4EwQ26sSOkVWjgIIHAzPiCgaqiqnJHZnKICBERHN194O5b9vbLuAVRL+l0YWnZAAAAAElFTkSuQmCCXA==");}.ace_fold-widget:hover {border: 1px solid rgba(0, 0, 0, 0.3);background-color: rgba(255, 255, 255, 0.2);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);}.ace_fold-widget:active {border: 1px solid rgba(0, 0, 0, 0.4);background-color: rgba(0, 0, 0, 0.05);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);}.ace_dark .ace_fold-widget {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHklEQVQIW2P4//8/AzoGEQ7oGCaLLAhWiSwB146BAQCSTPYocqT0AAAAAElFTkSuQmCC");}.ace_dark .ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAH0lEQVQIW2P4//8/AxQ7wNjIAjDMgC4AxjCVKBirIAAF0kz2rlhxpAAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAHElEQVQIW2P4//+/AxAzgDADlOOAznHAKgPWAwARji8UIDTfQQAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget:hover {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);background-color: rgba(255, 255, 255, 0.1);}.ace_dark .ace_fold-widget:active {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);}.ace_fold-widget.ace_invalid {background-color: #FFB4B4;border-color: #DE5555;}.ace_fade-fold-widgets .ace_fold-widget {-webkit-transition: opacity 0.4s ease 0.05s;transition: opacity 0.4s ease 0.05s;opacity: 0;}.ace_fade-fold-widgets:hover .ace_fold-widget {-webkit-transition: opacity 0.05s ease 0.05s;transition: opacity 0.05s ease 0.05s;opacity:1;}.ace_underline {text-decoration: underline;}.ace_bold {font-weight: bold;}.ace_nobold .ace_bold {font-weight: normal;}.ace_italic {font-style: italic;}.ace_error-marker {background-color: rgba(255, 0, 0,0.2);position: absolute;z-index: 9;}.ace_highlight-marker {background-color: rgba(255, 255, 0,0.2);position: absolute;z-index: 8;}.ace_br1 {border-top-left-radius    : 3px;}.ace_br2 {border-top-right-radius   : 3px;}.ace_br3 {border-top-left-radius    : 3px; border-top-right-radius:    3px;}.ace_br4 {border-bottom-right-radius: 3px;}.ace_br5 {border-top-left-radius    : 3px; border-bottom-right-radius: 3px;}.ace_br6 {border-top-right-radius   : 3px; border-bottom-right-radius: 3px;}.ace_br7 {border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px;}.ace_br8 {border-bottom-left-radius : 3px;}.ace_br9 {border-top-left-radius    : 3px; border-bottom-left-radius:  3px;}.ace_br10{border-top-right-radius   : 3px; border-bottom-left-radius:  3px;}.ace_br11{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-left-radius:  3px;}.ace_br12{border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br13{border-top-left-radius    : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br14{border-top-right-radius   : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br15{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
+/*# sourceURL=ace/css/ace_editor.css */</style><style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}
+/*# sourceURL=ace/css/ace-tm */</style><style>    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }</style><style type="text/css">
+.sidebox-my-contest-history[data-v-530b5260] {
+  overflow: hidden;
+}
+.sidebox-my-contest-record[data-v-530b5260] {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.sidebox-my-contest-record .pull-left[data-v-530b5260] {
+    width: 39%;
+    margin-right: 1%;
+    color: #666;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sidebox-my-contest-record .pull-right[data-v-530b5260] {
+    width: 60%;
+}
+.sidebox-my-contest-record .challenge-meta-status[data-v-530b5260] {
+    position: relative;
+    bottom: 1px;
+}
+.sidebox-record-time[data-v-530b5260] {
+  display: inline-block;
+  margin-left: 4px;
+  color: #666;
+  font-size: 14px;
+}
+.sidebox-footer[data-v-530b5260] {
+  text-align: right;
+}
+.sidebox-footer a[data-v-530b5260] {
+    font-size: 14px;
+}
+</style><style type="text/css">
+.fade-enter-active[data-v-07a2dd56],
+.fade-leave-active[data-v-07a2dd56] {
+  transition: opacity .5s;
+}
+.fade-enter[data-v-07a2dd56],
+.fade-leave-active[data-v-07a2dd56] {
+  opacity: 0;
+}
+.header-message[data-v-07a2dd56] {
+  position: relative;
+  margin-right: 5px;
+}
+.header-message > a[data-v-07a2dd56] {
+  position: relative;
+}
+.header-message > a .fa-bell-o[data-v-07a2dd56] {
+    font-size: 22px;
+    margin-top: -3px;
+}
+.popover[data-v-07a2dd56] {
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: -66px;
+  width: 180px;
+  background: #fff;
+}
+.popover .msg-content[data-v-07a2dd56] {
+    padding: 8px;
+    font-size: 14px;
+    text-align: center;
+}
+.popover .msg-content a[data-v-07a2dd56] {
+      color: #f66;
+}
+.popover .msg-content a[data-v-07a2dd56]:focus, .popover .msg-content a[data-v-07a2dd56]:hover {
+        text-decoration: none;
+}
+.mark[data-v-07a2dd56] {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 1px;
+  height: 1px;
+  background: #f66;
+  border-radius: 50%;
+}
+@media (max-width: 768px) {
+.mark[data-v-07a2dd56] {
+    top: 14px;
+    right: calc(50% - 8px);
+}
+}
+</style><style type="text/css">
+.hidden[data-v-815c5224] {
+  display: none;
+}
+.show[data-v-815c5224] {
+  display: block;
+}
+.fade-enter-active[data-v-815c5224],
+.fade-leave-active[data-v-815c5224] {
+  transition: opacity .5s;
+}
+.fade-enter[data-v-815c5224],
+.fade-leave-active[data-v-815c5224] {
+  opacity: 0;
+}
+.header-userbox a[data-v-815c5224] {
+  display: block;
+  padding: 0;
+}
+.header-avatar[data-v-815c5224] {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+.vip-icon[data-v-815c5224] {
+  position: absolute;
+  bottom: 0;
+  right: calc(50% - 30px);
+  width: 20px;
+  height: 20px;
+}
+@media (min-width: 768px) {
+.vip-icon[data-v-815c5224] {
+    right: 0;
+}
+}
+.user[data-v-815c5224] {
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: -150px;
+  width: 300px;
+  height: 320px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 4px 1px #ccc;
+  z-index: 999 !important;
+}
+.user[data-v-815c5224]:before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: 0;
+    width: 220px;
+    height: 50px;
+}
+.user.popover > .arrow[data-v-815c5224] {
+    left: 63%;
+}
+.user-info[data-v-815c5224] {
+  overflow: hidden;
+}
+.user-info a[data-v-815c5224] {
+    float: left;
+}
+.user-info a img[data-v-815c5224] {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+      border-radius: 50%;
+}
+.username[data-v-815c5224] {
+  position: relative;
+}
+.username > img[data-v-815c5224] {
+    width: 20px;
+    position: absolute;
+    left: -30px;
+    bottom: 10px;
+}
+.username > span[data-v-815c5224] {
+    display: inline-block;
+    max-width: 150px;
+    color: #666;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.username > span.user-level[data-v-815c5224] {
+      color: #fec42d;
+      font-size: 14px;
+      font-weight: 700;
+}
+.username > p[data-v-815c5224] {
+    color: #A4A4A4;
+    font-size: 12px;
+    margin-top: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 170px;
+    text-overflow: ellipsis;
+}
+.marked-words[data-v-815c5224] {
+  width: 100%;
+  color: #A4A4A4 !important;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  position: absolute;
+  top: 130px;
+  left: 0;
+}
+.marked-words > a[data-v-815c5224] {
+    color: #A4A4A4 !important;
+    font-size: 12px;
+}
+.marked-words > a[data-v-815c5224]:hover, .marked-words > a[data-v-815c5224]:focus {
+      text-decoration: none;
+      color: #A4A4A4;
+}
+.start-experiment > a[data-v-815c5224] {
+  display: inline-block;
+  width: 240px;
+  height: 35px;
+  line-height: 35px;
+  background-color: #08BF91;
+  border-radius: 100px;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #fff;
+}
+.start-experiment > a[data-v-815c5224]:hover, .start-experiment > a[data-v-815c5224]:focus {
+    text-decoration: none;
+    color: #fff;
+}
+.user-links[data-v-815c5224] {
+  margin-top: 30px;
+}
+.user-links .row > div[data-v-815c5224] {
+    padding-right: 0;
+    padding-left: 10px;
+}
+.user-links .row a[data-v-815c5224],
+  .user-links .row .invite-user-btn[data-v-815c5224] {
+    width: 115px;
+    height: 30px;
+    line-height: 30px;
+    margin: 5px 0 10px;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid #eee;
+    *display: inline;
+    *zoom: 1;
+}
+.user-links .row a[data-v-815c5224]:focus, .user-links .row a[data-v-815c5224]:hover,
+    .user-links .row .invite-user-btn[data-v-815c5224]:focus,
+    .user-links .row .invite-user-btn[data-v-815c5224]:hover {
+      text-decoration: none;
+}
+.user-links .row a[data-v-815c5224]:hover,
+    .user-links .row .invite-user-btn[data-v-815c5224]:hover {
+      background: #eee;
+}
+.user-links .invite-user-btn[data-v-815c5224] {
+    margin: 0 !important;
+}
+.user-links a.member-index[data-v-815c5224] {
+    border: 1px solid #f66;
+    color: #f66;
+}
+.user-links a.member-index[data-v-815c5224]:hover, .user-links a.member-index[data-v-815c5224]:focus {
+      background: #f66;
+      color: #fff;
+}
+.feedback[data-v-815c5224] {
+  font-size: 12px;
+  color: #C6C6C6;
+  margin-top: 35px;
+  margin-left: calc(50% - 96px);
+}
+.friendly-link[data-v-815c5224] {
+  margin-top: 10px;
+}
+.friendly-link .invite-user[data-v-815c5224] {
+    width: 240px;
+    color: #C6C6C6;
+    font-size: 12px;
+}
+.friendly-link .invite-user img[data-v-815c5224] {
+      width: 18px;
+      height: 18px;
+}
+.friendly-link .invite-user a[data-v-815c5224] {
+      display: inline-block;
+      width: 18px;
+}
+.log-out[data-v-815c5224] {
+  display: block;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 20px;
+  width: 100%;
+  text-align: right;
+}
+.log-out a[data-v-815c5224] {
+    display: inline-block;
+    color: #999;
+    font-size: 14px;
+}
+.log-out a[data-v-815c5224]:hover, .log-out a[data-v-815c5224]:focus {
+      text-decoration: none;
+      color: #999;
+}
+.invite-user-link[data-v-815c5224] {
+  display: none;
+}
+.invite-user-msg[data-v-815c5224] {
+  position: absolute;
+  bottom: -20px;
+}
+.no_member_vm[data-v-815c5224] {
+  background: #ddd !important;
+}
+.no_member_vm .memberVmIcon[data-v-815c5224] {
+    margin-left: 5px;
+}
+.is-member[data-v-815c5224] {
+  cursor: default;
+}
+</style><style type="text/css">
+.header-learn-info[data-v-33ac7940] {
+  float: right;
+  width: 100%;
+  padding: 23.5px 10px;
+  margin: 0;
+  position: relative;
+}
+.header-learn-info > span[data-v-33ac7940] {
+    font-size: 16px;
+    color: #666;
+}
+.header-learn-info > span img[data-v-33ac7940] {
+      transform: rotate(-90deg);
+}
+.header-learn-info > span[data-v-33ac7940]:hover {
+      cursor: pointer;
+}
+.home-page[data-v-33ac7940] {
+  color: #666;
+}
+.home-page[data-v-33ac7940]:hover {
+    text-decoration: none;
+    color: #08bf91;
+}
+@media (min-width: 768px) {
+.header-learn-info[data-v-33ac7940] {
+    width: auto;
+}
+}
+@media (max-width: 1200px) {
+.header-learn-info[data-v-33ac7940] {
+    display: none;
+}
+}
+.fade-enter-active[data-v-33ac7940],
+.fade-leave-active[data-v-33ac7940] {
+  transition: opacity .5s;
+}
+.fade-enter[data-v-33ac7940],
+.fade-leave-active[data-v-33ac7940] {
+  opacity: 0;
+}
+.learninfo-box[data-v-33ac7940] {
+  display: block;
+  width: 223px;
+  margin-top: 60px;
+  margin-bottom: 20px;
+  padding: 20px;
+  left: 35px;
+  background: #fff;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  border: none;
+}
+.learninfo-box .lab-running > span[data-v-33ac7940] {
+    font-size: 14px;
+    color: #a4a4a4;
+}
+.learninfo-box .lab-running .lab-running-name[data-v-33ac7940] {
+    font-size: 14px;
+    padding: 10px 0;
+}
+.learninfo-box .lab-running .lab-running-name > span[data-v-33ac7940] {
+      max-width: 60%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: inline-block;
+}
+.learninfo-box .lab-running .lab-running-name .lab-continue[data-v-33ac7940] {
+      background: #08bf91;
+      font-size: 12px;
+      color: #fff;
+      border: none;
+      padding: 2px 12px;
+      margin-top: -1px;
+}
+.learninfo-box .learn-records > span[data-v-33ac7940] {
+    font-size: 14px;
+    color: #a4a4a4;
+}
+.learninfo-box .learn-records .records-list[data-v-33ac7940] {
+    margin-top: 10px;
+}
+.learninfo-box .learn-records .records-list .record-item[data-v-33ac7940] {
+      display: inline-block;
+      font-size: 14px;
+      color: #666;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 10px;
+}
+.learninfo-box .learn-records .records-list .record-item[data-v-33ac7940]:hover {
+        text-decoration: none;
+        background-color: #f5f5f5;
+}
+.learninfo-box .learn-records .record-view-all[data-v-33ac7940] {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+.learninfo-box .learn-records .record-view-all[data-v-33ac7940]:hover {
+      text-decoration: none;
+}
+@media (min-width: 768px) {
+.learninfo-box[data-v-33ac7940] {
+    left: -30px;
+    margin-bottom: 0;
+}
+}
+</style><style type="text/css">
+.side-new-contest .sidebox-body[data-v-7d67fa2d] {
+  overflow: hidden;
+}
+.side-new-contest .sidebox-body span[data-v-7d67fa2d] {
+    position: relative;
+    top: 4px;
+    color: #3a3a3a;
+    font-size: 14px;
+}
+.side-new-contest .sidebox-body .btn[data-v-7d67fa2d] {
+    padding: 2px 10px;
+    color: #08bf91;
+    font-size: 14px;
+    border: solid 1px #08bf91;
+}
+.side-new-contest .sidebox-body .btn[data-v-7d67fa2d]:hover, .side-new-contest .sidebox-body .btn[data-v-7d67fa2d]:focus {
+      color: #fff;
+      background: #09bf91;
+}
+</style><style type="text/css">
+a[data-v-9b3c8994] {
+    display: inline-block;
+}
+.fa[data-v-9b3c8994] {
+    padding: 4px;
+    color: #274a59;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+}
+.fa[data-v-9b3c8994]:hover {
+    color: #ec5353;
+}
+
+/*# sourceURL=/home/shiyanlou/shiyanlou/simplecloud/app/src/base/components/weibo.vue?1f60b06f */
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3NoaXlhbmxvdS9zaGl5YW5sb3Uvc2ltcGxlY2xvdWQvYXBwL3NyYy9iYXNlL2NvbXBvbmVudHMvd2VpYm8udnVlPzFmNjBiMDZmIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFpQ0E7SUFDQSxzQkFBQTtDQUNBO0FBQ0E7SUFDQSxhQUFBO0lBQ0EsZUFBQTtJQUNBLGlCQUFBO0lBQ0EsZ0JBQUE7SUFDQSxtQkFBQTtDQUNBO0FBQ0E7SUFDQSxlQUFBO0NBQ0EiLCJmaWxlIjoid2VpYm8udnVlIiwic291cmNlc0NvbnRlbnQiOlsiPHRlbXBsYXRlPlxuPGEgOmhyZWY9XCJocmVmXCIgOmNsYXNzPVwieyAnYnRuIGJ0bi1wcmltYXJ5JzogaXNCdG4gfVwiIHRhcmdldD1cIl9ibGFua1wiPlxuICAgIDxzcGFuIHYtaWY9XCJpc0J0blwiPuWIhuS6q+WIsOW+ruWNmjwvc3Bhbj5cbiAgICA8aSB2LWVsc2UgY2xhc3M9XCJmYSBmYS13ZWlib1wiPjwvaT5cbjwvYT5cbjwvdGVtcGxhdGU+XG5cbjxzY3JpcHQ+XG5leHBvcnQgZGVmYXVsdCB7XG4gICAgcHJvcHM6IFsnaXNCdG4nLCAncGF0aCcsICd0aXRsZScsICdwaWMnXSxcbiAgICBkYXRhKCkge1xuICAgICAgICByZXR1cm4ge1xuICAgICAgICAgICAgaHJlZjogJycsXG4gICAgICAgICAgICBwYXJhbXM6IHtcbiAgICAgICAgICAgICAgICB0aXRsZTogdGhpcy50aXRsZSxcbiAgICAgICAgICAgICAgICBhcHBrZXk6ICcxMzQzNzEzMDUzJyxcbiAgICAgICAgICAgICAgICBwaWM6ICh0aGlzLnBpYyAmJiB0aGlzLnBpYy5sZW5ndGgpID8gdGhpcy5waWMgOiBbJ2h0dHBzOi8vc3RhdGljLnNoaXlhbmxvdS5jb20vaW1nL2xvZ28tYmFzZS5wbmcnXSxcbiAgICAgICAgICAgICAgICBzZWFyY2hQaWM6IGZhbHNlLFxuICAgICAgICAgICAgfSxcbiAgICAgICAgICAgIHdlaWJvVXJsOiAnaHR0cDovL3NlcnZpY2Uud2VpYm8uY29tL3NoYXJlL3NoYXJlLnBocD91cmw9aHR0cHM6Ly93d3cuc2hpeWFubG91LmNvbScsXG4gICAgICAgIH07XG4gICAgfSxcbiAgICBtb3VudGVkKCkge1xuICAgICAgICB0aGlzLmhyZWYgPSBgJHt0aGlzLndlaWJvVXJsfSR7dGhpcy5wYXRofWBcbiAgICAgICAgICAgICsgYCZ0aXRsZT0ke2VuY29kZVVSSUNvbXBvbmVudCh0aGlzLnBhcmFtcy50aXRsZSl9YFxuICAgICAgICAgICAgKyBgJmFwcGtleT0ke3RoaXMucGFyYW1zLmFwcGtleX1gXG4gICAgICAgICAgICArIGAmcGljPSR7dGhpcy5wYXJhbXMucGljLmpvaW4oJ3x8Jyl9YFxuICAgICAgICAgICAgKyBgJnNlYXJjaFBpYz0ke3RoaXMucGFyYW1zLnNlYXJjaFBpY31gO1xuICAgIH1cbn1cbjwvc2NyaXB0PlxuXG48c3R5bGUgc2NvcGVkPlxuYSB7XG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xufVxuLmZhIHtcbiAgICBwYWRkaW5nOiA0cHg7XG4gICAgY29sb3I6ICMyNzRhNTk7XG4gICAgYmFja2dyb3VuZDogI2ZmZjtcbiAgICBmb250LXNpemU6IDE0cHg7XG4gICAgYm9yZGVyLXJhZGl1czogNHB4O1xufVxuLmZhOmhvdmVyIHtcbiAgICBjb2xvcjogI2VjNTM1Mztcbn1cbjwvc3R5bGU+XG5cbiJdLCJzb3VyY2VSb290IjoiIn0= */</style><style type="text/css">
+.search-autocomplete[data-v-72bea96c] {
+  position: absolute;
+  top: 35px;
+  left: 1px;
+  width: 195px;
+  padding: 4px;
+  border: solid 1px #ddd;
+  border-top: none;
+  background: #fff;
+  z-index: 1000;
+}
+.search-autocomplete a[data-v-72bea96c] {
+    display: block;
+    padding: 6px 8px;
+    color: #4c5157;
+    font-size: 13px;
+}
+.search-autocomplete a[data-v-72bea96c]:hover, .search-autocomplete a[data-v-72bea96c]:focus {
+      color: #fff;
+      background: #0c9;
+      text-decoration: none;
+}
+</style></head>
+
+    <body>
+        
+
+
+        
+<div class="layout layout-margin-top layout-fullscreen">
+    <div class="container">
+        
+        
+    </div>
+    
+<div class="lab-btns">
+    
+        
+
+        
+
+        
+            
+        
+
+        
+        <div>
+            <img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/best-study-way.png">
+            <a class="  lab-item-start " data-mobile-url="/courses/document/2072" data-url="/courses/start/2072" data-next="/courses/running">
+                <img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/labdoc-start.png">
+                <span>开始<br>实验</span>
+            </a>
+        </div>
+    
+    <div>
+        <a data-toggle="modal" href="#askquestion">
+            <img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/labdoc-question.png">
+            <span>我要<br>提问</span>
+        </a>
+    </div>
+</div>
+<div class="labdoc-header">
+    <a href="https://www.shiyanlou.com/courses/623">
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+        Python3 实现火车票查询工具
+    </a>
+    
+</div>
+<div class="labdoc-nav">
+    <div class="labdoc-nav-content">
+                <h2>
+                    <a href="#labdoc-header-0">注意：由于 12306 的接口经常变化，课程内容可能很快过期，如果遇到接口问题，需要根据最新的接口对代码进行适当修改才可以完成实验。</a>
+                </h2>
+            
+                <h2>
+                    <a href="#labdoc-header-1">一、实验简介</a>
+                </h2>
+            
+                <h3>
+                    <a href="#labdoc-header-2">1.1 知识点</a>
+                </h3>
+            
+                <h2>
+                    <a href="#labdoc-header-3">1.2 效果截图</a>
+                </h2>
+            
+                <h2>
+                    <a href="#labdoc-header-4">二、接口设计</a>
+                </h2>
+            
+                <h2>
+                    <a href="#labdoc-header-5">三、代码实现</a>
+                </h2>
+            
+                <h3>
+                    <a href="#labdoc-header-6">3.1 解析参数</a>
+                </h3>
+            
+                <h3>
+                    <a href="#labdoc-header-7">3.2 获取数据</a>
+                </h3>
+            
+                <h3>
+                    <a href="#labdoc-header-8">3.3 解析数据</a>
+                </h3>
+            
+                <h3>
+                    <a href="#labdoc-header-9">3.4 显示结果</a>
+                </h3>
+            
+                <h3>
+                    <a href="#labdoc-header-10">3.5 着色</a>
+                </h3>
+            
+                <h3>
+                    <a href="#labdoc-header-11">3.6 完整代码</a>
+                </h3>
+            
+                <h2>
+                    <a href="#labdoc-header-12">四、Setup</a>
+                </h2>
+            
+                <h2>
+                    <a href="#labdoc-header-13">五、总结</a>
+                </h2>
+            
+                <h2>
+                    <a href="#labdoc-header-14">六、参考资料</a>
+                </h2>
+            </div>
+    
+</div>
+<div class="labdoc-content-container">
+    <div class="markdown-body labdoc-content"><div><h1 id="python-">Python 实现火车票查询工具</h1>
+<h2 id="labdoc-header-0">注意：由于 12306 的接口经常变化，课程内容可能很快过期，如果遇到接口问题，需要根据最新的接口对代码进行适当修改才可以完成实验。</h2>
+<h2 id="labdoc-header-1">一、实验简介</h2>
+<p>当你想查询一下火车票信息的时候，你还在上 12306 官网吗？或是打开你手机里的 APP？</p>
+<p>下面让我们来用 Python 写一个命令行版的火车票查看器， 只要在命令行敲一行命令就能获得你想要的火车票信息！如果你刚掌握了 Python 基础，这将是个不错的小练习。</p>
+<h3 id="labdoc-header-2">1.1 知识点</h3>
+<ul>
+<li>Python 基础知识的综合运用</li>
+<li><code>docopt</code>、<code>requests</code>、<code>colorama</code> 及 <code>prettytable</code> 库的使用</li>
+<li>setuptools 的使用</li>
+</ul>
+<h2 id="labdoc-header-3">1.2 效果截图</h2>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/tickets9.png" alt="此处输入图片的描述"></p>
+<h2 id="labdoc-header-4">二、接口设计</h2>
+<p>一个应用写出来最终是要给人使用的，哪怕只是给你自己使用。</p>
+<p>所以，首先应该想想你希望怎么使用它？让我们先给这个小应用起个名字吧，既然及查询票务信息，那就叫它 <code>tickets</code> 好了。</p>
+<p>我们希望用户只要输入出发站，到达站以及日期就让就能获得想要的信息，比如要查看10月30号上海-北京的火车余票， 我们只需输入：</p>
+<pre><code class="hljs ruby">$ python tickets.py 上海 北京 <span class="hljs-number">2016</span>-<span class="hljs-number">10</span>-<span class="hljs-number">30</span>
+</code></pre><p>注意：上面的日期（包括后面的）是笔者写文章时确定的日期，当你在做这个项目的时候可能要根据当前时间做适当调整。</p>
+<p>转化为程序语言就是：</p>
+<pre><code class="hljs coffeescript">$ python tickets.py <span class="hljs-keyword">from</span> to date
+</code></pre><p>另外，火车有各种类型，高铁、动车、特快、快速和直达，我们希望可以提供选项只查询特定的一种或几种的火车，所以，我们应该有下面这些选项：</p>
+<ul>
+<li>-g    高铁</li>
+<li>-d    动车</li>
+<li>-t    特快</li>
+<li>-k    快速</li>
+<li>-z    直达</li>
+</ul>
+<p>这几个选项应该能被组合使用，所以，最终我们的接口应该是这个样子的：</p>
+<pre><code class="hljs coffeescript">$ python tickets.py [-gdtkz] <span class="hljs-keyword">from</span> to date
+</code></pre><p>接口已经确定好了，剩下的就是实现它了。</p>
+<h2 id="labdoc-header-5">三、代码实现</h2>
+<p>首先安装一下实验需要用到的库：</p>
+<pre><code class="hljs ruby">$ sudo pip3 install requests prettytable docopt colorama
+</code></pre><ul>
+<li><code>requests</code>，使用 Python 访问 HTTP 资源的必备库。</li>
+<li><code>docopt</code>，Python3 命令行参数解析工具。</li>
+<li><code>prettytable</code>， 格式化信息打印工具，能让你像 MySQL 那样打印数据。</li>
+<li><code>colorama</code>，命令行着色工具</li>
+</ul>
+<h3 id="labdoc-header-6">3.1 解析参数</h3>
+<p>Python有很多写命令行参数解析工具，如 <code>argparse</code>, <code>docopt</code>, <code>click</code>，这里我们选用的是 <code>docopt</code> 这个简单易用的工具。<code>docopt</code> 可以按我们在文档字符串中定义的格式来解析参数，比如我们在 <code>tickets.py</code> 中写下下面的内容（实验楼环境下，通过点击右下角的键盘小图标可以选择中文输入法）：</p>
+<pre><code class="lang-python hljs"><span class="hljs-comment"># coding: utf-8</span>
+
+<span class="hljs-string">"""命令行火车票查看器
+
+Usage:
+    tickets [-gdtkz] &lt;from&gt; &lt;to&gt; &lt;date&gt;
+
+Options:
+    -h,--help   显示帮助菜单
+    -g          高铁
+    -d          动车
+    -t          特快
+    -k          快速
+    -z          直达
+
+Example:
+    tickets 北京 上海 2016-10-10
+    tickets -dg 成都 南京 2016-10-10
+"""</span>
+<span class="hljs-keyword">from</span> docopt <span class="hljs-keyword">import</span> docopt
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cli</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-string">"""command-line interface"""</span>
+    arguments = docopt(__doc__)
+    print(arguments)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    cli()
+</code></pre>
+<p>上面的程序中， <code>docopt</code> 会根据我们在 <code>docstring</code> 中的定义的格式自动解析出参数并返回一个字典，也就是 <code>arguments</code>， 我们打印出了这个字典的内容。下面我们运行一下这个程序， 比如查询一下10月30号从成都到南京的动车和高铁：</p>
+<pre><code class="hljs ruby">$ python tickets.py -dg 成都 南京 <span class="hljs-number">2016</span>-<span class="hljs-number">10</span>-<span class="hljs-number">10</span>
+</code></pre><p>我们得到下面的参数解析结果：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/tickets13.png" alt=""></p>
+<h3 id="labdoc-header-7">3.2 获取数据</h3>
+<p>参数已经解析好了，下面就是如何获取数据了，这也是最主要的部分。首先我们用实验楼环境的Firefox浏览打开 <a href="http://www.12306.cn/" target="_blank">12306</a>，进入余票查询页面，按下 <code>F12</code> 打开开发者工具，选中 <code>Network</code> 一栏，在查询框中随便查询一次，我们在调试工具观察下请求和响应：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/tickets2.png" alt=""></p>
+<p>注意到上面的请求 URL ，它是由基 URL <code>https://kyfw.12306.cn/otn/lcxxcx/query</code> 加四个参数构成的，这四个参数分别代表，查询的类型（成人？学生？），日期，出发车站，到达车站：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/tickets3.png" alt=""></p>
+<p>再来看看响应：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/tickets4.png" alt=""></p>
+<p>返回的是<code>JSON</code>格式的数据！ 我们打开返回的数据看看：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/ticketes10.png" alt=""></p>
+<p>可以看到一列火车的数据用 Python 的语言说就是一个字典。</p>
+<p>接下来问题就简单了，我们只需要利用这个接口， 构建请求URL然后解析返回的JSON数据就可以了。但是我们发现，URL里面参数 <code>from_station</code> 和 <code>to_station</code> 并不是汉字，而是一个代号，而我们想要输入的是汉字，我们要如何获取代号呢？我们打开网页源码看看有没有什么发现。</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/tickets5.png" alt=""></p>
+<p>果然，这里有个关于 station 的文件，打开看看：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/ticketes11.png" alt=""></p>
+<p><code>station_names</code> 是一个很长的字符串， 这里面貌似是包含了所有车站的中文名，拼音，简写和代号等信息。但是这些信息挤在一起，而我们只想要车站的拼音和大写字母的代号信息，怎么办呢？ 正则表达式！我们写个小脚本来匹配提取出想要的信息吧, 在<code>parse_station.py</code>中：</p>
+<pre><code class="lang-python hljs"><span class="hljs-keyword">import</span> re
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> pprint <span class="hljs-keyword">import</span> pprint 
+
+url = <span class="hljs-string">'https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.8971'</span>
+response = requests.get(url, verify=<span class="hljs-keyword">False</span>)
+stations = re.findall(<span class="hljs-string">u'([\u4e00-\u9fa5]+)\|([A-Z]+)'</span>, response.text)
+pprint(dict(stations), indent=<span class="hljs-number">4</span>)
+</code></pre>
+<p>我们运行这个脚本，它将以字典的形式返回所有车站和它的大写字母代号, 我们将结果重定向到 <code>stations.py</code> 中，</p>
+<pre><code class="hljs ruby">$ python3 parse_station.py &gt; stations.py
+</code></pre><p>我们为这个字典加名字，<code>stations</code>, 最终，<code>stations.py</code>文件是这样的：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/tickets6.png" alt=""></p>
+<p>现在，用户输入车站的中文名，我们就可以直接从这个字典中获取它的字母代码了：</p>
+<pre><code class="lang-python hljs">...
+<span class="hljs-keyword">from</span> stations <span class="hljs-keyword">import</span> stations
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cli</span><span class="hljs-params">()</span>:</span>
+    arguments = docopt(__doc__)
+    from_station = stations.get(arguments[<span class="hljs-string">'&lt;from&gt;'</span>])
+    to_station = stations.get(arguments[<span class="hljs-string">'&lt;to&gt;'</span>])
+    date = arguments[<span class="hljs-string">'&lt;date&gt;'</span>]
+    <span class="hljs-comment"># 构建URL</span>
+    url = <span class="hljs-string">'https://kyfw.12306.cn/otn/lcxxcx/query?purpose_codes=ADULT&amp;queryDate={}&amp;from_station={}&amp;to_station={}'</span>.format(
+        date, from_station, to_station
+    )
+</code></pre>
+<p>万事俱备，下面我们来请求这个URL获取数据吧！这里我们使用 <code>requests</code> 这个库, 它提供了非常简单易用的接口，</p>
+<pre><code class="hljs python">...
+<span class="hljs-keyword">import</span> requests
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cli</span><span class="hljs-params">()</span>:</span>
+    ...
+    <span class="hljs-comment"># 添加verify=False参数不验证证书</span>
+    r = requests.get(url, verify=<span class="hljs-keyword">False</span>)
+    print(r.json())
+</code></pre><p>从结果中，我们可以观察到，与车票有关的信息需要进一步提取：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cli</span><span class="hljs-params">()</span>:</span>
+    ...
+    r = requsets.get(url);
+    print(r.json())
+</code></pre><p>我们已经知道该请求返回的是JSON数据， 使用 <code>requests</code> 提供的 <code>r.json()</code> 可以将 JSON 数据转化为 Python 字典，上面我们打印了这个字典，运行程序，我们看到：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/tickets7.png" alt=""></p>
+<p>图中方框是一个字典，字典中的数据也就是一班列车的信息， 也就是说所有列车的信息都在一个包含多个字典的列表中， 而这个列表又嵌套了2个字典，就是图中的2个椭圆，所以，我们需要的信息应该这样来提取：</p>
+<pre><code class="lang-python hljs">available_trains = r.json()[<span class="hljs-string">'data'</span>][<span class="hljs-string">'datas'</span>]
+</code></pre>
+<h3 id="labdoc-header-8">3.3 解析数据</h3>
+<p>我们封装一个简单的类来解析数据：</p>
+<pre><code class="lang-python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TrainsCollection</span>:</span>
+
+    header = <span class="hljs-string">'车次 车站 时间 历时 一等 二等 软卧 硬卧 硬座 无座'</span>.split()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, available_trains, options)</span>:</span>
+        <span class="hljs-string">"""查询到的火车班次集合
+
+        :param available_trains: 一个列表, 包含可获得的火车班次, 每个
+                                 火车班次是一个字典
+        :param options: 查询的选项, 如高铁, 动车, etc...
+        """</span>
+        self.available_trains = available_trains
+        self.options = options
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_get_duration</span><span class="hljs-params">(self, raw_train)</span>:</span>
+        duration = raw_train.get(<span class="hljs-string">'lishi'</span>).replace(<span class="hljs-string">':'</span>, <span class="hljs-string">'小时'</span>) + <span class="hljs-string">'分'</span>
+        <span class="hljs-keyword">if</span> duration.startswith(<span class="hljs-string">'00'</span>):
+            <span class="hljs-keyword">return</span> duration[<span class="hljs-number">4</span>:]
+        <span class="hljs-keyword">if</span> duration.startswith(<span class="hljs-string">'0'</span>):
+            <span class="hljs-keyword">return</span> duration[<span class="hljs-number">1</span>:]
+        <span class="hljs-keyword">return</span> duration
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">trains</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">for</span> raw_train <span class="hljs-keyword">in</span> self.available_trains:
+            train_no = raw_train[<span class="hljs-string">'station_train_code'</span>]
+            initial = train_no[<span class="hljs-number">0</span>].lower()
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.options <span class="hljs-keyword">or</span> initial <span class="hljs-keyword">in</span> self.options:
+                train = [
+                    train_no,        
+                    <span class="hljs-string">'\n'</span>.join([raw_train[<span class="hljs-string">'from_station_name'</span>],
+                              raw_train[<span class="hljs-string">'to_station_name'</span>]]),
+                    <span class="hljs-string">'\n'</span>.join([raw_train[<span class="hljs-string">'start_time'</span>],
+                               raw_train[<span class="hljs-string">'arrive_time'</span>]]),
+                    self._get_duration(raw_train),
+                    raw_train[<span class="hljs-string">'zy_num'</span>],
+                    raw_train[<span class="hljs-string">'ze_num'</span>],
+                    raw_train[<span class="hljs-string">'rw_num'</span>],
+                    raw_train[<span class="hljs-string">'yw_num'</span>],
+                    raw_train[<span class="hljs-string">'yz_num'</span>],
+                    raw_train[<span class="hljs-string">'wz_num'</span>],
+                ]
+                <span class="hljs-keyword">yield</span> train
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pretty_print</span><span class="hljs-params">(self)</span>:</span>
+        pt = PrettyTable()
+        pt._set_field_names(self.header)
+        <span class="hljs-keyword">for</span> train <span class="hljs-keyword">in</span> self.trains:
+            pt.add_row(train)
+        print(pt)
+</code></pre>
+<h3 id="labdoc-header-9">3.4 显示结果</h3>
+<p>最后，我们将上述过程进行汇总并将结果输出到屏幕上：</p>
+<pre><code class="lang-python hljs">...
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TrainCollection</span>:</span>
+    ...
+    ...
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cli</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-string">"""Command-line interface"""</span>
+    arguments = docopt(__doc__)
+    from_station = stations.get(arguments[<span class="hljs-string">'&lt;from&gt;'</span>])
+    to_station = stations.get(arguments[<span class="hljs-string">'&lt;to&gt;'</span>])
+    date = arguments[<span class="hljs-string">'&lt;date&gt;'</span>]
+    url = (<span class="hljs-string">'https://kyfw.12306.cn/otn/lcxxcx/query?'</span>
+           <span class="hljs-string">'purpose_codes=ADULT&amp;queryDate={}&amp;'</span>
+           <span class="hljs-string">'from_station={}&amp;to_station={}'</span>).format(
+                date, from_station, to_station
+           )
+    <span class="hljs-comment"># 获取参数</span>
+    options = <span class="hljs-string">''</span>.join([
+        key <span class="hljs-keyword">for</span> key, value <span class="hljs-keyword">in</span> arguments.items() <span class="hljs-keyword">if</span> value <span class="hljs-keyword">is</span> <span class="hljs-keyword">True</span>
+    ])
+    r = requests.get(url, verify=<span class="hljs-keyword">False</span>)
+    available_trains = r.json()[<span class="hljs-string">'data'</span>][<span class="hljs-string">'datas'</span>]
+    TrainsCollection(available_trains, options).pretty_print()
+</code></pre>
+<p>运行下程序看看效果吧：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/tickets8.png" alt=""></p>
+<h3 id="labdoc-header-10">3.5 着色</h3>
+<p>至此， 程序的主体已经完成了， 但是上面打印出的结果是全是黑白的，很是乏味， 我们来给它添加点颜色吧！</p>
+<p>这里我们使用 <code>colorama</code> 这个命令行着色工具：</p>
+<pre><code class="lang-python hljs"><span class="hljs-keyword">from</span> colorama <span class="hljs-keyword">import</span> init, Fore
+
+init()
+</code></pre>
+<p>修改一下程序，将出发车站与出发时间显示为绿色，到达车站与到达时间显示为红色：</p>
+<pre><code class="lang-python hljs">...
+<span class="hljs-string">'\n'</span>.join([Fore.GREEN + raw_train[<span class="hljs-string">'from_station_name'</span>] + Fore.RESET,
+           Fore.RED + raw_train[<span class="hljs-string">'to_station_name'</span>] + Fore.RESET]),
+<span class="hljs-string">'\n'</span>.join([Fore.GREEN + raw_train[<span class="hljs-string">'start_time'</span>] + Fore.RESET,
+           Fore.RED + raw_train[<span class="hljs-string">'arrive_time'</span>] + Fore.RESET]),
+...
+</code></pre>
+<p>现在再运行程序就可以像文章开始的效果图一样了！</p>
+<h3 id="labdoc-header-11">3.6 完整代码</h3>
+<pre><code class="lang-python hljs"><span class="hljs-comment"># coding: utf-8</span>
+
+<span class="hljs-string">"""命令行火车票查看器
+
+Usage:
+    tickets [-dgktz] &lt;from&gt; &lt;to&gt; &lt;date&gt;
+
+Options:
+    -h, --help 查看帮助
+    -d         动车
+    -g         高铁
+    -k         快速
+    -t         特快
+    -z         直达
+
+Examples:
+    tickets 上海 北京 2016-10-10
+    tickets -dg 成都 南京 2016-10-10
+"""</span>
+
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> docopt <span class="hljs-keyword">import</span> docopt
+<span class="hljs-keyword">from</span> prettytable <span class="hljs-keyword">import</span> PrettyTable
+<span class="hljs-keyword">from</span> colorama <span class="hljs-keyword">import</span> init, Fore
+
+<span class="hljs-keyword">from</span> stations <span class="hljs-keyword">import</span> stations
+
+
+init()
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TrainsCollection</span>:</span>
+
+    header = <span class="hljs-string">'车次 车站 时间 历时 一等 二等 软卧 硬卧 硬座 无座'</span>.split()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, available_trains, options)</span>:</span>
+        <span class="hljs-string">"""查询到的火车班次集合
+
+        :param available_trains: 一个列表, 包含可获得的火车班次, 每个
+                                 火车班次是一个字典
+        :param options: 查询的选项, 如高铁, 动车, etc...
+        """</span>
+        self.available_trains = available_trains
+        self.options = options
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_get_duration</span><span class="hljs-params">(self, raw_train)</span>:</span>
+        duration = raw_train.get(<span class="hljs-string">'lishi'</span>).replace(<span class="hljs-string">':'</span>, <span class="hljs-string">'小时'</span>) + <span class="hljs-string">'分'</span>
+        <span class="hljs-keyword">if</span> duration.startswith(<span class="hljs-string">'00'</span>):
+            <span class="hljs-keyword">return</span> duration[<span class="hljs-number">4</span>:]
+        <span class="hljs-keyword">if</span> duration.startswith(<span class="hljs-string">'0'</span>):
+            <span class="hljs-keyword">return</span> duration[<span class="hljs-number">1</span>:]
+        <span class="hljs-keyword">return</span> duration
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">trains</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">for</span> raw_train <span class="hljs-keyword">in</span> self.available_trains:
+            train_no = raw_train[<span class="hljs-string">'station_train_code'</span>]
+            initial = train_no[<span class="hljs-number">0</span>].lower()
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.options <span class="hljs-keyword">or</span> initial <span class="hljs-keyword">in</span> self.options:
+                train = [
+                    train_no,        
+                    <span class="hljs-string">'\n'</span>.join([Fore.GREEN + raw_train[<span class="hljs-string">'from_station_name'</span>] + Fore.RESET,
+                               Fore.RED + raw_train[<span class="hljs-string">'to_station_name'</span>] + Fore.RESET]),
+                    <span class="hljs-string">'\n'</span>.join([Fore.GREEN + raw_train[<span class="hljs-string">'start_time'</span>] + Fore.RESET,
+                               Fore.RED + raw_train[<span class="hljs-string">'arrive_time'</span>] + Fore.RESET]),
+                    self._get_duration(raw_train),
+                    raw_train[<span class="hljs-string">'zy_num'</span>],
+                    raw_train[<span class="hljs-string">'ze_num'</span>],
+                    raw_train[<span class="hljs-string">'rw_num'</span>],
+                    raw_train[<span class="hljs-string">'yw_num'</span>],
+                    raw_train[<span class="hljs-string">'yz_num'</span>],
+                    raw_train[<span class="hljs-string">'wz_num'</span>],
+                ]
+                <span class="hljs-keyword">yield</span> train
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pretty_print</span><span class="hljs-params">(self)</span>:</span>
+        pt = PrettyTable()
+        pt._set_field_names(self.header)
+        <span class="hljs-keyword">for</span> train <span class="hljs-keyword">in</span> self.trains:
+            pt.add_row(train)
+        print(pt)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cli</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-string">"""Command-line interface"""</span>
+    arguments = docopt(__doc__)
+    from_station = stations.get(arguments[<span class="hljs-string">'&lt;from&gt;'</span>])
+    to_station = stations.get(arguments[<span class="hljs-string">'&lt;to&gt;'</span>])
+    date = arguments[<span class="hljs-string">'&lt;date&gt;'</span>]
+    url = (<span class="hljs-string">'https://kyfw.12306.cn/otn/lcxxcx/query?'</span>
+           <span class="hljs-string">'purpose_codes=ADULT&amp;queryDate={}&amp;'</span>
+           <span class="hljs-string">'from_station={}&amp;to_station={}'</span>).format(
+                date, from_station, to_station
+           )
+    options = <span class="hljs-string">''</span>.join([
+        key <span class="hljs-keyword">for</span> key, value <span class="hljs-keyword">in</span> arguments.items() <span class="hljs-keyword">if</span> value <span class="hljs-keyword">is</span> <span class="hljs-keyword">True</span>
+    ])
+    r = requests.get(url, verify=<span class="hljs-keyword">False</span>)
+    available_trains = r.json()[<span class="hljs-string">'data'</span>][<span class="hljs-string">'datas'</span>]
+    TrainsCollection(available_trains, options).pretty_print()
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    cli()
+</code></pre>
+<h2 id="labdoc-header-12">四、Setup</h2>
+<p>上面的程序中我们运行程序的方式是这样的：</p>
+<pre><code class="hljs coffeescript">python3 tickets.py <span class="hljs-keyword">from</span> to date
+</code></pre><p>我们当然可以将脚本改成可执行的，然后这样执行：</p>
+<pre><code class="hljs coffeescript">./tickets.py <span class="hljs-keyword">from</span> to date
+</code></pre><p>但这也不是理想的方案，因为我们必须在脚本的目录下才能运行。我们想要的是在命令行的任何地方都可以这样运行：</p>
+<pre><code class="hljs coffeescript">ticktes <span class="hljs-keyword">from</span> to date
+</code></pre><p>这是可以实现的，我们需要借助 Python 的 SETUP 工具。写一个简单的 setup 脚本：</p>
+<pre><code class="lang-python hljs"><span class="hljs-keyword">from</span> setuptools <span class="hljs-keyword">import</span> setup
+
+setup(
+    name=<span class="hljs-string">'tickets'</span>,
+    py_modules=[<span class="hljs-string">'tickets'</span>, <span class="hljs-string">'stations'</span>],
+    install_requires=[<span class="hljs-string">'requests'</span>, <span class="hljs-string">'docopt'</span>, <span class="hljs-string">'prettytable'</span>, <span class="hljs-string">'colorama'</span>],
+    entry_points={
+        <span class="hljs-string">'console_scripts'</span>: [<span class="hljs-string">'tickets=tickets:cli'</span>]
+    }
+)
+</code></pre>
+<p>在命令行运行一下：</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">python3</span> <span class="hljs-selector-tag">setup</span><span class="hljs-selector-class">.py</span> <span class="hljs-selector-tag">install</span>
+</code></pre><p>现在我们可以愉快的查询了：</p>
+<p><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/ticketes12.png" alt=""></p>
+<h2 id="labdoc-header-13">五、总结</h2>
+<p>本课程使用 Python3 抓取 12306 网站信息提供一个命令行的火车票查询工具。通过该项目的实现，可以学习并实践 Python3 基础及网络编程，以及 docopt，requests，prettytable，colorama 等库的使用。</p>
+<h2 id="labdoc-header-14">六、参考资料</h2>
+<p>本项目详细代码可以从下面链接获取：</p>
+<ul>
+<li><a href="https://github.com/protream/iquery" target="_blank">https://github.com/protream/iquery</a></li>
+</ul>
+</div></div>
+    
+    
+    
+</div>
+<textarea id="editor" style="display:none;"># Python 实现火车票查询工具
+
+## 注意：由于 12306 的接口经常变化，课程内容可能很快过期，如果遇到接口问题，需要根据最新的接口对代码进行适当修改才可以完成实验。
+
+## 一、实验简介
+
+当你想查询一下火车票信息的时候，你还在上 12306 官网吗？或是打开你手机里的 APP？
+
+下面让我们来用 Python 写一个命令行版的火车票查看器， 只要在命令行敲一行命令就能获得你想要的火车票信息！如果你刚掌握了 Python 
+基础，这将是个不错的小练习。
+
+### 1.1 知识点
+
+- Python 基础知识的综合运用
+- `docopt`、`requests`、`colorama` 及 `prettytable` 库的使用
+-  setuptools 的使用
+
+## 1.2 效果截图
+
+![此处输入图片的描述](http://7xqdxb.com1.z0.glb.clouddn.com/tickets9.png)
+
+## 二、接口设计
+
+一个应用写出来最终是要给人使用的，哪怕只是给你自己使用。
+
+所以，首先应该想想你希望怎么使用它？让我们先给这个小应用起个名字吧，既然及查询票务信息，那就叫它 `tickets` 好了。
+
+我们希望用户只要输入出发站，到达站以及日期就让就能获得想要的信息，比如要查看10月30号上海-北京的火车余票， 我们只需输入：
+
+```
+$ python tickets.py 上海 北京 2016-10-30
+```
+
+注意：上面的日期（包括后面的）是笔者写文章时确定的日期，当你在做这个项目的时候可能要根据当前时间做适当调整。
+
+转化为程序语言就是：
+
+```
+$ python tickets.py from to date
+```
+
+另外，火车有各种类型，高铁、动车、特快、快速和直达，我们希望可以提供选项只查询特定的一种或几种的火车，所以，我们应该有下面这些选项：
+
+- -g    高铁
+- -d    动车
+- -t    特快
+- -k    快速
+- -z    直达
+
+这几个选项应该能被组合使用，所以，最终我们的接口应该是这个样子的：
+
+```
+$ python tickets.py [-gdtkz] from to date
+```
+
+接口已经确定好了，剩下的就是实现它了。
+
+## 三、代码实现
+
+首先安装一下实验需要用到的库：
+
+```
+$ sudo pip3 install requests prettytable docopt colorama
+```
+
+- `requests`，使用 Python 访问 HTTP 资源的必备库。
+- `docopt`，Python3 命令行参数解析工具。
+- `prettytable`， 格式化信息打印工具，能让你像 MySQL 那样打印数据。
+- `colorama`，命令行着色工具
+
+### 3.1 解析参数
+
+Python有很多写命令行参数解析工具，如 `argparse`, `docopt`, `click`，这里我们选用的是 `docopt` 
+这个简单易用的工具。`docopt` 可以按我们在文档字符串中定义的格式来解析参数，比如我们在 `tickets.py` 
+中写下下面的内容（实验楼环境下，通过点击右下角的键盘小图标可以选择中文输入法）：
+
+```python
+# coding: utf-8
+
+"""命令行火车票查看器
+
+Usage:
+    tickets [-gdtkz] &lt;from&gt; &lt;to&gt; &lt;date&gt;
+
+Options:
+    -h,--help   显示帮助菜单
+    -g          高铁
+    -d          动车
+    -t          特快
+    -k          快速
+    -z          直达
+
+Example:
+    tickets 北京 上海 2016-10-10
+    tickets -dg 成都 南京 2016-10-10
+"""
+from docopt import docopt
+
+def cli():
+    """command-line interface"""
+    arguments = docopt(__doc__)
+    print(arguments)
+
+if __name__ == '__main__':
+    cli()
+```
+上面的程序中， `docopt` 会根据我们在 `docstring` 中的定义的格式自动解析出参数并返回一个字典，也就是 
+`arguments`， 我们打印出了这个字典的内容。下面我们运行一下这个程序， 比如查询一下10月30号从成都到南京的动车和高铁：
+
+```
+$ python tickets.py -dg 成都 南京 2016-10-10
+```
+
+我们得到下面的参数解析结果：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/tickets13.png)
+
+### 3.2 获取数据
+
+参数已经解析好了，下面就是如何获取数据了，这也是最主要的部分。首先我们用实验楼环境的Firefox浏览打开 
+[12306](http://www.12306.cn)，进入余票查询页面，按下 `F12` 打开开发者工具，选中 `Network` 
+一栏，在查询框中随便查询一次，我们在调试工具观察下请求和响应：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/tickets2.png)
+
+注意到上面的请求 URL ，它是由基 URL `https://kyfw.12306.cn/otn/lcxxcx/query` 
+加四个参数构成的，这四个参数分别代表，查询的类型（成人？学生？），日期，出发车站，到达车站：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/tickets3.png)
+
+再来看看响应：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/tickets4.png)
+
+返回的是`JSON`格式的数据！ 我们打开返回的数据看看：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/ticketes10.png)
+
+可以看到一列火车的数据用 Python 的语言说就是一个字典。
+
+接下来问题就简单了，我们只需要利用这个接口， 构建请求URL然后解析返回的JSON数据就可以了。但是我们发现，URL里面参数 
+`from_station` 和 `to_station` 
+并不是汉字，而是一个代号，而我们想要输入的是汉字，我们要如何获取代号呢？我们打开网页源码看看有没有什么发现。
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/tickets5.png)
+
+果然，这里有个关于 station 的文件，打开看看：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/ticketes11.png)
+
+`station_names` 是一个很长的字符串， 
+这里面貌似是包含了所有车站的中文名，拼音，简写和代号等信息。但是这些信息挤在一起，而我们只想要车站的拼音和大写字母的代号信息，怎么办呢？ 
+正则表达式！我们写个小脚本来匹配提取出想要的信息吧, 在`parse_station.py`中：
+
+```python
+import re
+import requests
+from pprint import pprint 
+
+url = 
+'https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.8971'
+response
+ = requests.get(url, verify=False)
+stations = re.findall(u'([\u4e00-\u9fa5]+)\|([A-Z]+)', response.text)
+pprint(dict(stations), indent=4)
+```
+
+我们运行这个脚本，它将以字典的形式返回所有车站和它的大写字母代号, 我们将结果重定向到 `stations.py` 中，
+
+```
+$ python3 parse_station.py &gt; stations.py
+```
+
+我们为这个字典加名字，`stations`, 最终，`stations.py`文件是这样的：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/tickets6.png)
+
+现在，用户输入车站的中文名，我们就可以直接从这个字典中获取它的字母代码了：
+
+```python
+...
+from stations import stations
+
+def cli():
+    arguments = docopt(__doc__)
+    from_station = stations.get(arguments['&lt;from&gt;'])
+    to_station = stations.get(arguments['&lt;to&gt;'])
+    date = arguments['&lt;date&gt;']
+    # 构建URL
+    url = 
+'https://kyfw.12306.cn/otn/lcxxcx/query?purpose_codes=ADULT&amp;queryDate={}&amp;from_station={}&amp;to_station={}'.format(
+
+        date, from_station, to_station
+    )
+```
+
+万事俱备，下面我们来请求这个URL获取数据吧！这里我们使用 `requests` 这个库, 它提供了非常简单易用的接口，
+
+```
+...
+import requests
+
+def cli():
+    ...
+    # 添加verify=False参数不验证证书
+    r = requests.get(url, verify=False)
+    print(r.json())
+```
+
+从结果中，我们可以观察到，与车票有关的信息需要进一步提取：
+
+```
+def cli():
+    ...
+    r = requsets.get(url);
+    print(r.json())
+```
+我们已经知道该请求返回的是JSON数据， 使用 `requests` 提供的 `r.json()` 可以将 JSON 数据转化为 Python 
+字典，上面我们打印了这个字典，运行程序，我们看到：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/tickets7.png)
+
+图中方框是一个字典，字典中的数据也就是一班列车的信息， 也就是说所有列车的信息都在一个包含多个字典的列表中， 
+而这个列表又嵌套了2个字典，就是图中的2个椭圆，所以，我们需要的信息应该这样来提取：
+
+```python
+available_trains = r.json()['data']['datas']
+```
+
+### 3.3 解析数据
+
+我们封装一个简单的类来解析数据：
+
+```python
+class TrainsCollection:
+
+    header = '车次 车站 时间 历时 一等 二等 软卧 硬卧 硬座 无座'.split()
+    
+    def __init__(self, available_trains, options):
+        """查询到的火车班次集合
+        
+        :param available_trains: 一个列表, 包含可获得的火车班次, 每个
+                                 火车班次是一个字典
+        :param options: 查询的选项, 如高铁, 动车, etc...
+        """
+        self.available_trains = available_trains
+        self.options = options
+
+    def _get_duration(self, raw_train):
+        duration = raw_train.get('lishi').replace(':', '小时') + '分'
+        if duration.startswith('00'):
+            return duration[4:]
+        if duration.startswith('0'):
+            return duration[1:]
+        return duration
+
+    @property
+    def trains(self):
+        for raw_train in self.available_trains:
+            train_no = raw_train['station_train_code']
+            initial = train_no[0].lower()
+            if not self.options or initial in self.options:
+                train = [
+                    train_no,        
+                    '\n'.join([raw_train['from_station_name'],
+                              raw_train['to_station_name']]),
+                    '\n'.join([raw_train['start_time'],
+                               raw_train['arrive_time']]),
+                    self._get_duration(raw_train),
+                    raw_train['zy_num'],
+                    raw_train['ze_num'],
+                    raw_train['rw_num'],
+                    raw_train['yw_num'],
+                    raw_train['yz_num'],
+                    raw_train['wz_num'],
+                ]
+                yield train
+
+    def pretty_print(self):
+        pt = PrettyTable()
+        pt._set_field_names(self.header)
+        for train in self.trains:
+            pt.add_row(train)
+        print(pt)
+```
+
+### 3.4 显示结果
+
+最后，我们将上述过程进行汇总并将结果输出到屏幕上：
+
+```python
+...
+
+class TrainCollection:
+    ...
+    ...
+
+def cli():
+    """Command-line interface"""
+    arguments = docopt(__doc__)
+    from_station = stations.get(arguments['&lt;from&gt;'])
+    to_station = stations.get(arguments['&lt;to&gt;'])
+    date = arguments['&lt;date&gt;']
+    url = ('https://kyfw.12306.cn/otn/lcxxcx/query?'
+           'purpose_codes=ADULT&amp;queryDate={}&amp;'
+           'from_station={}&amp;to_station={}').format(
+                date, from_station, to_station
+           )
+    # 获取参数
+    options = ''.join([
+        key for key, value in arguments.items() if value is True
+    ])
+    r = requests.get(url, verify=False)
+    available_trains = r.json()['data']['datas']
+    TrainsCollection(available_trains, options).pretty_print()
+```
+
+运行下程序看看效果吧：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/tickets8.png)
+
+### 3.5 着色
+
+至此， 程序的主体已经完成了， 但是上面打印出的结果是全是黑白的，很是乏味， 我们来给它添加点颜色吧！
+这里我们使用 `colorama` 这个命令行着色工具：
+
+```python
+from colorama import init, Fore
+
+init()
+```
+修改一下程序，将出发车站与出发时间显示为绿色，到达车站与到达时间显示为红色：
+
+```python
+...
+'\n'.join([Fore.GREEN + raw_train['from_station_name'] + Fore.RESET,
+           Fore.RED + raw_train['to_station_name'] + Fore.RESET]),
+'\n'.join([Fore.GREEN + raw_train['start_time'] + Fore.RESET,
+           Fore.RED + raw_train['arrive_time'] + Fore.RESET]),
+...
+```
+现在再运行程序就可以像文章开始的效果图一样了！
+
+### 3.6 完整代码
+
+```python
+# coding: utf-8
+
+"""命令行火车票查看器
+
+Usage:
+    tickets [-dgktz] &lt;from&gt; &lt;to&gt; &lt;date&gt;
+
+Options:
+    -h, --help 查看帮助
+    -d         动车
+    -g         高铁
+    -k         快速
+    -t         特快
+    -z         直达
+
+Examples:
+    tickets 上海 北京 2016-10-10
+    tickets -dg 成都 南京 2016-10-10
+"""
+
+import requests
+from docopt import docopt
+from prettytable import PrettyTable
+from colorama import init, Fore
+
+from stations import stations
+
+
+init()
+
+class TrainsCollection:
+
+    header = '车次 车站 时间 历时 一等 二等 软卧 硬卧 硬座 无座'.split()
+    
+    def __init__(self, available_trains, options):
+        """查询到的火车班次集合
+        
+        :param available_trains: 一个列表, 包含可获得的火车班次, 每个
+                                 火车班次是一个字典
+        :param options: 查询的选项, 如高铁, 动车, etc...
+        """
+        self.available_trains = available_trains
+        self.options = options
+
+    def _get_duration(self, raw_train):
+        duration = raw_train.get('lishi').replace(':', '小时') + '分'
+        if duration.startswith('00'):
+            return duration[4:]
+        if duration.startswith('0'):
+            return duration[1:]
+        return duration
+
+    @property
+    def trains(self):
+        for raw_train in self.available_trains:
+            train_no = raw_train['station_train_code']
+            initial = train_no[0].lower()
+            if not self.options or initial in self.options:
+                train = [
+                    train_no,        
+                    '\n'.join([Fore.GREEN + 
+raw_train['from_station_name'] + Fore.RESET,
+                               Fore.RED + raw_train['to_station_name'] +
+ Fore.RESET]),
+                    '\n'.join([Fore.GREEN + raw_train['start_time'] + 
+Fore.RESET,
+                               Fore.RED + raw_train['arrive_time'] + 
+Fore.RESET]),
+                    self._get_duration(raw_train),
+                    raw_train['zy_num'],
+                    raw_train['ze_num'],
+                    raw_train['rw_num'],
+                    raw_train['yw_num'],
+                    raw_train['yz_num'],
+                    raw_train['wz_num'],
+                ]
+                yield train
+
+    def pretty_print(self):
+        pt = PrettyTable()
+        pt._set_field_names(self.header)
+        for train in self.trains:
+            pt.add_row(train)
+        print(pt)
+
+
+def cli():
+    """Command-line interface"""
+    arguments = docopt(__doc__)
+    from_station = stations.get(arguments['&lt;from&gt;'])
+    to_station = stations.get(arguments['&lt;to&gt;'])
+    date = arguments['&lt;date&gt;']
+    url = ('https://kyfw.12306.cn/otn/lcxxcx/query?'
+           'purpose_codes=ADULT&amp;queryDate={}&amp;'
+           'from_station={}&amp;to_station={}').format(
+                date, from_station, to_station
+           )
+    options = ''.join([
+        key for key, value in arguments.items() if value is True
+    ])
+    r = requests.get(url, verify=False)
+    available_trains = r.json()['data']['datas']
+    TrainsCollection(available_trains, options).pretty_print()
+
+
+if __name__ == '__main__':
+    cli()
+```
+
+## 四、Setup
+
+上面的程序中我们运行程序的方式是这样的：
+
+```
+python3 tickets.py from to date
+```
+我们当然可以将脚本改成可执行的，然后这样执行：
+
+```
+./tickets.py from to date
+```
+但这也不是理想的方案，因为我们必须在脚本的目录下才能运行。我们想要的是在命令行的任何地方都可以这样运行：
+
+```
+ticktes from to date
+```
+
+这是可以实现的，我们需要借助 Python 的 SETUP 工具。写一个简单的 setup 脚本：
+
+```python
+from setuptools import setup
+
+setup(
+    name='tickets',
+    py_modules=['tickets', 'stations'],
+    install_requires=['requests', 'docopt', 'prettytable', 'colorama'],
+    entry_points={
+        'console_scripts': ['tickets=tickets:cli']
+    }
+)
+```
+在命令行运行一下：
+
+```
+python3 setup.py install
+```
+
+现在我们可以愉快的查询了：
+
+![](http://7xqdxb.com1.z0.glb.clouddn.com/ticketes12.png)
+
+## 五、总结
+
+本课程使用 Python3 抓取 12306 网站信息提供一个命令行的火车票查询工具。通过该项目的实现，可以学习并实践 Python3 
+基础及网络编程，以及 docopt，requests，prettytable，colorama 等库的使用。
+
+## 六、参考资料
+
+本项目详细代码可以从下面链接获取：
+
++ 
+[https://github.com/protream/iquery](https://github.com/protream/iquery)
+
+
+
+
+
+
+</textarea>
+
+</div>
+
+
+        
+        
+
+        
+        
+
+        <div class="modal fade" id="invite-user" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">邀请好友，双方都可获赠实验豆！</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="form-label">
+                            分享专属链接给好友，或粘贴到QQ群/微博/论坛，好友注册后，您和好友将分别获赠3个实验豆！
+                        </div>
+                        <input id="bstext" class="form-invite" value="https://www.shiyanlou.com/register?inviter=NTY0MzE5MzkyMDIx" type="text">
+                        
+                        <div id="msg-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="flash-message" tabindex="-1" role="dialog">
+            <div class="modal-dialog" rolw="document">
+            </div>
+        </div>
+        <div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">注意</h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary confirm" data-dismiss="modal">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        
+<div class="modal fade" id="start-newlab">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始新实验</h3>
+			</div>
+			<div class="modal-body">
+                <p>一个实验正在进行，是否停止它，开始新实验？</p>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-newlab-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="start-evaluation-course">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始评估课实验</h3>
+			</div>
+			<div class="modal-body">
+                <div>
+                    <p>为了让评估结果更加准确，请注意以下操作：</p>
+                    <ul>
+                        <li>完成实验后点击「停止实验」按钮</li>
+                        <li>将代码提交到代码库</li>
+                        <li>尽可能详尽的撰写实验报告</li>
+                        <li>尽可能在实验操作的关键步骤截图</li>
+                        <li>尽可能减少无用操作</li>
+                        <li>尽可能高效的利用内存/CPU资源</li>
+                    </ul>
+                    <p>评估课还在不断完善中，我们真挚希望你能通过我们提供的这个平台，找到更好的发展机会。</p>
+                </div>
+                <br>
+                <div class="start-newlab"></div>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="vip-startlab-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始实验</h3>
+			</div>
+			<div class="modal-body">
+                <div class="start-newlab"></div>
+                <br>
+                <div class="text-center vip-vm">
+                    <a class="btn btn-default btn-lg newvm">创建新环境</a>
+					
+                </div>
+                <br>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade askquestion-modal" id="askquestion" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">发帖</h4>
+            </div>
+            <div class="modal-body words-ctrl">
+                <form class="form-horizontal" action="/questions/">
+                    <input name="_csrf_token" value="IjkxNDU1MzFiMTdhNGQ3MWE0YTFjZTllMmY5ZmZlMWFmNmVlYWYwZjMi.DGq0FQ.Ma8vhZOFfs7zp-KE8cZSLc0_98w" type="hidden">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">标题</label>
+                        <div class="col-md-10">
+                            <input name="title" min="5" max="100" class="form-control" placeholder="至少输入5个字" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">描述</label>
+                        <div class="col-md-10">
+                            
+                            
+                            
+<div class="tabpanel mkeditor">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#mkeditor-editor" role="tab" data-toggle="tab">编辑</a>
+        </li>
+        <li role="presentation">
+            <a class="mkeditor-btn-view" href="#mkeditor-viewer" role="tab" data-toggle="tab">预览</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active mkeditor-editor" id="mkeditor-editor" role="tabpanel">
+            
+            <div class="btn-group" role="group">
+            
+                <button type="button" class="btn btn-default mkeditor-btn-bold">
+                    <i class="fa fa-bold"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-italic">
+                    <i class="fa fa-italic"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-link">
+                    <i class="fa fa-link"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-quote">
+                    <i class="fa fa-quote-left"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-code">
+                    <i class="fa fa-code"></i>
+                </button>
+                <button id="mkeditor-pickfile" type="button" class="btn btn-default mkeditor-btn-img" style="z-index: 1;">
+                    <i class="fa fa-image"></i>
+                </button>
+                
+                <button type="button" class="btn btn-default mkeditor-btn-listol">
+                    <i class="fa fa-list-ol"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-listul">
+                    <i class="fa fa-list-ul"></i>
+                </button>
+            <div id="html5_1bmvqu7f3rpg6raimi2qpmfk3_container" class="moxie-shim moxie-shim-html5" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px; overflow: hidden; z-index: 0;"><input id="html5_1bmvqu7f3rpg6raimi2qpmfk3" style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;" multiple="" accept="" type="file"></div></div>
+            <div class="btn-group pull-right" role="group">
+                <a style="font-size:12px; color:#666; text-decoration:underline;" href="https://www.shiyanlou.com/questions/764" target="_blank">
+                    <i class="fa fa-question-circle"></i>Markdown 语法
+                </a>
+            </div>
+            <textarea name="content" class="content" min="0" max="20000" placeholder="推荐使用 Markdown 语法，至少输入 5 个字"></textarea>
+            <div class="help-block"></div>
+        </div>
+        <div class="tab-pane mkeditor-viewer markdown-body" id="mkeditor-viewer" role="tabpanel">
+            <div></div>
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none;">
+                        <label class="col-md-2 control-label">板块</label>
+                        <div class="col-md-10">
+                            <div class="q-types" data-type="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="bottom-link btn btn-primary" href="https://www.shiyanlou.com/vip" target="_blank" style="background:#FFFFFF;color:#00CC99;border:none;float:left;padding-left:0;"><img src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/icon-vip-advance.png" alt=""> 加入高级会员获得助教答疑</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="submit-question btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        
+        
+        
+        
+        
+
+        <div class="modal fade" id="sign-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#signin-form" aria-controls="signin-form" role="tab" data-toggle="tab">登录</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#signup-form" aria-controls="signup-form" role="tab" data-toggle="tab">注册</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="signin-form">
+                        <form action="/login" method="post">
+                            <input name="_csrf_token" value="IjkxNDU1MzFiMTdhNGQ3MWE0YTFjZTllMmY5ZmZlMWFmNmVlYWYwZjMi.DGq0FQ.Ma8vhZOFfs7zp-KE8cZSLc0_98w" type="hidden">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input name="login" class="form-control" placeholder="请输入邮箱" type="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input name="password" class="form-control" placeholder="请输入密码" type="password">
+                                </div>
+                            </div>
+                            <div class="form-inline verify-code-item" style="display:none;">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input name="captcha_v" class="form-control" placeholder="请输入验证码" type="text">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="" source="/captcha.gif">
+                            </div>
+                            <div class="form-group remember-login">
+                                <input name="remember" value="y" type="checkbox"> 下次自动登录
+                                <a class="pull-right" href="https://www.shiyanlou.com/reset_password">忘记密码？</a>
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" value="进入实验楼" type="submit">
+                            </div>
+                            <div class="form-group widget-signin">
+                                <span>快速登录</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="signup-form">
+                        <form action="/register" method="post">
+                            <input name="_csrf_token" value="IjkxNDU1MzFiMTdhNGQ3MWE0YTFjZTllMmY5ZmZlMWFmNmVlYWYwZjMi.DGq0FQ.Ma8vhZOFfs7zp-KE8cZSLc0_98w" type="hidden">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input name="email" class="form-control" placeholder="请输入邮箱" type="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input name="password" class="form-control" placeholder="请输入密码" type="password">
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input name="captcha_v" class="form-control" placeholder="请输入验证码" type="text">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="" source="/captcha.gif">
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" value="注册" type="submit">
+                            </div>
+                            <div class="form-group agree-privacy">
+                                注册表示您已经同意我们的<a href="https://www.shiyanlou.com/privacy" target="_blank">隐私条款</a>
+                            </div>
+                            <div class="form-group widget-signup">
+                                <span>快速注册</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div id="base-data" data-flash="false" data-is-login="true" data-jwt-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIzNzkzNDYiLCJpc3MiOiJzaGl5YW5sb3U6d2ViOmFwcCIsInVuYW1lIjoiTE9VMTU4OTMyOTQ2NSIsImlzX2FkbWluIjpmYWxzZSwiZXhwIjoxNTAyMjQ1OTA5LCJpYXQiOjE1MDIxNTk1MDl9.oCG9qKxaK80ze-HuQiehJx_aU-j2xOex3ClxReJzVEg" data-user-id="379346" data-is-jwt="true" data-socket-url="wss://comet.shiyanlou.com" data-msg-user="" data-msg-system=""></div>
+
+        <!-- 不带 CSS 的库 -->
+        <script async="" src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/analytics.js"></script><script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/polyfill.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/manifest.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/vendor.js"></script>
+
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/jquery_002.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/jquery_004.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/jquery.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/jquery_003.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/html2canvas.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/jspdf.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/ZeroClipboard.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/aliyun-oss-sdk-4.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/qiniu.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/plupload.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/echarts.js"></script>
+        <!-- 不带 CSS 的库 end -->
+
+        <!-- 带有 CSS 的库 -->
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap-switch.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap-tour.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap-table.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap-table-zh-CN.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/bootstrap-table-filter-control.js"></script>
+
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/ace.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/video.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/katex.js"></script>
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/highlight.js"></script>
+        <!-- 带有 CSS 的库 end -->
+
+        <script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/raven.js"></script>
+        <script>
+            Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
+                release: '3.12.13'
+            }).install();
+        </script>
+
+        
+<div id="jinja-data" data-is-authenticated="true" data-tencent-labid="[877]" data-course-detail="/courses/623" data-left-time="0" data-course-id="623" data-userlab-id="None" data-question-form="/questions/meta" data-start-newlab-url="/courses/clear"></div>
+<script src="Python3%20%E5%AE%9E%E7%8E%B0%E7%81%AB%E8%BD%A6%E7%A5%A8%E6%9F%A5%E8%AF%A2%E5%B7%A5%E5%85%B7_files/labDoc.js"></script><div style="display: none; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background: rgba(0, 0, 0, 0.5) none repeat scroll 0% 0%; text-align: center; z-index: 1600;"><i class="fa fa-spinner fa-pulse" style="margin-top: 348.4px; color: rgb(255, 255, 255); font-size: 35px;"></i></div>
+
+
+
+        
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-89338452-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+</body></html>

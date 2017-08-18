@@ -160,3 +160,9 @@ portcheckers   | http://www.portcheckers.com
 ###20170519 data_analyse\tableau
 蓝鲸的网站分析笔记 使用python和tableau对数据进行抓取及可视化 http://bluewhale.cc/2017-05-05/use-python-and-tableau-to-capture-and-visualize-the-data.html
 
+### 20170726 70个Python练手项目列表 实验楼 1 图片转字符画：将256灰度映射到70个字符上
+```python
+from PIL import Image  # sudo pip install pillow
+```
+### 20170808 70个Python练手项目列表 实验楼 2 实现2048游戏 https://www.shiyanlou.com/courses/368/labs/1172/document
+有限状态机，矩阵转置、列表遍历等基本数据操作
