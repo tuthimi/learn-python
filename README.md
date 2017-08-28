@@ -166,3 +166,8 @@ from PIL import Image  # sudo pip install pillow
 ```
 ### 20170808 70个Python练手项目列表 实验楼 2 实现2048游戏 https://www.shiyanlou.com/courses/368/labs/1172/document
 有限状态机，矩阵转置、列表遍历等基本数据操作
+### 20170814 70个Python练手项目列表 实验楼 3 Python3 实现火车票查询工具
+分析了最新的返回数据格式。
+### 20170828 70个Python练手项目列表 实验楼 4 高德API+Python解决租房问题
+调用高德API
+index.html代码可能过时，功能未实现。待研习其代码。
