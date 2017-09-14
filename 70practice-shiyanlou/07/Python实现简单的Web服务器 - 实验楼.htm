@@ -1,0 +1,3270 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><style class="vjs-styles-defaults">
+      .video-js {
+        width: 300px;
+        height: 150px;
+      }
+
+      .vjs-fluid {
+        padding-top: 56.25%
+      }
+    </style>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Lei Shi">
+        <meta http-equiv="Cache-Control" content="o-transform">
+        <meta http-equiv="Cache-Control" content="no-siteapp">
+        <meta name="csrf-token" content="IjlkNjg2ZDkzODAwOGYxOTgzNmQ3YzE4NGFiMGU3OWI2ZWQyMGQ1ZDAi.DIlZzQ.9pac_WG1cl5pZfZdUyRdY3IliMI">
+        
+            
+                <title>Python实现简单的Web服务器 - 实验楼</title>
+            
+        
+
+        
+        <meta content="实验楼是国内领先的IT在线编程及在线实训学习平台，专业导师提供精选的实践项目，创新的技术使得学习者无需配置繁琐的本地环境，随时在线流畅使用。以就业为导向，提供编程、运维、测试、云计算、大数据、数据库等全面的IT技术动手实践环境，提供Linux、Python、Java、C语言、Node.js、Hadoop、PHP、Docker、Git、R、SQL、MongoDB、Redis、Swift、Spark等千门热门课程。" name="description">
+        <meta content="实验楼,IT培训,IT教育,编程,在线编程,Linux,Linux教程,Linux操作系统,Python,Python教程,Python基础教程,Java,Java编程,C语言,大数据,Node.js,Hadoop,PHP,Docker,Git,R,SQL,MongoDB,Redis,Swift,Spark,在线实验,IT在线教育,编程入门,项目训练,项目实践,webIDE,软件开发" name="keywords">
+        
+        <meta content="实验楼，琛石科技" name="author">
+
+        <link rel="shortcut icon" href="https://static.shiyanlou.com/favicon.ico">
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/font-awesome.css">
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap.css">
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap-switch.css">
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap-tour.css">
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap-table.css">
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/katex.css">
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/video-js.css">
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/monokai-sublime.css">
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/calendar-heatmap.css">
+
+        <link rel="stylesheet" href="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/styles.css">
+
+        <style>
+            @font-face {
+                font-family: "lantingxihei";
+        src: url("https://static.shiyanlou.com/fonts/FZLTCXHJW.TTF");
+        }
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+        overflow: hidden;
+        }
+        #invite-user .modal-body .form-label {
+        margin-bottom: 16px;
+        font-size:14px;
+        }
+        #invite-user .modal-body .form-invite {
+        width: 80%;
+        padding: 6px 12px;
+        background-color: #eeeeee;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        float: left;
+        margin-right: 10px;
+        }
+        #invite-user .modal-body .msg-modal-style {
+        background-color: #7dd383;
+        margin-top: 10px;
+        padding: 6px 0;
+        text-align: center;
+        width: 100%;
+        }
+        #invite-user .modal-body .modal-flash {
+        position: absolute;
+        top: 53px;
+        right: 74px;
+        z-index: 999;
+        }
+        /* end modal */
+
+        .en-footer {
+        padding: 30px;
+        text-align: center;
+        font-size: 14px;
+        }
+        </style>
+        
+<style>
+    .layout-fullscreen {
+        margin-top: 0;
+    }
+    .labdoc-header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 18px;
+        color: #666;
+        background: #fff;
+        font-size: 16px;
+        border-bottom: solid 1px #eee;
+        z-index: 10;
+    }
+    .labdoc-header a {
+        color: #666;
+    }
+    .labdoc-header a:hover,
+    .labdoc-header a:focus {
+        color: #08bf91;;
+        text-decoration: none;
+    }
+    .labdoc-nav {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 20%;
+        height: calc(100% - 60px);
+        padding: 0 10px;
+        background-color: #f7f7f7;
+        background-image: url(https://static.shiyanlou.com/img/logo-water-mark.png);
+        background-repeat: no-repeat;
+        background-position: 50% calc(100% - 20px);
+        overflow: auto;
+    }
+    .labdoc-nav-content {
+        margin-left: 10px;
+    }
+    .labdoc-nav h2 {
+        padding: 5px 0;
+        font-size: 16px;
+    }
+    .labdoc-nav h3 {
+        padding: 5px 0;
+        margin-left: 20px;
+        font-size: 14px;
+    }
+    .labdoc-nav h2 a,
+    .labdoc-nav h3 a {
+        color: #666;
+        text-decoration: none;
+    }
+    .labdoc-nav h2:hover a,
+    .labdoc-nav h2:focus a,
+    .labdoc-nav h3:hover a,
+    .labdoc-nav h3:focus a,
+    .labdoc-nav h2.active a,
+    .labdoc-nav h3.active a {
+        color: #08bf91;
+        text-decoration: none;
+    }
+    .labdoc-content-container {
+        float: right;
+        width: 100%;
+        padding: 0;
+        margin-top: 60px;
+    }
+    .labdoc-content {
+        padding: 0 10px 20px;
+        background: #fff;
+    }
+    .lab-btns {
+        display: none;
+        position: fixed;
+        top: 30%;
+        right: 10px;
+        width: 56px;
+        text-align: center;
+        z-index: 10;
+    }
+    .lab-btns div {
+        margin-bottom: 4px;
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
+    }
+    .lab-btns a {
+        display: block;
+        padding: 0 2px;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .lab-btns a:hover,
+    .lab-btns a:focus {
+        text-decoration: none;
+    }
+
+    .lab-btns img {
+        display: inline-block;
+        border-radius: 5px;
+    }
+    .lab-btns a img {
+        padding: 11px 0;
+    }
+    .lab-btns span {
+        display: none;
+        color: #08bf91;
+    }
+    .lab-btns a:hover img {
+        display: none;
+    }
+    .lab-btns a:hover span {
+        display: block;
+        width: 52px;
+        height: 52px;
+        padding-top: 8px;
+        text-align: center;
+    }
+    .labinfo {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 20%;
+        padding: 5px 20px;
+        background: cornsilk;
+        z-index: 10;
+    }
+    .labinfo-header {
+        margin-bottom: 20px;
+    }
+    .labinfo-body div {
+        margin: 5px 0;
+        font-size: 16px;
+    }
+    .labinfo-body div {
+        margin: 10px 0;
+        font-size: 16px;
+    }
+    .labinfo-body a {
+        margin: 10px 0;
+    }
+    .left-time a {
+        position: relative;
+        bottom: 1px;
+        padding: 4px 10px;
+        margin-left: 4px;
+        color: #fff;
+        background: #f66;
+        font-size: 14px;
+    }
+    .left-time a:hover,
+    .left-time a:focus {
+        color: #fff;
+    }
+    .labdoc-page,
+    .labdoc-page:focus,
+    .labdoc-page:hover {
+        padding: 20px;
+        color: #08bf91;
+        font-size: 16px;
+        text-decoration: none;
+    }
+    .course-warning {
+        width: 40%;
+        margin: 10px auto;
+        font-size: 18px;
+        text-align: center;
+    }
+    @media (min-width: 768px) {
+        .labdoc-nav,
+        .lab-btns {
+            display: block;
+        }
+        .labdoc-content-container {
+            width: 80%;
+        }
+        .labdoc-content {
+            padding: 0 100px 20px;
+        }
+    }
+</style>
+
+
+        
+        
+    <style id="ace_editor.css">.ace_editor {position: relative;overflow: hidden;font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;direction: ltr;text-align: left;}.ace_scroller {position: absolute;overflow: hidden;top: 0;bottom: 0;background-color: inherit;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;cursor: text;}.ace_content {position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;min-width: 100%;}.ace_dragging .ace_scroller:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;content: '';background: rgba(250, 250, 250, 0.01);z-index: 1000;}.ace_dragging.ace_dark .ace_scroller:before{background: rgba(0, 0, 0, 0.01);}.ace_selecting, .ace_selecting * {cursor: text !important;}.ace_gutter {position: absolute;overflow : hidden;width: auto;top: 0;bottom: 0;left: 0;cursor: default;z-index: 4;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_gutter-active-line {position: absolute;left: 0;right: 0;}.ace_scroller.ace_scroll-left {box-shadow: 17px 0 16px -16px rgba(0, 0, 0, 0.4) inset;}.ace_gutter-cell {padding-left: 19px;padding-right: 6px;background-repeat: no-repeat;}.ace_gutter-cell.ace_error {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABOFBMVEX/////////QRswFAb/Ui4wFAYwFAYwFAaWGAfDRymzOSH/PxswFAb/SiUwFAYwFAbUPRvjQiDllog5HhHdRybsTi3/Tyv9Tir+Syj/UC3////XurebMBIwFAb/RSHbPx/gUzfdwL3kzMivKBAwFAbbvbnhPx66NhowFAYwFAaZJg8wFAaxKBDZurf/RB6mMxb/SCMwFAYwFAbxQB3+RB4wFAb/Qhy4Oh+4QifbNRcwFAYwFAYwFAb/QRzdNhgwFAYwFAbav7v/Uy7oaE68MBK5LxLewr/r2NXewLswFAaxJw4wFAbkPRy2PyYwFAaxKhLm1tMwFAazPiQwFAaUGAb/QBrfOx3bvrv/VC/maE4wFAbRPBq6MRO8Qynew8Dp2tjfwb0wFAbx6eju5+by6uns4uH9/f36+vr/GkHjAAAAYnRSTlMAGt+64rnWu/bo8eAA4InH3+DwoN7j4eLi4xP99Nfg4+b+/u9B/eDs1MD1mO7+4PHg2MXa347g7vDizMLN4eG+Pv7i5evs/v79yu7S3/DV7/498Yv24eH+4ufQ3Ozu/v7+y13sRqwAAADLSURBVHjaZc/XDsFgGIBhtDrshlitmk2IrbHFqL2pvXf/+78DPokj7+Fz9qpU/9UXJIlhmPaTaQ6QPaz0mm+5gwkgovcV6GZzd5JtCQwgsxoHOvJO15kleRLAnMgHFIESUEPmawB9ngmelTtipwwfASilxOLyiV5UVUyVAfbG0cCPHig+GBkzAENHS0AstVF6bacZIOzgLmxsHbt2OecNgJC83JERmePUYq8ARGkJx6XtFsdddBQgZE2nPR6CICZhawjA4Fb/chv+399kfR+MMMDGOQAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: 2px center;}.ace_gutter-cell.ace_warning {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX///8AAAD///8AAAAAAABPSzb/5sAAAAB/blH/73z/ulkAAAAAAAD85pkAAAAAAAACAgP/vGz/rkDerGbGrV7/pkQICAf////e0IsAAAD/oED/qTvhrnUAAAD/yHD/njcAAADuv2r/nz//oTj/p064oGf/zHAAAAA9Nir/tFIAAAD/tlTiuWf/tkIAAACynXEAAAAAAAAtIRW7zBpBAAAAM3RSTlMAABR1m7RXO8Ln31Z36zT+neXe5OzooRDfn+TZ4p3h2hTf4t3k3ucyrN1K5+Xaks52Sfs9CXgrAAAAjklEQVR42o3PbQ+CIBQFYEwboPhSYgoYunIqqLn6/z8uYdH8Vmdnu9vz4WwXgN/xTPRD2+sgOcZjsge/whXZgUaYYvT8QnuJaUrjrHUQreGczuEafQCO/SJTufTbroWsPgsllVhq3wJEk2jUSzX3CUEDJC84707djRc5MTAQxoLgupWRwW6UB5fS++NV8AbOZgnsC7BpEAAAAABJRU5ErkJggg==");background-position: 2px center;}.ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAAB2k804AAAAPklEQVQY02NgIB68QuO3tiLznjAwpKTgNyDbMegwisCHZUETUZV0ZqOquBpXj2rtnpSJT1AEnnRmL2OgGgAAIKkRQap2htgAAAAASUVORK5CYII=");background-position: 2px center;}.ace_dark .ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAChoaGAgIAqKiq+vr6tra1ZWVmUlJSbm5s8PDxubm56enrdgzg3AAAAAXRSTlMAQObYZgAAAClJREFUeNpjYMAPdsMYHegyJZFQBlsUlMFVCWUYKkAZMxZAGdxlDMQBAG+TBP4B6RyJAAAAAElFTkSuQmCC");}.ace_scrollbar {position: absolute;right: 0;bottom: 0;z-index: 6;}.ace_scrollbar-inner {position: absolute;cursor: text;left: 0;top: 0;}.ace_scrollbar-v{overflow-x: hidden;overflow-y: scroll;top: 0;}.ace_scrollbar-h {overflow-x: scroll;overflow-y: hidden;left: 0;}.ace_print-margin {position: absolute;height: 100%;}.ace_text-input {position: absolute;z-index: 0;width: 0.5em;height: 1em;opacity: 0;background: transparent;-moz-appearance: none;appearance: none;border: none;resize: none;outline: none;overflow: hidden;font: inherit;padding: 0 1px;margin: 0 -1px;text-indent: -1em;-ms-user-select: text;-moz-user-select: text;-webkit-user-select: text;user-select: text;white-space: pre!important;}.ace_text-input.ace_composition {background: inherit;color: inherit;z-index: 1000;opacity: 1;text-indent: 0;}.ace_layer {z-index: 1;position: absolute;overflow: hidden;word-wrap: normal;white-space: pre;height: 100%;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;pointer-events: none;}.ace_gutter-layer {position: relative;width: auto;text-align: right;pointer-events: auto;}.ace_text-layer {font: inherit !important;}.ace_cjk {display: inline-block;text-align: center;}.ace_cursor-layer {z-index: 4;}.ace_cursor {z-index: 4;position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 2px solid;transform: translatez(0);}.ace_slim-cursors .ace_cursor {border-left-width: 1px;}.ace_overwrite-cursors .ace_cursor {border-left-width: 0;border-bottom: 1px solid;}.ace_hidden-cursors .ace_cursor {opacity: 0.2;}.ace_smooth-blinking .ace_cursor {-webkit-transition: opacity 0.18s;transition: opacity 0.18s;}.ace_editor.ace_multiselect .ace_cursor {border-left-width: 1px;}.ace_marker-layer .ace_step, .ace_marker-layer .ace_stack {position: absolute;z-index: 3;}.ace_marker-layer .ace_selection {position: absolute;z-index: 5;}.ace_marker-layer .ace_bracket {position: absolute;z-index: 6;}.ace_marker-layer .ace_active-line {position: absolute;z-index: 2;}.ace_marker-layer .ace_selected-word {position: absolute;z-index: 4;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}.ace_line .ace_fold {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;display: inline-block;height: 11px;margin-top: -2px;vertical-align: middle;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpi+P//fxgTAwPDBxDxD078RSX+YeEyDFMCIMAAI3INmXiwf2YAAAAASUVORK5CYII=");background-repeat: no-repeat, repeat-x;background-position: center center, top left;color: transparent;border: 1px solid black;border-radius: 2px;cursor: pointer;pointer-events: auto;}.ace_dark .ace_fold {}.ace_fold:hover{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACBJREFUeNpi+P//fz4TAwPDZxDxD5X4i5fLMEwJgAADAEPVDbjNw87ZAAAAAElFTkSuQmCC");}.ace_tooltip {background-color: #FFF;background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.1));background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));border: 1px solid gray;border-radius: 1px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);color: black;max-width: 100%;padding: 3px 4px;position: fixed;z-index: 999999;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: default;white-space: pre;word-wrap: break-word;line-height: normal;font-style: normal;font-weight: normal;letter-spacing: normal;pointer-events: none;}.ace_folding-enabled > .ace_gutter-cell {padding-right: 13px;}.ace_fold-widget {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0 -12px 0 1px;display: none;width: 11px;vertical-align: top;background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42mWKsQ0AMAzC8ixLlrzQjzmBiEjp0A6WwBCSPgKAXoLkqSot7nN3yMwR7pZ32NzpKkVoDBUxKAAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: center;border-radius: 3px;border: 1px solid transparent;cursor: pointer;}.ace_folding-enabled .ace_fold-widget {display: inline-block;   }.ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==");}.ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCAYAAAAG5SQMAAAAOUlEQVR42jXKwQkAMAgDwKwqKD4EwQ26sSOkVWjgIIHAzPiCgaqiqnJHZnKICBERHN194O5b9vbLuAVRL+l0YWnZAAAAAElFTkSuQmCCXA==");}.ace_fold-widget:hover {border: 1px solid rgba(0, 0, 0, 0.3);background-color: rgba(255, 255, 255, 0.2);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);}.ace_fold-widget:active {border: 1px solid rgba(0, 0, 0, 0.4);background-color: rgba(0, 0, 0, 0.05);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);}.ace_dark .ace_fold-widget {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHklEQVQIW2P4//8/AzoGEQ7oGCaLLAhWiSwB146BAQCSTPYocqT0AAAAAElFTkSuQmCC");}.ace_dark .ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAH0lEQVQIW2P4//8/AxQ7wNjIAjDMgC4AxjCVKBirIAAF0kz2rlhxpAAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAHElEQVQIW2P4//+/AxAzgDADlOOAznHAKgPWAwARji8UIDTfQQAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget:hover {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);background-color: rgba(255, 255, 255, 0.1);}.ace_dark .ace_fold-widget:active {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);}.ace_fold-widget.ace_invalid {background-color: #FFB4B4;border-color: #DE5555;}.ace_fade-fold-widgets .ace_fold-widget {-webkit-transition: opacity 0.4s ease 0.05s;transition: opacity 0.4s ease 0.05s;opacity: 0;}.ace_fade-fold-widgets:hover .ace_fold-widget {-webkit-transition: opacity 0.05s ease 0.05s;transition: opacity 0.05s ease 0.05s;opacity:1;}.ace_underline {text-decoration: underline;}.ace_bold {font-weight: bold;}.ace_nobold .ace_bold {font-weight: normal;}.ace_italic {font-style: italic;}.ace_error-marker {background-color: rgba(255, 0, 0,0.2);position: absolute;z-index: 9;}.ace_highlight-marker {background-color: rgba(255, 255, 0,0.2);position: absolute;z-index: 8;}.ace_br1 {border-top-left-radius    : 3px;}.ace_br2 {border-top-right-radius   : 3px;}.ace_br3 {border-top-left-radius    : 3px; border-top-right-radius:    3px;}.ace_br4 {border-bottom-right-radius: 3px;}.ace_br5 {border-top-left-radius    : 3px; border-bottom-right-radius: 3px;}.ace_br6 {border-top-right-radius   : 3px; border-bottom-right-radius: 3px;}.ace_br7 {border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px;}.ace_br8 {border-bottom-left-radius : 3px;}.ace_br9 {border-top-left-radius    : 3px; border-bottom-left-radius:  3px;}.ace_br10{border-top-right-radius   : 3px; border-bottom-left-radius:  3px;}.ace_br11{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-left-radius:  3px;}.ace_br12{border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br13{border-top-left-radius    : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br14{border-top-right-radius   : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br15{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
+/*# sourceURL=ace/css/ace_editor.css */</style><style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}
+/*# sourceURL=ace/css/ace-tm */</style><style>    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }</style><style type="text/css">
+.sidebox-my-contest-history[data-v-530b5260] {
+  overflow: hidden;
+}
+.sidebox-my-contest-record[data-v-530b5260] {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.sidebox-my-contest-record .pull-left[data-v-530b5260] {
+    width: 39%;
+    margin-right: 1%;
+    color: #666;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sidebox-my-contest-record .pull-right[data-v-530b5260] {
+    width: 60%;
+}
+.sidebox-my-contest-record .challenge-meta-status[data-v-530b5260] {
+    position: relative;
+    bottom: 1px;
+}
+.sidebox-record-time[data-v-530b5260] {
+  display: inline-block;
+  margin-left: 4px;
+  color: #666;
+  font-size: 14px;
+}
+.sidebox-footer[data-v-530b5260] {
+  text-align: right;
+}
+.sidebox-footer a[data-v-530b5260] {
+    font-size: 14px;
+}
+</style><style type="text/css">
+.fade-enter-active[data-v-07a2dd56],
+.fade-leave-active[data-v-07a2dd56] {
+  transition: opacity .5s;
+}
+.fade-enter[data-v-07a2dd56],
+.fade-leave-active[data-v-07a2dd56] {
+  opacity: 0;
+}
+.header-message[data-v-07a2dd56] {
+  position: relative;
+  margin-right: 5px;
+}
+.header-message > a[data-v-07a2dd56] {
+  position: relative;
+}
+.header-message > a .fa-bell-o[data-v-07a2dd56] {
+    font-size: 22px;
+    margin-top: -3px;
+}
+.popover[data-v-07a2dd56] {
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: -66px;
+  width: 180px;
+  background: #fff;
+}
+.popover .msg-content[data-v-07a2dd56] {
+    padding: 8px;
+    font-size: 14px;
+    text-align: center;
+}
+.popover .msg-content a[data-v-07a2dd56] {
+      color: #f66;
+}
+.popover .msg-content a[data-v-07a2dd56]:focus, .popover .msg-content a[data-v-07a2dd56]:hover {
+        text-decoration: none;
+}
+.mark[data-v-07a2dd56] {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 1px;
+  height: 1px;
+  background: #f66;
+  border-radius: 50%;
+}
+@media (max-width: 768px) {
+.mark[data-v-07a2dd56] {
+    top: 14px;
+    right: calc(50% - 8px);
+}
+}
+</style><style type="text/css">
+.hidden[data-v-815c5224] {
+  display: none;
+}
+.show[data-v-815c5224] {
+  display: block;
+}
+.fade-enter-active[data-v-815c5224],
+.fade-leave-active[data-v-815c5224] {
+  transition: opacity .5s;
+}
+.fade-enter[data-v-815c5224],
+.fade-leave-active[data-v-815c5224] {
+  opacity: 0;
+}
+.header-userbox a[data-v-815c5224] {
+  display: block;
+  padding: 0;
+}
+.header-avatar[data-v-815c5224] {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+.vip-icon[data-v-815c5224] {
+  position: absolute;
+  bottom: 0;
+  right: calc(50% - 30px);
+  width: 20px;
+  height: 20px;
+}
+@media (min-width: 768px) {
+.vip-icon[data-v-815c5224] {
+    right: 0;
+}
+}
+.user[data-v-815c5224] {
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: -150px;
+  width: 300px;
+  height: 320px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 4px 1px #ccc;
+  z-index: 999 !important;
+}
+.user[data-v-815c5224]:before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: 0;
+    width: 220px;
+    height: 50px;
+}
+.user.popover > .arrow[data-v-815c5224] {
+    left: 63%;
+}
+.user-info[data-v-815c5224] {
+  overflow: hidden;
+}
+.user-info a[data-v-815c5224] {
+    float: left;
+}
+.user-info a img[data-v-815c5224] {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+      border-radius: 50%;
+}
+.username[data-v-815c5224] {
+  position: relative;
+}
+.username > img[data-v-815c5224] {
+    width: 20px;
+    position: absolute;
+    left: -30px;
+    bottom: 10px;
+}
+.username > span[data-v-815c5224] {
+    display: inline-block;
+    max-width: 150px;
+    color: #666;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.username > span.user-level[data-v-815c5224] {
+      color: #fec42d;
+      font-size: 14px;
+      font-weight: 700;
+}
+.username > p[data-v-815c5224] {
+    color: #A4A4A4;
+    font-size: 12px;
+    margin-top: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 170px;
+    text-overflow: ellipsis;
+}
+.marked-words[data-v-815c5224] {
+  width: 100%;
+  color: #A4A4A4 !important;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  position: absolute;
+  top: 130px;
+  left: 0;
+}
+.marked-words > a[data-v-815c5224] {
+    color: #A4A4A4 !important;
+    font-size: 12px;
+}
+.marked-words > a[data-v-815c5224]:hover, .marked-words > a[data-v-815c5224]:focus {
+      text-decoration: none;
+      color: #A4A4A4;
+}
+.start-experiment > a[data-v-815c5224] {
+  display: inline-block;
+  width: 240px;
+  height: 35px;
+  line-height: 35px;
+  background-color: #08BF91;
+  border-radius: 100px;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #fff;
+}
+.start-experiment > a[data-v-815c5224]:hover, .start-experiment > a[data-v-815c5224]:focus {
+    text-decoration: none;
+    color: #fff;
+}
+.user-links[data-v-815c5224] {
+  margin-top: 30px;
+}
+.user-links .row > div[data-v-815c5224] {
+    padding-right: 0;
+    padding-left: 10px;
+}
+.user-links .row a[data-v-815c5224],
+  .user-links .row .invite-user-btn[data-v-815c5224] {
+    width: 115px;
+    height: 30px;
+    line-height: 30px;
+    margin: 5px 0 10px;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid #eee;
+    *display: inline;
+    *zoom: 1;
+}
+.user-links .row a[data-v-815c5224]:focus, .user-links .row a[data-v-815c5224]:hover,
+    .user-links .row .invite-user-btn[data-v-815c5224]:focus,
+    .user-links .row .invite-user-btn[data-v-815c5224]:hover {
+      text-decoration: none;
+}
+.user-links .row a[data-v-815c5224]:hover,
+    .user-links .row .invite-user-btn[data-v-815c5224]:hover {
+      background: #eee;
+}
+.user-links .invite-user-btn[data-v-815c5224] {
+    margin: 0 !important;
+}
+.user-links a.member-index[data-v-815c5224] {
+    border: 1px solid #f66;
+    color: #f66;
+}
+.user-links a.member-index[data-v-815c5224]:hover, .user-links a.member-index[data-v-815c5224]:focus {
+      background: #f66;
+      color: #fff;
+}
+.feedback[data-v-815c5224] {
+  font-size: 12px;
+  color: #C6C6C6;
+  margin-top: 35px;
+  margin-left: calc(50% - 96px);
+}
+.friendly-link[data-v-815c5224] {
+  margin-top: 10px;
+}
+.friendly-link .invite-user[data-v-815c5224] {
+    width: 240px;
+    color: #C6C6C6;
+    font-size: 12px;
+}
+.friendly-link .invite-user img[data-v-815c5224] {
+      width: 18px;
+      height: 18px;
+}
+.friendly-link .invite-user a[data-v-815c5224] {
+      display: inline-block;
+      width: 18px;
+}
+.log-out[data-v-815c5224] {
+  display: block;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 20px;
+  width: 100%;
+  text-align: right;
+}
+.log-out a[data-v-815c5224] {
+    display: inline-block;
+    color: #999;
+    font-size: 14px;
+}
+.log-out a[data-v-815c5224]:hover, .log-out a[data-v-815c5224]:focus {
+      text-decoration: none;
+      color: #999;
+}
+.invite-user-link[data-v-815c5224] {
+  display: none;
+}
+.invite-user-msg[data-v-815c5224] {
+  position: absolute;
+  bottom: -20px;
+}
+.no_member_vm[data-v-815c5224] {
+  background: #ddd !important;
+}
+.no_member_vm .memberVmIcon[data-v-815c5224] {
+    margin-left: 5px;
+}
+.is-member[data-v-815c5224] {
+  cursor: default;
+}
+</style><style type="text/css">
+.header-learn-info[data-v-33ac7940] {
+  float: right;
+  width: 100%;
+  padding: 23.5px 10px;
+  margin: 0;
+  position: relative;
+}
+.header-learn-info > span[data-v-33ac7940] {
+    font-size: 16px;
+    color: #666;
+}
+.header-learn-info > span img[data-v-33ac7940] {
+      transform: rotate(-90deg);
+}
+.header-learn-info > span[data-v-33ac7940]:hover {
+      cursor: pointer;
+}
+.home-page[data-v-33ac7940] {
+  color: #666;
+}
+.home-page[data-v-33ac7940]:hover {
+    text-decoration: none;
+    color: #08bf91;
+}
+@media (min-width: 768px) {
+.header-learn-info[data-v-33ac7940] {
+    width: auto;
+}
+}
+@media (max-width: 1200px) {
+.header-learn-info[data-v-33ac7940] {
+    display: none;
+}
+}
+.fade-enter-active[data-v-33ac7940],
+.fade-leave-active[data-v-33ac7940] {
+  transition: opacity .5s;
+}
+.fade-enter[data-v-33ac7940],
+.fade-leave-active[data-v-33ac7940] {
+  opacity: 0;
+}
+.learninfo-box[data-v-33ac7940] {
+  display: block;
+  width: 223px;
+  margin-top: 60px;
+  margin-bottom: 20px;
+  padding: 20px;
+  left: 35px;
+  background: #fff;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  border: none;
+}
+.learninfo-box .lab-running > span[data-v-33ac7940] {
+    font-size: 14px;
+    color: #a4a4a4;
+}
+.learninfo-box .lab-running .lab-running-name[data-v-33ac7940] {
+    font-size: 14px;
+    padding: 10px 0;
+}
+.learninfo-box .lab-running .lab-running-name > span[data-v-33ac7940] {
+      max-width: 60%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: inline-block;
+}
+.learninfo-box .lab-running .lab-running-name .lab-continue[data-v-33ac7940] {
+      background: #08bf91;
+      font-size: 12px;
+      color: #fff;
+      border: none;
+      padding: 2px 12px;
+      margin-top: -1px;
+}
+.learninfo-box .learn-records > span[data-v-33ac7940] {
+    font-size: 14px;
+    color: #a4a4a4;
+}
+.learninfo-box .learn-records .records-list[data-v-33ac7940] {
+    margin-top: 10px;
+}
+.learninfo-box .learn-records .records-list .record-item[data-v-33ac7940] {
+      display: inline-block;
+      font-size: 14px;
+      color: #666;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 10px;
+}
+.learninfo-box .learn-records .records-list .record-item[data-v-33ac7940]:hover {
+        text-decoration: none;
+        background-color: #f5f5f5;
+}
+.learninfo-box .learn-records .record-view-all[data-v-33ac7940] {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+.learninfo-box .learn-records .record-view-all[data-v-33ac7940]:hover {
+      text-decoration: none;
+}
+@media (min-width: 768px) {
+.learninfo-box[data-v-33ac7940] {
+    left: -30px;
+    margin-bottom: 0;
+}
+}
+</style><style type="text/css">
+.side-new-contest .sidebox-body[data-v-7d67fa2d] {
+  overflow: hidden;
+}
+.side-new-contest .sidebox-body span[data-v-7d67fa2d] {
+    position: relative;
+    top: 4px;
+    color: #3a3a3a;
+    font-size: 14px;
+}
+.side-new-contest .sidebox-body .btn[data-v-7d67fa2d] {
+    padding: 2px 10px;
+    color: #08bf91;
+    font-size: 14px;
+    border: solid 1px #08bf91;
+}
+.side-new-contest .sidebox-body .btn[data-v-7d67fa2d]:hover, .side-new-contest .sidebox-body .btn[data-v-7d67fa2d]:focus {
+      color: #fff;
+      background: #09bf91;
+}
+</style><style type="text/css">
+a[data-v-9b3c8994] {
+    display: inline-block;
+}
+.fa[data-v-9b3c8994] {
+    padding: 4px;
+    color: #274a59;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+}
+.fa[data-v-9b3c8994]:hover {
+    color: #ec5353;
+}
+.pull-left[data-v-9b3c8994] {
+    margin-left: 10px;
+}
+
+/*# sourceURL=/home/shiyanlou/shiyanlou/simplecloud/app/src/base/components/weibo.vue?ddc63646 */
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3NoaXlhbmxvdS9zaGl5YW5sb3Uvc2ltcGxlY2xvdWQvYXBwL3NyYy9iYXNlL2NvbXBvbmVudHMvd2VpYm8udnVlP2RkYzYzNjQ2Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFrQ0E7SUFDQSxzQkFBQTtDQUNBO0FBQ0E7SUFDQSxhQUFBO0lBQ0EsZUFBQTtJQUNBLGlCQUFBO0lBQ0EsZ0JBQUE7SUFDQSxtQkFBQTtDQUNBO0FBQ0E7SUFDQSxlQUFBO0NBQ0E7QUFDQTtJQUNBLGtCQUFBO0NBQ0EiLCJmaWxlIjoid2VpYm8udnVlIiwic291cmNlc0NvbnRlbnQiOlsiPHRlbXBsYXRlPlxuPGEgOmhyZWY9XCJocmVmXCIgOmNsYXNzPVwieyAnYnRuIGJ0bi1wcmltYXJ5JzogaXNCdG4gLCAncHVsbC1sZWZ0JzogaXNMZWZ0fVwiIHRhcmdldD1cIl9ibGFua1wiPlxuICAgIDxzcGFuIHYtaWY9XCJpc0J0blwiPuWIhuS6q+WIsOW+ruWNmjwvc3Bhbj5cbiAgICA8aW1nIDpzcmM9XCJpY29uXCIgYWx0PVwiXCI+XG48L2E+XG48L3RlbXBsYXRlPlxuXG48c2NyaXB0PlxuZXhwb3J0IGRlZmF1bHQge1xuICAgIHByb3BzOiBbJ2lzQnRuJywgJ3BhdGgnLCAndGl0bGUnLCAncGljJywgJ2ljb24nLCAnaXNMZWZ0JywgJ3VybCddLFxuICAgIGRhdGEoKSB7XG4gICAgICAgIHJldHVybiB7XG4gICAgICAgICAgICBocmVmOiAnJyxcbiAgICAgICAgICAgIHBhcmFtczoge1xuICAgICAgICAgICAgICAgIHRpdGxlOiB0aGlzLnRpdGxlLFxuICAgICAgICAgICAgICAgIGFwcGtleTogJzEzNDM3MTMwNTMnLFxuICAgICAgICAgICAgICAgIHBpYzogKHRoaXMucGljICYmIHRoaXMucGljLmxlbmd0aCkgPyB0aGlzLnBpYyA6IFsnaHR0cHM6Ly9zdGF0aWMuc2hpeWFubG91LmNvbS9pbWcvbG9nby1iYXNlLnBuZyddLFxuICAgICAgICAgICAgICAgIHNlYXJjaFBpYzogZmFsc2UsXG4gICAgICAgICAgICAgICAgdXJsOiB0aGlzLnVybFxuICAgICAgICAgICAgfSxcbiAgICAgICAgICAgIHdlaWJvVXJsOiB0aGlzLnVybCA/IGBodHRwOi8vc2VydmljZS53ZWliby5jb20vc2hhcmUvc2hhcmUucGhwP3VybD0ke3RoaXMudXJsfSBgOiBgaHR0cDovL3NlcnZpY2Uud2VpYm8uY29tL3NoYXJlL3NoYXJlLnBocD91cmw9aHR0cHM6Ly93d3cuc2hpeWFubG91LmNvbWAsXG4gICAgICAgIH07XG4gICAgfSxcbiAgICBtb3VudGVkKCkge1xuICAgICAgICB0aGlzLmhyZWYgPSBgJHt0aGlzLndlaWJvVXJsfSR7dGhpcy5wYXRofWBcbiAgICAgICAgICAgICsgYCZ0aXRsZT0ke2VuY29kZVVSSUNvbXBvbmVudCh0aGlzLnBhcmFtcy50aXRsZSl9YFxuICAgICAgICAgICAgKyBgJmFwcGtleT0ke3RoaXMucGFyYW1zLmFwcGtleX1gXG4gICAgICAgICAgICArIGAmcGljPSR7dGhpcy5wYXJhbXMucGljLmpvaW4oJ3x8Jyl9YFxuICAgICAgICAgICAgKyBgJnNlYXJjaFBpYz0ke3RoaXMucGFyYW1zLnNlYXJjaFBpY31gO1xuICAgIH1cbn1cbjwvc2NyaXB0PlxuXG48c3R5bGUgc2NvcGVkPlxuYSB7XG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xufVxuLmZhIHtcbiAgICBwYWRkaW5nOiA0cHg7XG4gICAgY29sb3I6ICMyNzRhNTk7XG4gICAgYmFja2dyb3VuZDogI2ZmZjtcbiAgICBmb250LXNpemU6IDE0cHg7XG4gICAgYm9yZGVyLXJhZGl1czogNHB4O1xufVxuLmZhOmhvdmVyIHtcbiAgICBjb2xvcjogI2VjNTM1Mztcbn1cbi5wdWxsLWxlZnQge1xuICAgIG1hcmdpbi1sZWZ0OiAxMHB4O1xufVxuPC9zdHlsZT5cblxuIl0sInNvdXJjZVJvb3QiOiIifQ== */</style><style type="text/css">
+.search-autocomplete[data-v-72bea96c] {
+  position: absolute;
+  top: 35px;
+  left: 1px;
+  width: 195px;
+  padding: 4px;
+  border: solid 1px #ddd;
+  border-top: none;
+  background: #fff;
+  z-index: 1000;
+}
+.search-autocomplete a[data-v-72bea96c] {
+    display: block;
+    padding: 6px 8px;
+    color: #4c5157;
+    font-size: 13px;
+}
+.search-autocomplete a[data-v-72bea96c]:hover, .search-autocomplete a[data-v-72bea96c]:focus {
+      color: #fff;
+      background: #0c9;
+      text-decoration: none;
+}
+</style></head>
+
+    <body>
+        
+
+
+        
+<div class="layout layout-margin-top layout-fullscreen">
+    <div class="container">
+        
+        
+    </div>
+    
+<div class="lab-btns">
+    
+        
+
+        
+
+        
+            
+        
+
+        
+        <div>
+            <img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/best-study-way.png">
+            <a class="  lab-item-start " data-mobile-url="/courses/document/1867" data-url="/courses/start/1867" data-next="/courses/running">
+                <img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/labdoc-start.png">
+                <span>开始<br>实验</span>
+            </a>
+        </div>
+    
+    <div>
+        <a data-toggle="modal" href="#askquestion">
+            <img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/labdoc-question.png">
+            <span>我要<br>提问</span>
+        </a>
+    </div>
+    <div>
+        <a class="commit-error">
+            <img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/labdoc-jiucuo.png">
+            <span>我要<br>纠错</span>
+        </a>
+    </div>
+</div>
+<div class="labdoc-header">
+    <a href="https://www.shiyanlou.com/courses/552">
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+        Python实现简单的Web服务器
+    </a>
+    
+</div>
+<div class="labdoc-nav">
+    <div class="labdoc-nav-content">
+                <h2 class="">
+                    <a href="#labdoc-header-0">一、实验介绍</a>
+                </h2>
+            
+                <h3 class="">
+                    <a href="#labdoc-header-1">1.1 课程来源</a>
+                </h3>
+            
+                <h3 class="">
+                    <a href="#labdoc-header-2">1.2 实验简介</a>
+                </h3>
+            
+                <h3 class="">
+                    <a href="#labdoc-header-3">1.3 实验知识点</a>
+                </h3>
+            
+                <h3 class="">
+                    <a href="#labdoc-header-4">1.4 实验环境</a>
+                </h3>
+            
+                <h3 class="">
+                    <a href="#labdoc-header-5">1.5 适合人群</a>
+                </h3>
+            
+                <h2 class="">
+                    <a href="#labdoc-header-6">二、实验原理</a>
+                </h2>
+            
+                <h2 class="">
+                    <a href="#labdoc-header-7">三、开发准备</a>
+                </h2>
+            
+                <h2 class="">
+                    <a href="#labdoc-header-8">四、实验步骤</a>
+                </h2>
+            
+                <h3 class="">
+                    <a href="#labdoc-header-9">4.1 你好, web</a>
+                </h3>
+            
+                <h3 class="">
+                    <a href="#labdoc-header-10">4.2 显示请求的信息</a>
+                </h3>
+            
+                <h3 class="">
+                    <a href="#labdoc-header-11">4.3 响应静态页面</a>
+                </h3>
+            
+                <h2 class="">
+                    <a href="#labdoc-header-12">4.4 在根url显示首页内容</a>
+                </h2>
+            
+                <h3 class="">
+                    <a href="#labdoc-header-13">4.5 CGI协议</a>
+                </h3>
+            
+                <h3 class="active">
+                    <a href="#labdoc-header-14">4.6 代码重构</a>
+                </h3>
+            
+                <h2 class="">
+                    <a href="#labdoc-header-15">五、实验总结</a>
+                </h2>
+            
+                <h2>
+                    <a href="#labdoc-header-16">六、参考资料</a>
+                </h2>
+            </div>
+    
+</div>
+<div class="labdoc-content-container">
+    <div class="markdown-body labdoc-content"><div><h1 id="python-web-">Python实现简单的Web服务器</h1>
+<h2 id="labdoc-header-0">一、实验介绍</h2>
+<h3 id="labdoc-header-1">1.1 课程来源</h3>
+<p>本课程核心部分来自<a href="https://github.com/aosabook/500lines/blob/master/web-server" target="_blank">《500 lines or less》</a>项目，作者是 Mozilla 的 Greg Wilson。项目代码使用 MIT 协议，项目文档使用 <a href="http://creativecommons.org/licenses/by/3.0/legalcode" target="_blank">http://creativecommons.org/licenses/by/3.0/legalcode</a> 协议。</p>
+<p>课程内容在原文档基础上做了稍许修改，增加了部分原理介绍，步骤的拆解分析及源代码注释。</p>
+<h3 id="labdoc-header-2">1.2 实验简介</h3>
+<p>互联网在过去20年里已经大大地改变了我们的生活方式，影响着社会。但是反观互联网，它的基础－web的核心原理并没有改变多少。大部分web系统
+仍旧遵守 Tim Berners-Lee 20 多年前提出的 W3C 标准，大部分web服务器接收的信息格式与接收的方式与过去并无二致。</p>
+<p>本课程将通过使用 Python 语言实现一个 Web 服务器，探索 HTTP 协议和 Web 服务的基本原理，同时学习 Python 如何实现 Web 服务请求、响应、错误处理及CGI协议，最后会根据项目需求使用 Python 面向对象思路对代码进行重构。</p>
+<h3 id="labdoc-header-3">1.3 实验知识点</h3>
+<p>本课程项目完成过程中，我们将学习：</p>
+<ol>
+<li>HTTP 协议基本原理</li>
+<li>简单的 Web 服务器框架</li>
+<li>Python 语言的网络开发</li>
+<li>Web 服务请求，响应及错误处理的实现</li>
+<li>CGI 协议的 Python 实现</li>
+<li>使用 Python 面向对象思想重构代码</li>
+</ol>
+<h3 id="labdoc-header-4">1.4 实验环境</h3>
+<ul>
+<li>python2.7   </li>
+<li>Xfce终端</li>
+</ul>
+<h3 id="labdoc-header-5">1.5 适合人群</h3>
+<p>本课程难度为中等，适合具有Python基础的用户，熟悉python基础知识加深巩固。</p>
+<h2 id="labdoc-header-6">二、实验原理</h2>
+<p>想要了解http原理， <a href="https://launchschool.com/books/http" target="_blank">Introduction to HTTP</a> 是一个不错的选择，也可以参考它的中文翻译版: <a href="http://www.kancloud.cn/kancloud/tealeaf-http" target="_blank">HTTP 下午茶</a></p>
+<p>这里我们简单过一遍我们需要了解的部分。</p>
+<p>一般我们的web程序都运行在 TCP/IP 协议上，程序之间使用 socket(套接字) 进行通信，它能够让计算机之间的通信就像写文件和读文件一样简单。</p>
+<p>一个 tcp socket 由一个IP地址和端口号组成。 </p>
+<ul>
+<li>IP地址是一个32位的二进制数，通常被分割为4个“8位二进制数”,写成10进制的形式就是我们常见的 174.136.14.108。我们通过IP地址来标识所连接的主机。</li>
+<li>端口号是一个范围在0-65535之间的数字，一台主机上可能同时有多个sockets，因此需要端口号进行标识。端口号0-1023 是保留给操作系统使用的，我们可以使用剩下的端口号。</li>
+</ul>
+<p>超文本传输协议（HTTP）描述了一种程序之间交换数据的方法，它非常简单易用，在一个socket连接上，客户端首先发送请求说明它需要什么，然后服务器发送响应，并在响应中包含客户端的数据。响应数据也许是从本地磁盘上复制来的，也许是程序动态生成的。传输过程如图：</p>
+<p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_010.png" alt="此处输入图片的描述"></p>
+<p>HTTP请求就是一段文本，任何程序都能生成一个http请求，就像生成文本一样简单。这段文本需要包含以下这些部分：</p>
+<p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_006.png" alt="此处输入图片的描述"></p>
+<ul>
+<li>HTTP method：HTTP请求方法。最常用的就是 <code>GET</code>(抓取数据)与<code>POST</code>(更新数据或者上传文件)</li>
+<li>URL：通常是客户端请求的文件的路径，比如 /research/experiments.html， 但是是否响应文件都是由服务器决定的。</li>
+<li>HTTP version：HTTP版本。通常是 HTTP/1.0 或 HTTP/1.1</li>
+<li>header field：HTTP头内的键值对，做一些基本设置，就像下面这样。</li>
+</ul>
+<pre><code class="hljs php"><span class="hljs-comment">#客户端接受的数据类型</span>
+Accept: text/html
+<span class="hljs-comment">#客户端接受的语言</span>
+Accept-Language: en, fr         
+<span class="hljs-keyword">If</span>-Modified-Since: <span class="hljs-number">16</span>-May<span class="hljs-number">-2005</span>
+
+
+</code></pre><ul>
+<li>body： 一些与请求有关的负载数据了。比如在一个网站登陆的时候提交登陆表单，那负载数据就是你的账号与密码信息了。</li>
+</ul>
+<p>HTTP响应的结构类似于请求：</p>
+<p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_002.png" alt="此处输入图片的描述"></p>
+<ul>
+<li>status code：状态码。请求成功响应200，请求的文件找不到则响应404。</li>
+<li>status phrase：对状态码的描述。</li>
+</ul>
+<h2 id="labdoc-header-7">三、开发准备</h2>
+<p>打开终端，进入Code目录，创建 web-server 文件夹, 并将其作为我们的工作目录。</p>
+<pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> Code
+$ mkdir web-server &amp;&amp; <span class="hljs-built_in">cd</span> web-server
+
+
+</code></pre><p>本实验使用<code>httpie</code>代替浏览器发送请求并在终端打印响应信息。</p>
+<pre><code class="hljs cs">$ sudo apt-<span class="hljs-keyword">get</span> install httpie
+
+
+
+</code></pre><h2 id="labdoc-header-8">四、实验步骤</h2>
+<h3 id="labdoc-header-9">4.1 你好, web</h3>
+<p>现在就来写我们第一个web服务器吧， 基本概念非常简单：</p>
+<ol>
+<li>等待某个人连接我们的服务器并向我们发送一个HTTP请求</li>
+<li>解析该请求</li>
+<li>了解该请求希望请求的内容</li>
+<li>服务器根据请求抓取需要的数据（从服务器本地文件中读或者程序动态生成）</li>
+<li>将数据格式化为请求需要的格式</li>
+<li>送回HTTP响应</li>
+</ol>
+<p>步骤1，2，6的操作对所有web应用都是一样的，这部分内容Python标准库中的 <code>BaseHTTPServer</code> 模块可以帮助我们处理。我们只需要关注步骤3～5。</p>
+<p>首先在工作目录下创建 <code>server.py</code> 文件</p>
+<pre><code class="hljs python"><span class="hljs-comment">#-*- coding:utf-8 -*-</span>
+<span class="hljs-keyword">import</span> BaseHTTPServer
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RequestHandler</span><span class="hljs-params">(BaseHTTPServer.BaseHTTPRequestHandler)</span>:</span>
+    <span class="hljs-string">'''处理请求并返回页面'''</span>
+
+    <span class="hljs-comment"># 页面模板</span>
+    Page = <span class="hljs-string">'''\
+        &lt;html&gt;
+        &lt;body&gt;
+        &lt;p&gt;Hello, web!&lt;/p&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+    '''</span>
+
+    <span class="hljs-comment"># 处理一个GET请求</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_GET</span><span class="hljs-params">(self)</span>:</span>
+        self.send_response(<span class="hljs-number">200</span>)
+        self.send_header(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"text/html"</span>)
+        self.send_header(<span class="hljs-string">"Content-Length"</span>, str(len(self.Page)))
+        self.end_headers()
+        self.wfile.write(self.Page)
+
+<span class="hljs-comment">#----------------------------------------------------------------------</span>
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    serverAddress = (<span class="hljs-string">''</span>, <span class="hljs-number">8080</span>)
+    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
+    server.serve_forever()
+
+
+</code></pre><p>模块的 <code>BaseHTTPRequestHandler</code> 类会帮我们处理对请求的解析，并通过确定请求的方法来调用其对应的函数，比如方法是 <code>GET</code> ,该类就会调用名为 <code>do_GET</code> 的方法。<code>RequestHandler</code> 继承了 <code>BaseHTTPRequestHandler</code> 并重写了 <code>do_GET</code> 方法，其效果如代码所示是返回 <code>Page</code> 的内容。 <code>Content-Type</code> 告诉了客户端要以处理html文件的方式处理返回的内容。<code>end_headers</code> 方法会插入一个空白行，如之前的request结构图所示。</p>
+<p>运行我们的第一个 web服务器</p>
+<pre><code class="hljs ruby">$ python server.py
+
+
+</code></pre><p>可以在浏览器地址输入 <code>127.0.0.1:8080</code> 进行查看</p>
+<p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_011.png" alt="此处输入图片的描述"></p>
+<p>方便起见，还是让我们新开一个终端窗口，使用<code>httpie</code>来查看输出(之后都使用<code>httpie</code>来查看输出)</p>
+<pre><code class="hljs ruby">$ http <span class="hljs-number">127.0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">8080</span>
+
+
+</code></pre><p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_005.png" alt="此处输入图片的描述"></p>
+<p><code>httpie</code>很贴心地显示了响应报文的全部内容。</p>
+<h3 id="labdoc-header-10">4.2 显示请求的信息</h3>
+<p>修改之前的代码来显示请求的信息，同时重新整理一下代码：</p>
+<pre><code class="hljs ruby"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RequestHandler</span>(<span class="hljs-title">BaseHTTPServer</span>.<span class="hljs-title">BaseHTTPRequestHandler</span>):</span>
+
+    <span class="hljs-comment"># ...页面模板...</span>
+    Page＝<span class="hljs-string">"..待设计.."</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_GET</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+        page = <span class="hljs-keyword">self</span>.create_page()
+        <span class="hljs-keyword">self</span>.send_content(page)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_page</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+        <span class="hljs-comment"># ...待实现...</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_content</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, page)</span></span>:
+        <span class="hljs-comment"># ...待实现...</span>
+
+
+</code></pre><p><code>send_content</code> 与之前 <code>do_GET</code> 内的代码一样：</p>
+<pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_content</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, page)</span></span>:
+    <span class="hljs-keyword">self</span>.send_response(<span class="hljs-number">200</span>)
+    <span class="hljs-keyword">self</span>.send_header(<span class="hljs-string">"Content-type"</span>, <span class="hljs-string">"text/html"</span>)
+    <span class="hljs-keyword">self</span>.send_header(<span class="hljs-string">"Content-Length"</span>, str(len(page)))
+    <span class="hljs-keyword">self</span>.end_headers()
+    <span class="hljs-keyword">self</span>.wfile.write(page)
+
+
+</code></pre><p>设计页面模版</p>
+<pre><code class="hljs xml">Page = '''\
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">table</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>  <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>Header<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>         <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>Value<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>          <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>  <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>Date and time<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>  <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>{date_time}<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>    <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>  <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>Client host<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>    <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>{client_host}<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>  <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>  <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>Client port<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>    <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>{client_port}<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>  <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>Command<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>{command}<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>      <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>  <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>Path<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>           <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>{path}<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>         <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+'''
+
+
+</code></pre><p>实现<code>create_page</code></p>
+<pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_page</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+    values = {
+        <span class="hljs-string">'date_time'</span>   : <span class="hljs-keyword">self</span>.date_time_string(),
+        <span class="hljs-string">'client_host'</span> : <span class="hljs-keyword">self</span>.client_address[<span class="hljs-number">0</span>],
+        <span class="hljs-string">'client_port'</span> : <span class="hljs-keyword">self</span>.client_address[<span class="hljs-number">1</span>],
+        <span class="hljs-string">'command'</span>     : <span class="hljs-keyword">self</span>.command,
+        <span class="hljs-string">'path'</span>        : <span class="hljs-keyword">self</span>.path
+    }
+    page = <span class="hljs-keyword">self</span>.Page.format(**values)
+    <span class="hljs-keyword">return</span> page
+
+
+</code></pre><p>main中的内容不用去修改它。</p>
+<p>运行看看</p>
+<pre><code class="hljs ruby">$ http <span class="hljs-number">127.0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">8080</span>/something.html
+
+
+</code></pre><p>效果图：</p>
+<p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_007.png" alt="此处输入图片的描述"></p>
+<p>注意到它仍旧返回了200 OK而不是404 Not Found，即使 something.html 
+文件并不存在。那是因为我们现在的web服务器还没有实现找不到文件就返回404错误的功能。反过来说，只要我们想，可以通过编程实现任何我们想要的效
+果，像是随机返回一个维基百科的页面或是帮老王家订一个披萨(并不会)。</p>
+<p>怎么解决返回404的问题呢，首先得有返回文件的功能吧。</p>
+<h3 id="labdoc-header-11">4.3 响应静态页面</h3>
+<p>所以这一步就该处理静态页面了，处理静态页面就是根据请求的页面名得到磁盘上的页面文件并返回。</p>
+<p>在当前目录下创建新文件 plain.html，这是我们测试用的静态页面</p>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Plain Page<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Plain Page<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Nothin' but HTML.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+
+
+
+</code></pre><p>在 <code>server.py</code> 中导入需要的库</p>
+<pre><code class="hljs coffeescript"><span class="hljs-keyword">import</span> sys, os, BaseHTTPServer
+
+
+</code></pre><p>为我们的服务器程序写一个异常类</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ServerException</span><span class="hljs-params">(Exception)</span>:</span>
+    <span class="hljs-string">'''服务器内部错误'''</span>
+    <span class="hljs-keyword">pass</span>
+
+
+
+</code></pre><p>重写 <code>do_GET</code> 函数：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_GET</span><span class="hljs-params">(self)</span>:</span>
+    <span class="hljs-keyword">try</span>:
+
+        <span class="hljs-comment"># 文件完整路径</span>
+        full_path = os.getcwd() + self.path
+
+        <span class="hljs-comment"># 如果该路径不存在...</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(full_path):
+            <span class="hljs-comment">#抛出异常：文件未找到</span>
+            <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"'{0}' not found"</span>.format(self.path))
+
+        <span class="hljs-comment"># 如果该路径是一个文件</span>
+        <span class="hljs-keyword">elif</span> os.path.isfile(full_path):
+            <span class="hljs-comment">#调用 handle_file 处理该文件</span>
+            self.handle_file(full_path)
+
+        <span class="hljs-comment"># 如果该路径不是一个文件</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment">#抛出异常：该路径为不知名对象</span>
+            <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"Unknown object '{0}'"</span>.format(self.path))
+
+    <span class="hljs-comment"># 处理异常</span>
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> msg:
+        self.handle_error(msg)
+
+
+</code></pre><p>首先看完整路径的代码，<code>os.getcwd()</code> 是当前的工作目录，<code>self.path</code> 保存了请求的相对路径，不要忘了 <code>RequestHandler</code> 继承自 <code>BaseHTTPRequestHandler</code>，它已经帮我们将请求的相对路径保存在<code>self.path</code>中了。</p>
+<p>编写文件处理函数：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_file</span><span class="hljs-params">(self, full_path)</span>:</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">with</span> open(full_path, <span class="hljs-string">'rb'</span>) <span class="hljs-keyword">as</span> reader:
+            content = reader.read()
+        self.send_content(content)
+    <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> msg:
+        msg = <span class="hljs-string">"'{0}' cannot be read: {1}"</span>.format(self.path, msg)
+        self.handle_error(msg)
+
+
+</code></pre><p>注意到我们是以二进制模式打开文件的，这样读文件的时候就不会对读取的内容做多余的处理。</p>
+<p>接着，实现我们的错误处理函数并设计错误页面模板</p>
+<pre><code class="hljs python">Error_Page = <span class="hljs-string">"""\
+    &lt;html&gt;
+    &lt;body&gt;
+    &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
+    &lt;p&gt;{msg}&lt;/p&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+    """</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_error</span><span class="hljs-params">(self, msg)</span>:</span>
+    content = self.Error_Page.format(path=self.path, msg=msg)
+    self.send_content(content)
+
+
+</code></pre><p>运行看看</p>
+<pre><code class="hljs ruby">$ http <span class="hljs-number">127.0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">8080</span>/plain.html
+
+
+</code></pre><p>效果图</p>
+<p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_008.png" alt="此处输入图片的描述"></p>
+<p>再测试一下错误的路径</p>
+<pre><code class="hljs ruby">$ http <span class="hljs-number">127.0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">8080</span>/something.html
+
+
+
+</code></pre><p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_004.png" alt="此处输入图片的描述"></p>
+<p>确实返回了错误页面但同时注意到返回的是200状态码，我们希望它能够返回404，所以还需要修改一下 <code>handle_error</code> 与 <code>send_content</code> 函数</p>
+<pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_error</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, msg)</span></span>:
+    content = <span class="hljs-keyword">self</span>.Error_Page.format(path=<span class="hljs-keyword">self</span>.path, msg=msg)
+    <span class="hljs-keyword">self</span>.send_content(content, <span class="hljs-number">404</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_content</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, content, status=<span class="hljs-number">200</span>)</span></span>:
+    <span class="hljs-keyword">self</span>.send_response(status)
+    <span class="hljs-keyword">self</span>.send_header(<span class="hljs-string">"Content-type"</span>, <span class="hljs-string">"text/html"</span>)
+    <span class="hljs-keyword">self</span>.send_header(<span class="hljs-string">"Content-Length"</span>, str(len(content)))
+    <span class="hljs-keyword">self</span>.end_headers()
+    <span class="hljs-keyword">self</span>.wfile.write(content)
+
+
+</code></pre><p>测试看看</p>
+<pre><code class="hljs ruby">$ http <span class="hljs-number">127.0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">8080</span>/something.html
+
+
+</code></pre><p>这回就对了。</p>
+<p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_003.png" alt="此处输入图片的描述"></p>
+<p>至今为止的代码：</p>
+<pre><code class="hljs python"><span class="hljs-comment">#-*- coding:utf-8 -*-</span>
+<span class="hljs-keyword">import</span> sys, os, BaseHTTPServer
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ServerException</span><span class="hljs-params">(Exception)</span>:</span>
+    <span class="hljs-string">'''服务器内部错误'''</span>
+    <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RequestHandler</span><span class="hljs-params">(BaseHTTPServer.BaseHTTPRequestHandler)</span>:</span>
+
+    Error_Page = <span class="hljs-string">"""\
+    &lt;html&gt;
+    &lt;body&gt;
+    &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
+    &lt;p&gt;{msg}&lt;/p&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+    """</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_GET</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+
+            <span class="hljs-comment"># 文件完整路径</span>
+            full_path = os.getcwd() + self.path
+
+            <span class="hljs-comment"># 如果该路径不存在...</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(full_path):
+                <span class="hljs-comment">#抛出异常：文件未找到</span>
+                <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"'{0}' not found"</span>.format(self.path))
+
+            <span class="hljs-comment"># 如果该路径是一个文件</span>
+            <span class="hljs-keyword">elif</span> os.path.isfile(full_path):
+                <span class="hljs-comment">#调用 handle_file 处理该文件</span>
+                self.handle_file(full_path)
+
+            <span class="hljs-comment"># 如果该路径不是一个文件</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment">#抛出异常：该路径为不知名对象</span>
+                <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"Unknown object '{0}'"</span>.format(self.path))
+
+        <span class="hljs-comment"># 处理异常</span>
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> msg:
+            self.handle_error(msg)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_error</span><span class="hljs-params">(self, msg)</span>:</span>
+        content = self.Error_Page.format(path=self.path, msg=msg)
+        self.send_content(content, <span class="hljs-number">404</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_content</span><span class="hljs-params">(self, content, status=<span class="hljs-number">200</span>)</span>:</span>
+        self.send_response(status)
+        self.send_header(<span class="hljs-string">"Content-type"</span>, <span class="hljs-string">"text/html"</span>)
+        self.send_header(<span class="hljs-string">"Content-Length"</span>, str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_file</span><span class="hljs-params">(self, full_path)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">with</span> open(full_path, <span class="hljs-string">'rb'</span>) <span class="hljs-keyword">as</span> reader:
+                content = reader.read()
+            self.send_content(content)
+        <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> msg:
+            msg = <span class="hljs-string">"'{0}' cannot be read: {1}"</span>.format(self.path, msg)
+            self.handle_error(msg)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    serverAddress = (<span class="hljs-string">''</span>, <span class="hljs-number">8080</span>)
+    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
+    server.serve_forever()
+
+
+
+</code></pre><h2 id="labdoc-header-12">4.4 在根url显示首页内容</h2>
+<p>大部分时候我们都希望能够直接在<code>http://127.0.0.1:8080/</code> 显示主页内容。要怎么做呢，也许我们可以在<code>do_GET</code>那冗长的if-elif-else判断里再加一个判断请求地址是不是根地址的分支，也许我们可以找到一个更加聪明的方法。</p>
+<p>比如说把每一种情况都单独写成一个条件类</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_no_file</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-string">'''该路径不存在'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> os.path.exists(handler.full_path)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"'{0}' not found"</span>.format(handler.path))
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_existing_file</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-string">'''该路径是文件'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.isfile(handler.full_path)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        handler.handle_file(handler.full_path)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_always_fail</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-string">'''所有情况都不符合时的默认处理类'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"Unknown object '{0}'"</span>.format(handler.path))
+
+
+</code></pre><p><code>test</code>方法用来判断是否符合该类指定的条件，<code>act</code>则是符合条件时的处理函数。其中的<code>handler</code>是对<code>RequestHandler</code>实例的引用，通过它，我们就能调用<code>handle_file</code>进行响应。</p>
+<p>将原先的if-elif-else分支替换成遍历所有的条件类来看一下区别。</p>
+<p>替换前：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_GET</span><span class="hljs-params">(self)</span>:</span>
+    <span class="hljs-keyword">try</span>:
+
+        <span class="hljs-comment"># 文件完整路径</span>
+        full_path = os.getcwd() + self.path
+
+        <span class="hljs-comment"># 如果该路径不存在...</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(full_path):
+            <span class="hljs-comment">#抛出异常：文件未找到</span>
+            <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"'{0}' not found"</span>.format(self.path))
+
+        <span class="hljs-comment"># 如果该路径是一个文件</span>
+        <span class="hljs-keyword">elif</span> os.path.isfile(full_path):
+            <span class="hljs-comment">#调用 handle_file 处理该文件</span>
+            self.handle_file(full_path)
+
+        <span class="hljs-comment"># 如果该路径不是一个文件</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment">#抛出异常：该路径为不知名对象</span>
+            <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"Unknown object '{0}'"</span>.format(self.path))
+
+    <span class="hljs-comment"># 处理异常</span>
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> msg:
+        self.handle_error(msg)
+
+
+</code></pre><p>替换后：</p>
+<pre><code class="hljs ruby"><span class="hljs-comment"># 所有可能的情况</span>
+Cases = [case_no_file(),
+         case_existing_file(),
+         case_always_fail()]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_GET</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>:
+    <span class="hljs-symbol">try:</span>
+
+        <span class="hljs-comment"># 文件完整路径</span>
+        full_path = os.getcwd() + <span class="hljs-keyword">self</span>.path
+
+        <span class="hljs-comment">#遍历所有可能的情况</span>
+        <span class="hljs-keyword">for</span> <span class="hljs-keyword">case</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span>.<span class="hljs-symbol">Cases:</span>
+            handler = <span class="hljs-keyword">case</span>()
+            <span class="hljs-comment">#如果满足该类情况</span>
+            <span class="hljs-keyword">if</span> handler.test(<span class="hljs-keyword">self</span>):
+                <span class="hljs-comment">#调用相应的act函数</span>
+                handler.act(<span class="hljs-keyword">self</span>)
+                <span class="hljs-keyword">break</span>
+
+    <span class="hljs-comment"># 处理异常</span>
+    except Exception as <span class="hljs-symbol">msg:</span>
+        <span class="hljs-keyword">self</span>.handle_error(msg)
+
+
+</code></pre><p>这样每当我们需要考虑一个新的情况时，只要新写一个条件处理类然后加到 <code>Cases</code> 中去就行了，是不是比原先在if-elif-else中添加条件的做法看起来更加干净更加清楚呢，毕竟修改原有的代码是一件很有风险的事情，调试起来也非常麻烦。在做功能扩展的同时尽量不要修改原代码是软件开发过程中需要牢记的一点。</p>
+<p>回到正题，我们希望浏览器访问根url的时候能返回工作目录下index.html的内容，那就需要再多加一个条件判断啦。</p>
+<p>写一个新的条件处理类</p>
+<pre><code class="hljs ruby"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_directory_index_file</span>(<span class="hljs-title">object</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index_path</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, handler)</span></span>:
+        <span class="hljs-keyword">return</span> os.path.join(handler.full_path, <span class="hljs-string">'index.html'</span>)
+
+    <span class="hljs-comment">#判断目标路径是否是目录&amp;&amp;目录下是否有index.html</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, handler)</span></span>:
+        <span class="hljs-keyword">return</span> os.path.isdir(handler.full_path) <span class="hljs-keyword">and</span> \
+               os.path.isfile(<span class="hljs-keyword">self</span>.index_path(handler))
+
+    <span class="hljs-comment">#响应index.html的内容</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, handler)</span></span>:
+        handler.handle_file(<span class="hljs-keyword">self</span>.index_path(handler))
+
+
+</code></pre><p>加到<code>Cases</code>中</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">Cases</span> =<span class="hljs-meta"> [case_no_file(),
+         case_existing_file(),
+         case_directory_index_file(),
+         case_always_fail()]</span>
+
+
+
+</code></pre><p>在工作目录下添加<code>index.html</code>文件</p>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Index Page<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Index Page<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Welcome to my home.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+
+
+</code></pre><p>测试一下</p>
+<pre><code class="hljs ruby">$ http <span class="hljs-number">127.0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">8080</span>
+
+
+</code></pre><p>效果图</p>
+<p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm.png" alt="此处输入图片的描述"></p>
+<pre><code class="hljs python"><span class="hljs-comment">#-*- coding:utf-8 -*-</span>
+<span class="hljs-keyword">import</span> sys, os, BaseHTTPServer
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ServerException</span><span class="hljs-params">(Exception)</span>:</span>
+    <span class="hljs-string">'''服务器内部错误'''</span>
+    <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_no_file</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-string">'''该路径不存在'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> os.path.exists(handler.full_path)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"'{0}' not found"</span>.format(handler.path))
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_existing_file</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-string">'''该路径是文件'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.isfile(handler.full_path)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        handler.handle_file(handler.full_path)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_always_fail</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-string">'''所有情况都不符合时的默认处理类'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"Unknown object '{0}'"</span>.format(handler.path))
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_directory_index_file</span><span class="hljs-params">(object)</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index_path</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.join(handler.full_path, <span class="hljs-string">'index.html'</span>)
+
+    <span class="hljs-comment">#判断目标路径是否是目录&amp;&amp;目录下是否有index.html</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.isdir(handler.full_path) <span class="hljs-keyword">and</span> \
+               os.path.isfile(self.index_path(handler))
+
+    <span class="hljs-comment">#响应index.html的内容</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        handler.handle_file(self.index_path(handler))
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RequestHandler</span><span class="hljs-params">(BaseHTTPServer.BaseHTTPRequestHandler)</span>:</span>
+    <span class="hljs-string">'''
+    请求路径合法则返回相应处理
+    否则返回错误页面
+    '''</span>
+
+    Cases = [case_no_file(),
+             case_existing_file(),
+             case_directory_index_file(),
+             case_always_fail()]
+
+    <span class="hljs-comment"># 错误页面模板</span>
+    Error_Page = <span class="hljs-string">"""\
+        &lt;html&gt;
+        &lt;body&gt;
+        &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
+        &lt;p&gt;{msg}&lt;/p&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+        """</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_GET</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+
+            <span class="hljs-comment"># 得到完整的请求路径</span>
+            self.full_path = os.getcwd() + self.path
+
+            <span class="hljs-comment"># 遍历所有的情况并处理</span>
+            <span class="hljs-keyword">for</span> case <span class="hljs-keyword">in</span> self.Cases:
+                <span class="hljs-keyword">if</span> case.test(self):
+                    case.act(self)
+                    <span class="hljs-keyword">break</span>
+
+        <span class="hljs-comment"># 处理异常</span>
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> msg:
+            self.handle_error(msg)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_error</span><span class="hljs-params">(self, msg)</span>:</span>
+        content = self.Error_Page.format(path=self.path, msg=msg)
+        self.send_content(content, <span class="hljs-number">404</span>)
+
+    <span class="hljs-comment"># 发送数据到客户端</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_content</span><span class="hljs-params">(self, content, status=<span class="hljs-number">200</span>)</span>:</span>
+        self.send_response(status)
+        self.send_header(<span class="hljs-string">"Content-type"</span>, <span class="hljs-string">"text/html"</span>)
+        self.send_header(<span class="hljs-string">"Content-Length"</span>, str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_file</span><span class="hljs-params">(self, full_path)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">with</span> open(full_path, <span class="hljs-string">'rb'</span>) <span class="hljs-keyword">as</span> reader:
+                content = reader.read()
+            self.send_content(content)
+        <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> msg:
+            msg = <span class="hljs-string">"'{0}' cannot be read: {1}"</span>.format(self.path, msg)
+            self.handle_error(msg)
+
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    serverAddress = (<span class="hljs-string">''</span>, <span class="hljs-number">8080</span>)
+    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
+    server.serve_forever()
+</code></pre><h3 id="labdoc-header-13">4.5 CGI协议</h3>
+<p>当然，大部分人都不希望每次给服务器加新功能都要到服务器的源代码里进行修改。如果程序能独立在另一个脚本文件里运行那就再好不过了。<a href="http://www.biaodianfu.com/cgi-fastcgi-wsgi.html" target="_blank">什么是CGI？</a> 本小节会实现CGI的效果。</p>
+<p>接下来的例子中，我们会在html页面上显示当地时间。</p>
+<p>创建新文件 time.py</p>
+<pre><code class="hljs python"><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
+<span class="hljs-keyword">print</span> <span class="hljs-string">'''\
+&lt;html&gt;
+&lt;body&gt;
+&lt;p&gt;Generated {0}&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;'''</span>.format(datetime.now())
+
+
+
+</code></pre><p>新建一个处理脚本文件的条件类：</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_cgi_file</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-string">'''脚本文件处理'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.isfile(handler.full_path) <span class="hljs-keyword">and</span> \
+               handler.full_path.endswith(<span class="hljs-string">'.py'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-comment">##运行脚本文件</span>
+        handler.run_cgi(handler.full_path)
+
+
+</code></pre><p>实现运行脚本文件的函数</p>
+<pre><code class="hljs ruby">import subprocess
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_cgi</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, full_path)</span></span>:
+    data = subprocess.check_output([<span class="hljs-string">"python"</span>, handler.full_path])
+    <span class="hljs-keyword">self</span>.send_content(data)
+
+
+</code></pre><p>不要忘了加到<code>Cases</code>中去</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">Cases</span> =<span class="hljs-meta"> [case_no_file(),
+         case_cgi_file(),
+         case_existing_file(),
+         case_directory_index_file(),
+         case_always_fail()]</span>
+
+
+</code></pre><p>查看效果</p>
+<pre><code class="hljs ruby">$ http <span class="hljs-number">127.0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">8080</span>/time.py
+
+
+</code></pre><p><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/wm_009.png" alt="此处输入图片的描述"></p>
+<h3 id="labdoc-header-14">4.6 代码重构</h3>
+<p>回头看看我们的代码，注意到一个新的问题了吗？虽然条件判断已经被我们整理到几个类中去了，但是像<code>run_cgi</code>只有在路径为py文件的条件下才使用的函数是放在 <code>RequestHandler</code>下的，那以后再加几个新功能，但是这类函数都放到 <code>RequestHandler</code>下的话可想而知<code>RequestHandler</code> 会变的臃肿不堪。当然你会想这算什么问题嘛，把它放到各自的条件类下不就好了噢。</p>
+<p>各自的代码归各自是个好办法，但有时候不同的条件类内可能会有功能相同的函数，这时候我们都知道重复相同的代码是软件开发里很忌讳的一件事情，那么怎么处理重复的代码呢？</p>
+<p>可以抽象出一个基类嘛，遇到重复的内容就放在基类的下面，所有的条件类都继承这个基类。</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">base_case</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-string">'''条件处理基类'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_file</span><span class="hljs-params">(self, handler, full_path)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">with</span> open(full_path, <span class="hljs-string">'rb'</span>) <span class="hljs-keyword">as</span> reader:
+                content = reader.read()
+            handler.send_content(content)
+        <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> msg:
+            msg = <span class="hljs-string">"'{0}' cannot be read: {1}"</span>.format(full_path, msg)
+            handler.handle_error(msg)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index_path</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.join(handler.full_path, <span class="hljs-string">'index.html'</span>)
+    <span class="hljs-comment">#要求子类必须实现该接口</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">assert</span> <span class="hljs-keyword">False</span>, <span class="hljs-string">'Not implemented.'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">assert</span> <span class="hljs-keyword">False</span>, <span class="hljs-string">'Not implemented.'</span>
+
+
+
+</code></pre><p>子类继承基类，依此类推进行修改</p>
+<pre><code class="hljs ruby"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_directory_index_file</span>(<span class="hljs-title">base_case</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, handler)</span></span>:
+        <span class="hljs-keyword">return</span> os.path.isdir(handler.full_path) <span class="hljs-keyword">and</span> \
+               os.path.isfile(<span class="hljs-keyword">self</span>.index_path(handler))
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(<span class="hljs-keyword">self</span>, handler)</span></span>:
+        <span class="hljs-keyword">self</span>.handle_file(handler, <span class="hljs-keyword">self</span>.index_path(handler))
+
+
+
+
+</code></pre><p>重构后的全部代码</p>
+<pre><code class="hljs python"><span class="hljs-comment">#-*- coding:utf-8 -*-</span>
+<span class="hljs-keyword">import</span> sys, os, BaseHTTPServer, subprocess
+
+<span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ServerException</span><span class="hljs-params">(Exception)</span>:</span>
+    <span class="hljs-string">'''服务器内部错误'''</span>
+    <span class="hljs-keyword">pass</span>
+
+<span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">base_case</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-string">'''条件处理基类'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_file</span><span class="hljs-params">(self, handler, full_path)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">with</span> open(full_path, <span class="hljs-string">'rb'</span>) <span class="hljs-keyword">as</span> reader:
+                content = reader.read()
+            handler.send_content(content)
+        <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> msg:
+            msg = <span class="hljs-string">"'{0}' cannot be read: {1}"</span>.format(full_path, msg)
+            handler.handle_error(msg)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index_path</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.join(handler.full_path, <span class="hljs-string">'index.html'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">assert</span> <span class="hljs-keyword">False</span>, <span class="hljs-string">'Not implemented.'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">assert</span> <span class="hljs-keyword">False</span>, <span class="hljs-string">'Not implemented.'</span>
+
+<span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_no_file</span><span class="hljs-params">(base_case)</span>:</span>
+    <span class="hljs-string">'''文件或目录不存在'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> os.path.exists(handler.full_path)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"'{0}' not found"</span>.format(handler.path))
+
+<span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_cgi_file</span><span class="hljs-params">(base_case)</span>:</span>
+    <span class="hljs-string">'''可执行脚本'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_cgi</span><span class="hljs-params">(self, handler)</span>:</span>
+        data = subprocess.check_output([<span class="hljs-string">"python"</span>, handler.full_path])
+        handler.send_content(data)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.isfile(handler.full_path) <span class="hljs-keyword">and</span> \
+               handler.full_path.endswith(<span class="hljs-string">'.py'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        self.run_cgi(handler)
+
+<span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_existing_file</span><span class="hljs-params">(base_case)</span>:</span>
+    <span class="hljs-string">'''文件存在的情况'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.isfile(handler.full_path)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        self.handle_file(handler, handler.full_path)
+
+<span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_directory_index_file</span><span class="hljs-params">(base_case)</span>:</span>
+    <span class="hljs-string">'''在根路径下返回主页文件'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> os.path.isdir(handler.full_path) <span class="hljs-keyword">and</span> \
+               os.path.isfile(self.index_path(handler))
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        self.handle_file(handler, self.index_path(handler))
+
+<span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">case_always_fail</span><span class="hljs-params">(base_case)</span>:</span>
+    <span class="hljs-string">'''默认处理'''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">act</span><span class="hljs-params">(self, handler)</span>:</span>
+        <span class="hljs-keyword">raise</span> ServerException(<span class="hljs-string">"Unknown object '{0}'"</span>.format(handler.path))
+
+<span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RequestHandler</span><span class="hljs-params">(BaseHTTPServer.BaseHTTPRequestHandler)</span>:</span>
+    <span class="hljs-string">'''
+    请求路径合法则返回相应处理
+    否则返回错误页面
+    '''</span>
+
+    Cases = [case_no_file(),
+             case_cgi_file(),
+             case_existing_file(),
+             case_directory_index_file(),
+             case_always_fail()]
+
+    <span class="hljs-comment"># 错误页面模板</span>
+    Error_Page = <span class="hljs-string">"""\
+        &lt;html&gt;
+        &lt;body&gt;
+        &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
+        &lt;p&gt;{msg}&lt;/p&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+        """</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_GET</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+
+            <span class="hljs-comment"># 得到完整的请求路径</span>
+            self.full_path = os.getcwd() + self.path
+
+            <span class="hljs-comment"># 遍历所有的情况并处理</span>
+            <span class="hljs-keyword">for</span> case <span class="hljs-keyword">in</span> self.Cases:
+                <span class="hljs-keyword">if</span> case.test(self):
+                    case.act(self)
+                    <span class="hljs-keyword">break</span>
+
+        <span class="hljs-comment"># 处理异常</span>
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> msg:
+            self.handle_error(msg)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_error</span><span class="hljs-params">(self, msg)</span>:</span>
+        content = self.Error_Page.format(path=self.path, msg=msg)
+        self.send_content(content, <span class="hljs-number">404</span>)
+
+    <span class="hljs-comment"># 发送数据到客户端</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_content</span><span class="hljs-params">(self, content, status=<span class="hljs-number">200</span>)</span>:</span>
+        self.send_response(status)
+        self.send_header(<span class="hljs-string">"Content-type"</span>, <span class="hljs-string">"text/html"</span>)
+        self.send_header(<span class="hljs-string">"Content-Length"</span>, str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
+<span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    serverAddress = (<span class="hljs-string">''</span>, <span class="hljs-number">8080</span>)
+    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
+    server.serve_forever()
+
+
+
+
+</code></pre><h2 id="labdoc-header-15">五、实验总结</h2>
+<p>通过重构我们发现，真正实施行为(Action)的代码逻辑可以抽出来进行封装(封装成各种条件处理类)，而 RequestHandler类 
+或是 basecase类 
+提供了供条件处理类使用的接口，它们可以看作是一系列服务(Service)，在软件设计中我们常常会把业务代码进行分层，将行为与服务分开，降低耦合，
+更有利于我们开发维护代码。</p>
+<p>通过统一接口，以及cgi程序，我们的代码功能扩展变的更加容易，可以专心于编写功能代码，而不用去关心其他部分。case 的添加虽然仍在server代码中，但我们也可以把它放到配置文件中，由server读取配置文件。</p>
+<p>我们的 server 现在还是一个在新手村里打史莱姆的小菜鸡，你会给它添加什么功能让它成长成什么样子呢？</p>
+<h2 id="labdoc-header-16">六、参考资料</h2>
+<ul>
+<li><a href="http://aosabook.org/en/500L/a-simple-web-server.html" target="_blank">A Simple Web Server</a></li>
+<li><a href="https://github.com/aosabook/500lines" target="_blank">500 Lines or Less</a></li>
+<li><a href="https://launchschool.com/books/http" target="_blank">Introduction to HTTP</a></li>
+<li><a href="http://www.kancloud.cn/kancloud/tealeaf-http" target="_blank">HTTP 下午茶</a></li>
+</ul>
+</div></div>
+    
+    
+    
+</div>
+<textarea id="editor" style="display:none;"># Python实现简单的Web服务器
+
+## 一、实验介绍
+
+### 1.1 课程来源
+
+本课程核心部分来自[《500 lines or 
+less》](https://github.com/aosabook/500lines/blob/master/web-server)项目，作者
+是 Mozilla 的 Greg Wilson。项目代码使用 MIT 协议，项目文档使用 
+[http://creativecommons.org/licenses/by/3.0/legalcode](http://creativecommons.org/licenses/by/3.0/legalcode)
+ 协议。
+
+课程内容在原文档基础上做了稍许修改，增加了部分原理介绍，步骤的拆解分析及源代码注释。
+
+
+### 1.2 实验简介
+
+互联网在过去20年里已经大大地改变了我们的生活方式，影响着社会。但是反观互联网，它的基础－web的核心原理并没有改变多少。大部分web系统仍旧遵
+守 Tim Berners-Lee 20 多年前提出的 W3C 标准，大部分web服务器接收的信息格式与接收的方式与过去并无二致。
+
+本课程将通过使用 Python 语言实现一个 Web 服务器，探索 HTTP 协议和 Web 服务的基本原理，同时学习 Python 如何实现 
+Web 服务请求、响应、错误处理及CGI协议，最后会根据项目需求使用 Python 面向对象思路对代码进行重构。
+
+
+### 1.3 实验知识点
+
+本课程项目完成过程中，我们将学习：
+
+1. HTTP 协议基本原理
+2. 简单的 Web 服务器框架
+3. Python 语言的网络开发
+4. Web 服务请求，响应及错误处理的实现
+5. CGI 协议的 Python 实现
+6. 使用 Python 面向对象思想重构代码
+
+### 1.4 实验环境
++ python2.7   
++ Xfce终端
+
+### 1.5 适合人群
+本课程难度为中等，适合具有Python基础的用户，熟悉python基础知识加深巩固。
+
+
+
+## 二、实验原理
+
+想要了解http原理， [Introduction to HTTP](https://launchschool.com/books/http) 
+是一个不错的选择，也可以参考它的中文翻译版: [HTTP 
+下午茶](http://www.kancloud.cn/kancloud/tealeaf-http)
+
+这里我们简单过一遍我们需要了解的部分。
+
+一般我们的web程序都运行在 TCP/IP 协议上，程序之间使用 socket(套接字) 
+进行通信，它能够让计算机之间的通信就像写文件和读文件一样简单。
+一个 tcp socket 由一个IP地址和端口号组成。 
+
++ IP地址是一个32位的二进制数，通常被分割为4个“8位二进制数”,写成10进制的形式就是我们常见的 
+174.136.14.108。我们通过IP地址来标识所连接的主机。
++ 端口号是一个范围在0-65535之间的数字，一台主机上可能同时有多个sockets，因此需要端口号进行标识。端口号0-1023 
+是保留给操作系统使用的，我们可以使用剩下的端口号。
+
+超文本传输协议（HTTP）描述了一种程序之间交换数据的方法，它非常简单易用，在一个socket连接上，客户端首先发送请求说明它需要什么，然后服务
+器发送响应，并在响应中包含客户端的数据。响应数据也许是从本地磁盘上复制来的，也许是程序动态生成的。传输过程如图：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1867timestamp1464674809775.png/wm)
+
+HTTP请求就是一段文本，任何程序都能生成一个http请求，就像生成文本一样简单。这段文本需要包含以下这些部分：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1867timestamp1464668363170.png/wm)
+
++ HTTP method：HTTP请求方法。最常用的就是 ``GET``(抓取数据)与``POST``(更新数据或者上传文件)
++ URL：通常是客户端请求的文件的路径，比如 /research/experiments.html， 但是是否响应文件都是由服务器决定的。
++ HTTP version：HTTP版本。通常是 HTTP/1.0 或 HTTP/1.1
++ header field：HTTP头内的键值对，做一些基本设置，就像下面这样。
+
+
+    #客户端接受的数据类型
+    Accept: text/html
+    #客户端接受的语言
+    Accept-Language: en, fr         
+    If-Modified-Since: 16-May-2005
+
++ body： 一些与请求有关的负载数据了。比如在一个网站登陆的时候提交登陆表单，那负载数据就是你的账号与密码信息了。
+
+HTTP响应的结构类似于请求：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1867timestamp1464668919639.png/wm)
+
++ status code：状态码。请求成功响应200，请求的文件找不到则响应404。
++ status phrase：对状态码的描述。
+
+
+## 三、开发准备
+
+打开终端，进入Code目录，创建 web-server 文件夹, 并将其作为我们的工作目录。
+
+    $ cd Code
+    $ mkdir web-server &amp;&amp; cd web-server
+
+本实验使用``httpie``代替浏览器发送请求并在终端打印响应信息。
+
+    $ sudo apt-get install httpie
+
+
+## 四、实验步骤
+
+### 4.1 你好, web
+
+现在就来写我们第一个web服务器吧， 基本概念非常简单：
+
+1. 等待某个人连接我们的服务器并向我们发送一个HTTP请求
+2. 解析该请求
+3. 了解该请求希望请求的内容
+4. 服务器根据请求抓取需要的数据（从服务器本地文件中读或者程序动态生成）
+5. 将数据格式化为请求需要的格式
+6. 送回HTTP响应
+
+步骤1，2，6的操作对所有web应用都是一样的，这部分内容Python标准库中的 ``BaseHTTPServer`` 
+模块可以帮助我们处理。我们只需要关注步骤3～5。
+
+首先在工作目录下创建 ``server.py`` 文件
+
+    #-*- coding:utf-8 -*-
+    import BaseHTTPServer
+
+    class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+        '''处理请求并返回页面'''
+        
+        # 页面模板
+        Page = '''\
+            &lt;html&gt;
+            &lt;body&gt;
+            &lt;p&gt;Hello, web!&lt;/p&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+        '''
+
+        # 处理一个GET请求
+        def do_GET(self):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.send_header("Content-Length", str(len(self.Page)))
+            self.end_headers()
+            self.wfile.write(self.Page)
+
+    
+#----------------------------------------------------------------------
+
+    if __name__ == '__main__':
+        serverAddress = ('', 8080)
+        server = BaseHTTPServer.HTTPServer(serverAddress, 
+RequestHandler)
+        server.serve_forever()
+
+模块的 ``BaseHTTPRequestHandler`` 类会帮我们处理对请求的解析，并通过确定请求的方法来调用其对应的函数，比如方法是 
+``GET`` ,该类就会调用名为 ``do_GET`` 的方法。``RequestHandler`` 继承了 
+``BaseHTTPRequestHandler`` 并重写了 ``do_GET`` 方法，其效果如代码所示是返回 ``Page`` 的内容。 
+``Content-Type`` 告诉了客户端要以处理html文件的方式处理返回的内容。``end_headers`` 
+方法会插入一个空白行，如之前的request结构图所示。
+
+运行我们的第一个 web服务器
+
+    $ python server.py
+
+可以在浏览器地址输入 ``127.0.0.1:8080`` 进行查看
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1867timestamp1464669402589.png/wm)
+
+方便起见，还是让我们新开一个终端窗口，使用``httpie``来查看输出(之后都使用``httpie``来查看输出)
+    
+    $ http 127.0.0.1:8080
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1867timestamp1464669430347.png/wm)
+
+``httpie``很贴心地显示了响应报文的全部内容。
+
+### 4.2 显示请求的信息
+
+修改之前的代码来显示请求的信息，同时重新整理一下代码：
+
+    class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+
+        # ...页面模板...
+        Page＝"..待设计.."
+
+        def do_GET(self):
+            page = self.create_page()
+            self.send_content(page)
+
+        def create_page(self):
+            # ...待实现...
+
+        def send_content(self, page):
+            # ...待实现...
+
+``send_content`` 与之前 ``do_GET`` 内的代码一样：
+
+    def send_content(self, page):
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.send_header("Content-Length", str(len(page)))
+        self.end_headers()
+        self.wfile.write(page)
+
+设计页面模版
+
+    Page = '''\
+    &lt;html&gt;
+    &lt;body&gt;
+    &lt;table&gt;
+    &lt;tr&gt;  &lt;td&gt;Header&lt;/td&gt;         
+&lt;td&gt;Value&lt;/td&gt;          &lt;/tr&gt;
+    &lt;tr&gt;  &lt;td&gt;Date and time&lt;/td&gt;  
+&lt;td&gt;{date_time}&lt;/td&gt;    &lt;/tr&gt;
+    &lt;tr&gt;  &lt;td&gt;Client host&lt;/td&gt;    
+&lt;td&gt;{client_host}&lt;/td&gt;  &lt;/tr&gt;
+    &lt;tr&gt;  &lt;td&gt;Client port&lt;/td&gt;    
+&lt;td&gt;{client_port}&lt;/td&gt; &lt;/tr&gt;
+    &lt;tr&gt;  &lt;td&gt;Command&lt;/td&gt;        
+&lt;td&gt;{command}&lt;/td&gt;      &lt;/tr&gt;
+    &lt;tr&gt;  &lt;td&gt;Path&lt;/td&gt;           
+&lt;td&gt;{path}&lt;/td&gt;         &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+    '''
+
+实现``create_page``
+
+    def create_page(self):
+        values = {
+            'date_time'   : self.date_time_string(),
+            'client_host' : self.client_address[0],
+            'client_port' : self.client_address[1],
+            'command'     : self.command,
+            'path'        : self.path
+        }
+        page = self.Page.format(**values)
+        return page
+
+main中的内容不用去修改它。
+
+运行看看
+
+    $ http 127.0.0.1:8080/something.html
+
+效果图：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1867timestamp1464669798450.png/wm)
+
+
+注意到它仍旧返回了200 OK而不是404 Not Found，即使 something.html 
+文件并不存在。那是因为我们现在的web服务器还没有实现找不到文件就返回404错误的功能。反过来说，只要我们想，可以通过编程实现任何我们想要的效
+果，像是随机返回一个维基百科的页面或是帮老王家订一个披萨(并不会)。
+
+怎么解决返回404的问题呢，首先得有返回文件的功能吧。
+
+### 4.3 响应静态页面
+
+所以这一步就该处理静态页面了，处理静态页面就是根据请求的页面名得到磁盘上的页面文件并返回。
+
+在当前目录下创建新文件 plain.html，这是我们测试用的静态页面
+
+    &lt;html&gt;
+    &lt;head&gt;
+    &lt;title&gt;Plain Page&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;h1&gt;Plain Page&lt;/h1&gt;
+    &lt;p&gt;Nothin' but HTML.&lt;/p&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+
+
+在 ``server.py`` 中导入需要的库
+
+    import sys, os, BaseHTTPServer
+
+为我们的服务器程序写一个异常类
+
+    class ServerException(Exception):
+        '''服务器内部错误'''
+        pass
+
+
+重写 ``do_GET`` 函数：
+
+    def do_GET(self):
+        try:
+
+            # 文件完整路径
+            full_path = os.getcwd() + self.path
+
+            # 如果该路径不存在...
+            if not os.path.exists(full_path):
+                #抛出异常：文件未找到
+                raise ServerException("'{0}' not 
+found".format(self.path))
+
+            # 如果该路径是一个文件
+            elif os.path.isfile(full_path):
+                #调用 handle_file 处理该文件
+                self.handle_file(full_path)
+
+            # 如果该路径不是一个文件
+            else:
+                #抛出异常：该路径为不知名对象
+                raise ServerException("Unknown object 
+'{0}'".format(self.path))
+
+        # 处理异常
+        except Exception as msg:
+            self.handle_error(msg)
+
+首先看完整路径的代码，``os.getcwd()`` 是当前的工作目录，``self.path`` 保存了请求的相对路径，不要忘了 
+``RequestHandler`` 继承自 
+``BaseHTTPRequestHandler``，它已经帮我们将请求的相对路径保存在``self.path``中了。
+
+编写文件处理函数：
+
+    def handle_file(self, full_path):
+        try:
+            with open(full_path, 'rb') as reader:
+                content = reader.read()
+            self.send_content(content)
+        except IOError as msg:
+            msg = "'{0}' cannot be read: {1}".format(self.path, msg)
+            self.handle_error(msg)
+
+注意到我们是以二进制模式打开文件的，这样读文件的时候就不会对读取的内容做多余的处理。
+
+
+接着，实现我们的错误处理函数并设计错误页面模板
+
+
+    Error_Page = """\
+        &lt;html&gt;
+        &lt;body&gt;
+        &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
+        &lt;p&gt;{msg}&lt;/p&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+        """
+
+    def handle_error(self, msg):
+        content = self.Error_Page.format(path=self.path, msg=msg)
+        self.send_content(content)
+
+运行看看
+
+    $ http 127.0.0.1:8080/plain.html
+
+效果图
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1867timestamp1464671865255.png/wm)
+
+再测试一下错误的路径
+
+    $ http 127.0.0.1:8080/something.html
+    
+    
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1867timestamp1464671777976.png/wm)
+
+确实返回了错误页面但同时注意到返回的是200状态码，我们希望它能够返回404，所以还需要修改一下 ``handle_error`` 与 
+``send_content`` 函数
+
+    def handle_error(self, msg):
+        content = self.Error_Page.format(path=self.path, msg=msg)
+        self.send_content(content, 404)
+
+    def send_content(self, content, status=200):
+        self.send_response(status)
+        self.send_header("Content-type", "text/html")
+        self.send_header("Content-Length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
+测试看看
+
+    $ http 127.0.0.1:8080/something.html
+
+这回就对了。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1867timestamp1464671933007.png/wm)
+
+
+至今为止的代码：
+
+    #-*- coding:utf-8 -*-
+    import sys, os, BaseHTTPServer
+    
+    class ServerException(Exception):
+        '''服务器内部错误'''
+        pass
+    
+    class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    
+        Error_Page = """\
+        &lt;html&gt;
+        &lt;body&gt;
+        &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
+        &lt;p&gt;{msg}&lt;/p&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+        """
+    
+        def do_GET(self):
+            try:
+    
+                # 文件完整路径
+                full_path = os.getcwd() + self.path
+    
+                # 如果该路径不存在...
+                if not os.path.exists(full_path):
+                    #抛出异常：文件未找到
+                    raise ServerException("'{0}' not 
+found".format(self.path))
+    
+                # 如果该路径是一个文件
+                elif os.path.isfile(full_path):
+                    #调用 handle_file 处理该文件
+                    self.handle_file(full_path)
+    
+                # 如果该路径不是一个文件
+                else:
+                    #抛出异常：该路径为不知名对象
+                    raise ServerException("Unknown object 
+'{0}'".format(self.path))
+    
+            # 处理异常
+            except Exception as msg:
+                self.handle_error(msg)
+    
+        def handle_error(self, msg):
+            content = self.Error_Page.format(path=self.path, msg=msg)
+            self.send_content(content, 404)
+    
+        def send_content(self, content, status=200):
+            self.send_response(status)
+            self.send_header("Content-type", "text/html")
+            self.send_header("Content-Length", str(len(content)))
+            self.end_headers()
+            self.wfile.write(content)
+    
+        def handle_file(self, full_path):
+            try:
+                with open(full_path, 'rb') as reader:
+                    content = reader.read()
+                self.send_content(content)
+            except IOError as msg:
+                msg = "'{0}' cannot be read: {1}".format(self.path, msg)
+                self.handle_error(msg)
+    
+    if __name__ == '__main__':
+        serverAddress = ('', 8080)
+        server = BaseHTTPServer.HTTPServer(serverAddress, 
+RequestHandler)
+        server.serve_forever()
+
+
+## 4.4 在根url显示首页内容
+
+大部分时候我们都希望能够直接在``http://127.0.0.1:8080/`` 
+显示主页内容。要怎么做呢，也许我们可以在``do_GET``那冗长的if-elif-else判断里再加一个判断请求地址是不是根地址的分支，也许我
+们可以找到一个更加聪明的方法。
+
+比如说把每一种情况都单独写成一个条件类
+
+    class case_no_file(object):
+        '''该路径不存在'''
+
+        def test(self, handler):
+            return not os.path.exists(handler.full_path)
+
+        def act(self, handler):
+            raise ServerException("'{0}' not 
+found".format(handler.path))
+
+
+    class case_existing_file(object):
+        '''该路径是文件'''
+
+        def test(self, handler):
+            return os.path.isfile(handler.full_path)
+
+        def act(self, handler):
+            handler.handle_file(handler.full_path)
+
+
+    class case_always_fail(object):
+        '''所有情况都不符合时的默认处理类'''
+
+        def test(self, handler):
+            return True
+
+        def act(self, handler):
+            raise ServerException("Unknown object 
+'{0}'".format(handler.path))
+
+``test``方法用来判断是否符合该类指定的条件，``act``则是符合条件时的处理函数。其中的``handler``是对
+``RequestHandler``实例的引用，通过它，我们就能调用``handle_file``进行响应。
+
+将原先的if-elif-else分支替换成遍历所有的条件类来看一下区别。
+
+替换前：
+
+    def do_GET(self):
+        try:
+
+            # 文件完整路径
+            full_path = os.getcwd() + self.path
+
+            # 如果该路径不存在...
+            if not os.path.exists(full_path):
+                #抛出异常：文件未找到
+                raise ServerException("'{0}' not 
+found".format(self.path))
+
+            # 如果该路径是一个文件
+            elif os.path.isfile(full_path):
+                #调用 handle_file 处理该文件
+                self.handle_file(full_path)
+
+            # 如果该路径不是一个文件
+            else:
+                #抛出异常：该路径为不知名对象
+                raise ServerException("Unknown object 
+'{0}'".format(self.path))
+
+        # 处理异常
+        except Exception as msg:
+            self.handle_error(msg)
+
+替换后：
+    
+    # 所有可能的情况
+    Cases = [case_no_file(),
+             case_existing_file(),
+             case_always_fail()]
+
+    def do_GET(self):
+        try:
+
+            # 文件完整路径
+            full_path = os.getcwd() + self.path
+            
+            #遍历所有可能的情况
+            for case in self.Cases:
+                handler = case()
+                #如果满足该类情况
+                if handler.test(self):
+                    #调用相应的act函数
+                    handler.act(self)
+                    break
+
+        # 处理异常
+        except Exception as msg:
+            self.handle_error(msg)
+
+这样每当我们需要考虑一个新的情况时，只要新写一个条件处理类然后加到 ``Cases`` 
+中去就行了，是不是比原先在if-elif-else中添加条件的做法看起来更加干净更加清楚呢，毕竟修改原有的代码是一件很有风险的事情，调试起来也非
+常麻烦。在做功能扩展的同时尽量不要修改原代码是软件开发过程中需要牢记的一点。
+
+回到正题，我们希望浏览器访问根url的时候能返回工作目录下index.html的内容，那就需要再多加一个条件判断啦。
+
+写一个新的条件处理类
+
+    class case_directory_index_file(object):
+
+        def index_path(self, handler):
+            return os.path.join(handler.full_path, 'index.html')
+
+        #判断目标路径是否是目录&amp;&amp;目录下是否有index.html
+        def test(self, handler):
+            return os.path.isdir(handler.full_path) and \
+                   os.path.isfile(self.index_path(handler))
+
+        #响应index.html的内容
+        def act(self, handler):
+            handler.handle_file(self.index_path(handler))
+
+加到``Cases``中
+
+    Cases = [case_no_file(),
+             case_existing_file(),
+             case_directory_index_file(),
+             case_always_fail()]
+
+
+在工作目录下添加``index.html``文件
+
+    &lt;html&gt;
+    &lt;head&gt;
+    &lt;title&gt;Index Page&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;h1&gt;Index Page&lt;/h1&gt;
+    &lt;p&gt;Welcome to my home.&lt;/p&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+
+测试一下
+
+    $ http 127.0.0.1:8080
+
+效果图
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1868timestamp1464672903751.png/wm)
+
+```
+#-*- coding:utf-8 -*-
+import sys, os, BaseHTTPServer
+
+class ServerException(Exception):
+    '''服务器内部错误'''
+    pass
+
+class case_no_file(object):
+    '''该路径不存在'''
+
+    def test(self, handler):
+        return not os.path.exists(handler.full_path)
+
+    def act(self, handler):
+        raise ServerException("'{0}' not found".format(handler.path))
+
+
+class case_existing_file(object):
+    '''该路径是文件'''
+
+    def test(self, handler):
+        return os.path.isfile(handler.full_path)
+
+    def act(self, handler):
+        handler.handle_file(handler.full_path)
+
+
+class case_always_fail(object):
+    '''所有情况都不符合时的默认处理类'''
+
+    def test(self, handler):
+        return True
+
+    def act(self, handler):
+        raise ServerException("Unknown object 
+'{0}'".format(handler.path))
+
+
+class case_directory_index_file(object):
+
+    def index_path(self, handler):
+        return os.path.join(handler.full_path, 'index.html')
+
+    #判断目标路径是否是目录&amp;&amp;目录下是否有index.html
+    def test(self, handler):
+        return os.path.isdir(handler.full_path) and \
+               os.path.isfile(self.index_path(handler))
+
+    #响应index.html的内容
+    def act(self, handler):
+        handler.handle_file(self.index_path(handler))
+
+
+class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    '''
+    请求路径合法则返回相应处理
+    否则返回错误页面
+    '''
+
+    Cases = [case_no_file(),
+             case_existing_file(),
+             case_directory_index_file(),
+             case_always_fail()]
+
+    # 错误页面模板
+    Error_Page = """\
+        &lt;html&gt;
+        &lt;body&gt;
+        &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
+        &lt;p&gt;{msg}&lt;/p&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+        """
+
+    def do_GET(self):
+        try:
+
+            # 得到完整的请求路径
+            self.full_path = os.getcwd() + self.path
+
+            # 遍历所有的情况并处理
+            for case in self.Cases:
+                if case.test(self):
+                    case.act(self)
+                    break
+
+        # 处理异常
+        except Exception as msg:
+            self.handle_error(msg)
+
+    def handle_error(self, msg):
+        content = self.Error_Page.format(path=self.path, msg=msg)
+        self.send_content(content, 404)
+
+    # 发送数据到客户端
+    def send_content(self, content, status=200):
+        self.send_response(status)
+        self.send_header("Content-type", "text/html")
+        self.send_header("Content-Length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
+    def handle_file(self, full_path):
+        try:
+            with open(full_path, 'rb') as reader:
+                content = reader.read()
+            self.send_content(content)
+        except IOError as msg:
+            msg = "'{0}' cannot be read: {1}".format(self.path, msg)
+            self.handle_error(msg)
+
+
+
+if __name__ == '__main__':
+    serverAddress = ('', 8080)
+    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
+    server.serve_forever()
+
+```
+
+
+### 4.5 CGI协议
+
+当然，大部分人都不希望每次给服务器加新功能都要到服务器的源代码里进行修改。如果程序能独立在另一个脚本文件里运行那就再好不过了。[什么是CGI？]
+(http://www.biaodianfu.com/cgi-fastcgi-wsgi.html) 本小节会实现CGI的效果。
+
+接下来的例子中，我们会在html页面上显示当地时间。
+
+创建新文件 time.py
+
+    from datetime import datetime
+    print '''\
+    &lt;html&gt;
+    &lt;body&gt;
+    &lt;p&gt;Generated {0}&lt;/p&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;'''.format(datetime.now())
+
+
+新建一个处理脚本文件的条件类：
+
+    class case_cgi_file(object):
+        '''脚本文件处理'''
+
+        def test(self, handler):
+            return os.path.isfile(handler.full_path) and \
+                   handler.full_path.endswith('.py')
+
+        def act(self, handler):
+            ##运行脚本文件
+            handler.run_cgi(handler.full_path)
+
+实现运行脚本文件的函数
+
+    import subprocess
+    
+    def run_cgi(self, full_path):
+        data = subprocess.check_output(["python", handler.full_path])
+        self.send_content(data)
+
+不要忘了加到``Cases``中去
+    
+    Cases = [case_no_file(),
+             case_cgi_file(),
+             case_existing_file(),
+             case_directory_index_file(),
+             case_always_fail()]
+
+查看效果
+
+    $ http 127.0.0.1:8080/time.py
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-
+uid8834labid1868timestamp1464673539050.png/wm)
+
+### 4.6 代码重构
+
+回头看看我们的代码，注意到一个新的问题了吗？虽然条件判断已经被我们整理到几个类中去了，但是像``run_cgi``只有在路径为py文件的条件下才
+使用的函数是放在 ``RequestHandler``下的，那以后再加几个新功能，但是这类函数都放到 
+``RequestHandler``下的话可想而知``RequestHandler`` 
+会变的臃肿不堪。当然你会想这算什么问题嘛，把它放到各自的条件类下不就好了噢。
+
+各自的代码归各自是个好办法，但有时候不同的条件类内可能会有功能相同的函数，这时候我们都知道重复相同的代码是软件开发里很忌讳的一件事情，那么怎么处
+理重复的代码呢？
+
+可以抽象出一个基类嘛，遇到重复的内容就放在基类的下面，所有的条件类都继承这个基类。
+
+    class base_case(object):
+        '''条件处理基类'''
+
+        def handle_file(self, handler, full_path):
+            try:
+                with open(full_path, 'rb') as reader:
+                    content = reader.read()
+                handler.send_content(content)
+            except IOError as msg:
+                msg = "'{0}' cannot be read: {1}".format(full_path, msg)
+                handler.handle_error(msg)
+
+        def index_path(self, handler):
+            return os.path.join(handler.full_path, 'index.html')
+        #要求子类必须实现该接口
+        def test(self, handler):
+            assert False, 'Not implemented.'
+
+        def act(self, handler):
+            assert False, 'Not implemented.'
+
+
+子类继承基类，依此类推进行修改
+
+    class case_directory_index_file(base_case):
+
+        def test(self, handler):
+            return os.path.isdir(handler.full_path) and \
+                   os.path.isfile(self.index_path(handler))
+
+        def act(self, handler):
+            self.handle_file(handler, self.index_path(handler))
+
+
+
+重构后的全部代码
+
+    #-*- coding:utf-8 -*-
+    import sys, os, BaseHTTPServer, subprocess
+
+    
+#-------------------------------------------------------------------------------
+
+
+    class ServerException(Exception):
+        '''服务器内部错误'''
+        pass
+
+    
+#-------------------------------------------------------------------------------
+
+
+    class base_case(object):
+        '''条件处理基类'''
+
+        def handle_file(self, handler, full_path):
+            try:
+                with open(full_path, 'rb') as reader:
+                    content = reader.read()
+                handler.send_content(content)
+            except IOError as msg:
+                msg = "'{0}' cannot be read: {1}".format(full_path, msg)
+                handler.handle_error(msg)
+
+        def index_path(self, handler):
+            return os.path.join(handler.full_path, 'index.html')
+
+        def test(self, handler):
+            assert False, 'Not implemented.'
+
+        def act(self, handler):
+            assert False, 'Not implemented.'
+
+    
+#-------------------------------------------------------------------------------
+
+
+    class case_no_file(base_case):
+        '''文件或目录不存在'''
+
+        def test(self, handler):
+            return not os.path.exists(handler.full_path)
+
+        def act(self, handler):
+            raise ServerException("'{0}' not 
+found".format(handler.path))
+
+    
+#-------------------------------------------------------------------------------
+
+
+    class case_cgi_file(base_case):
+        '''可执行脚本'''
+
+        def run_cgi(self, handler):
+            data = subprocess.check_output(["python", 
+handler.full_path])
+            handler.send_content(data)
+
+        def test(self, handler):
+            return os.path.isfile(handler.full_path) and \
+                   handler.full_path.endswith('.py')
+
+        def act(self, handler):
+            self.run_cgi(handler)
+
+    
+#-------------------------------------------------------------------------------
+
+
+    class case_existing_file(base_case):
+        '''文件存在的情况'''
+
+        def test(self, handler):
+            return os.path.isfile(handler.full_path)
+
+        def act(self, handler):
+            self.handle_file(handler, handler.full_path)
+
+    
+#-------------------------------------------------------------------------------
+
+
+    class case_directory_index_file(base_case):
+        '''在根路径下返回主页文件'''
+
+        def test(self, handler):
+            return os.path.isdir(handler.full_path) and \
+                   os.path.isfile(self.index_path(handler))
+
+        def act(self, handler):
+            self.handle_file(handler, self.index_path(handler))
+
+    
+#-------------------------------------------------------------------------------
+
+
+    class case_always_fail(base_case):
+        '''默认处理'''
+
+        def test(self, handler):
+            return True
+
+        def act(self, handler):
+            raise ServerException("Unknown object 
+'{0}'".format(handler.path))
+
+    
+#-------------------------------------------------------------------------------
+
+
+    class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+        '''
+        请求路径合法则返回相应处理
+        否则返回错误页面
+        '''
+
+        Cases = [case_no_file(),
+                 case_cgi_file(),
+                 case_existing_file(),
+                 case_directory_index_file(),
+                 case_always_fail()]
+
+        # 错误页面模板
+        Error_Page = """\
+            &lt;html&gt;
+            &lt;body&gt;
+            &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
+            &lt;p&gt;{msg}&lt;/p&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            """
+
+        def do_GET(self):
+            try:
+
+                # 得到完整的请求路径
+                self.full_path = os.getcwd() + self.path
+
+                # 遍历所有的情况并处理
+                for case in self.Cases:
+                    if case.test(self):
+                        case.act(self)
+                        break
+
+            # 处理异常
+            except Exception as msg:
+                self.handle_error(msg)
+
+        def handle_error(self, msg):
+            content = self.Error_Page.format(path=self.path, msg=msg)
+            self.send_content(content, 404)
+
+        # 发送数据到客户端
+        def send_content(self, content, status=200):
+            self.send_response(status)
+            self.send_header("Content-type", "text/html")
+            self.send_header("Content-Length", str(len(content)))
+            self.end_headers()
+            self.wfile.write(content)
+
+    
+#-------------------------------------------------------------------------------
+
+
+    if __name__ == '__main__':
+        serverAddress = ('', 8080)
+        server = BaseHTTPServer.HTTPServer(serverAddress, 
+RequestHandler)
+        server.serve_forever()
+
+
+
+## 五、实验总结
+
+通过重构我们发现，真正实施行为(Action)的代码逻辑可以抽出来进行封装(封装成各种条件处理类)，而 RequestHandler类 或是 
+basecase类 
+提供了供条件处理类使用的接口，它们可以看作是一系列服务(Service)，在软件设计中我们常常会把业务代码进行分层，将行为与服务分开，降低耦合，
+更有利于我们开发维护代码。
+
+通过统一接口，以及cgi程序，我们的代码功能扩展变的更加容易，可以专心于编写功能代码，而不用去关心其他部分。case 
+的添加虽然仍在server代码中，但我们也可以把它放到配置文件中，由server读取配置文件。
+
+我们的 server 现在还是一个在新手村里打史莱姆的小菜鸡，你会给它添加什么功能让它成长成什么样子呢？
+
+## 六、参考资料
+
++ [A Simple Web 
+Server](http://aosabook.org/en/500L/a-simple-web-server.html)
++ [500 Lines or Less](https://github.com/aosabook/500lines)
++ [Introduction to HTTP](https://launchschool.com/books/http)
++ [HTTP 下午茶](http://www.kancloud.cn/kancloud/tealeaf-http)
+
+
+
+
+
+</textarea>
+
+</div>
+
+
+        
+        
+
+        
+        
+
+        <div class="modal fade" id="invite-user" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">邀请好友，双方都可获赠实验豆！</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="form-label">
+                            分享专属链接给好友，或粘贴到QQ群/微博/论坛，好友注册后，您和好友将分别获赠3个实验豆！
+                        </div>
+                        <input id="bstext" class="form-invite" value="https://www.shiyanlou.com/register?inviter=NTY0MzE5MzkyMDIx" type="text">
+                        
+                        <div id="msg-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="flash-message" tabindex="-1" role="dialog">
+            <div class="modal-dialog" rolw="document">
+            </div>
+        </div>
+        <div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">注意</h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary confirm" data-dismiss="modal">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="new-loading new-loading-modal" id="new-loading-modal">
+            <div class="loading-wrapper">
+                <p class="loading-icon-lion">
+                    <img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/icon_loading.png" alt="">
+                </p>
+                <div class="progress">
+                    <div class="progress-bar load-progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
+                        <span class="sr-only">0% Complete</span>
+                    </div>
+                </div>
+              <p class="loading-txt">
+                    加载中，精彩就在后面...
+              </p>
+              <p class="progress-reload">
+                  <a href="javascript:;" type="button" class="btn-progress-reload" title="">卡住了？点击重试</a>
+              </p>
+            </div>
+        </div>
+
+        
+<div class="modal fade" id="start-newlab">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始新实验</h3>
+			</div>
+			<div class="modal-body">
+                <p>一个实验正在进行，是否停止它，开始新实验？</p>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-newlab-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="start-evaluation-course">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始评估课实验</h3>
+			</div>
+			<div class="modal-body">
+                <div>
+                    <p>为了让评估结果更加准确，请注意以下操作：</p>
+                    <ul>
+                        <li>完成实验后点击「停止实验」按钮</li>
+                        <li>将代码提交到代码库</li>
+                        <li>尽可能详尽的撰写实验报告</li>
+                        <li>尽可能在实验操作的关键步骤截图</li>
+                        <li>尽可能减少无用操作</li>
+                        <li>尽可能高效的利用内存/CPU资源</li>
+                    </ul>
+                    <p>评估课还在不断完善中，我们真挚希望你能通过我们提供的这个平台，找到更好的发展机会。</p>
+                </div>
+                <br>
+                <div class="start-newlab"></div>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="vip-startlab-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始实验</h3>
+			</div>
+			<div class="modal-body">
+                <div class="start-newlab"></div>
+                <br>
+                <div class="text-center vip-vm">
+                    <a class="btn btn-default btn-lg newvm">创建新环境</a>
+					
+                </div>
+                <br>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade askquestion-modal" id="askquestion" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">发帖</h4>
+            </div>
+            <div class="modal-body words-ctrl">
+                <form class="form-horizontal" action="/questions/">
+                    <input name="_csrf_token" value="IjlkNjg2ZDkzODAwOGYxOTgzNmQ3YzE4NGFiMGU3OWI2ZWQyMGQ1ZDAi.DIlZzQ.9pac_WG1cl5pZfZdUyRdY3IliMI" type="hidden">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">标题</label>
+                        <div class="col-md-10">
+                            <input name="title" min="5" max="100" class="form-control" placeholder="至少输入5个字" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">描述</label>
+                        <div class="col-md-10">
+                            
+                            
+                            
+<div class="tabpanel mkeditor">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#mkeditor-editor" role="tab" data-toggle="tab">编辑</a>
+        </li>
+        <li role="presentation">
+            <a class="mkeditor-btn-view" href="#mkeditor-viewer" role="tab" data-toggle="tab">预览</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active mkeditor-editor" id="mkeditor-editor" role="tabpanel">
+            
+            <div class="btn-group" role="group">
+            
+                <button type="button" class="btn btn-default mkeditor-btn-bold">
+                    <i class="fa fa-bold"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-italic">
+                    <i class="fa fa-italic"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-link">
+                    <i class="fa fa-link"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-quote">
+                    <i class="fa fa-quote-left"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-code">
+                    <i class="fa fa-code"></i>
+                </button>
+                <button id="mkeditor-pickfile" type="button" class="btn btn-default mkeditor-btn-img" style="z-index: 1;">
+                    <i class="fa fa-image"></i>
+                </button>
+                
+                <button type="button" class="btn btn-default mkeditor-btn-listol">
+                    <i class="fa fa-list-ol"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-listul">
+                    <i class="fa fa-list-ul"></i>
+                </button>
+            <div id="html5_1bormcrb3147t1rqgjjn1bjqa6q3_container" class="moxie-shim moxie-shim-html5" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px; overflow: hidden; z-index: 0;"><input id="html5_1bormcrb3147t1rqgjjn1bjqa6q3" style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;" multiple="" accept="" type="file"></div></div>
+            <div class="btn-group pull-right" role="group">
+                <a style="font-size:12px; color:#666; text-decoration:underline;" href="https://www.shiyanlou.com/questions/764" target="_blank">
+                    <i class="fa fa-question-circle"></i>Markdown 语法
+                </a>
+            </div>
+            <textarea name="content" class="content" min="0" max="20000" placeholder="推荐使用 Markdown 语法，至少输入 5 个字"></textarea>
+            <div class="help-block"></div>
+        </div>
+        <div class="tab-pane mkeditor-viewer markdown-body" id="mkeditor-viewer" role="tabpanel">
+            <div></div>
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none;">
+                        <label class="col-md-2 control-label">板块</label>
+                        <div class="col-md-10">
+                            <div class="q-types" data-type="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="bottom-link btn btn-primary" href="https://www.shiyanlou.com/vip" target="_blank" style="background:#FFFFFF;color:#00CC99;border:none;float:left;padding-left:0;"><img src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/icon-vip-advance.png" alt=""> 加入高级会员获得助教答疑</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="submit-question btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        
+        
+        
+        
+        
+
+        
+
+        <div class="modal fade" id="sign-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#signin-form" aria-controls="signin-form" role="tab" data-toggle="tab">登录</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#signup-form" aria-controls="signup-form" role="tab" data-toggle="tab">注册</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="signin-form">
+                        <form action="/login" method="post">
+                            <input name="_csrf_token" value="IjlkNjg2ZDkzODAwOGYxOTgzNmQ3YzE4NGFiMGU3OWI2ZWQyMGQ1ZDAi.DIlZzQ.9pac_WG1cl5pZfZdUyRdY3IliMI" type="hidden">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input name="login" class="form-control" placeholder="请输入邮箱" type="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input name="password" class="form-control" placeholder="请输入密码" type="password">
+                                </div>
+                            </div>
+                            <div class="form-inline verify-code-item" style="display:none;">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input name="captcha_v" class="form-control" placeholder="请输入验证码" type="text">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="" source="/captcha.gif">
+                            </div>
+                            <div class="form-group remember-login">
+                                <input name="remember" value="y" type="checkbox"> 下次自动登录
+                                <a class="pull-right" href="https://www.shiyanlou.com/reset_password">忘记密码？</a>
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" value="进入实验楼" type="submit">
+                            </div>
+                            <div class="form-group widget-signin">
+                                <span>快速登录</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="signup-form">
+                        <form action="/register" method="post">
+                            <input name="_csrf_token" value="IjlkNjg2ZDkzODAwOGYxOTgzNmQ3YzE4NGFiMGU3OWI2ZWQyMGQ1ZDAi.DIlZzQ.9pac_WG1cl5pZfZdUyRdY3IliMI" type="hidden">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input name="email" class="form-control" placeholder="请输入邮箱" type="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input name="password" class="form-control" placeholder="请输入密码" type="password">
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input name="captcha_v" class="form-control" placeholder="请输入验证码" type="text">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="" source="/captcha.gif">
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" value="注册" type="submit">
+                            </div>
+                            <div class="form-group agree-privacy">
+                                注册表示您已经同意我们的<a href="https://www.shiyanlou.com/privacy" target="_blank">隐私条款</a>
+                            </div>
+                            <div class="form-group widget-signup">
+                                <span>快速注册</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div id="base-data" data-flash="false" data-is-login="true" data-jwt-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIzNzkzNDYiLCJpc3MiOiJzaGl5YW5sb3U6d2ViOmFwcCIsInVuYW1lIjoiTE9VMTU4OTMyOTQ2NSIsImlzX2FkbWluIjpmYWxzZSwiZXhwIjoxNTA0MjU0NDEzLCJpYXQiOjE1MDQxNjgwMTN9.zsZmupxJEjyVocxdTmwtSXZhZpDigAbD_1WiV34A8b0" data-user-id="379346" data-is-jwt="true" data-socket-url="wss://comet.shiyanlou.com" data-msg-user="" data-msg-system=""></div>
+
+        <!-- 不带 CSS 的库 -->
+        <script async="" src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/analytics.js"></script><script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/polyfill.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/manifest.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/vendor.js"></script>
+
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/jquery_002.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/jquery.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/jquery_003.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/jquery_004.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/html2canvas.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/jspdf.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/ZeroClipboard.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/aliyun-oss-sdk-4.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/qiniu.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/plupload.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/echarts.js"></script>
+        <!-- 不带 CSS 的库 end -->
+
+        <!-- 带有 CSS 的库 -->
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap-switch.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap-tour.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap-table.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap-table-zh-CN.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/bootstrap-table-filter-control.js"></script>
+
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/ace.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/video.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/katex.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/highlight.js"></script>
+        <!-- 带有 CSS 的库 end -->
+
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/raven.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/d3.js"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/moment.js" charset="utf-8"></script>
+        <script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/calendar-heatmap.js"></script>
+
+        <script>
+            Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
+                release: '3.12.13'
+            }).install();
+        </script>
+
+        
+<div id="jinja-data" data-is-authenticated="true" data-tencent-labid="[877]" data-course-detail="/courses/552" data-left-time="0" data-course-id="552" data-userlab-id="None" data-question-form="/questions/meta" data-start-newlab-url="/courses/clear"></div>
+<script src="Python%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8%20-%20%E5%AE%9E%E9%AA%8C%E6%A5%BC_files/labDoc.js"></script><div style="display: none; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background: rgba(0, 0, 0, 0.8) none repeat scroll 0% 0%; text-align: center; z-index: 1600;"><i class="fa fa-spinner fa-pulse" style="margin-top: 358px; color: rgb(255, 255, 255); font-size: 35px;"></i></div>
+
+
+
+        
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-89338452-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+</body></html>
